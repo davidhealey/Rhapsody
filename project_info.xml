@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ProjectSettings>
+  <Name value="Rhapsody"/>
+  <Version value="1.0.0"/>
+  <Description value="Virtual instrument player"/>
+  <BundleIdentifier value="com.librewave.rhapsody"/>
+  <PluginCode value="Lwrp"/>
+  <EmbedAudioFiles value="1"/>
+  <EmbedImageFiles value="Yes"/>
+  <SupportFullDynamicsHLAC value="1"/>
+  <AdditionalDspLibraries value=""/>
+  <OSXStaticLibs value=""/>
+  <WindowsStaticLibFolder value=""/>
+  <ExtraDefinitionsWindows value="AUDIOFFT_FFTW3=1&#10;HISE_ENABLE_FULL_CONTROL_RATE_PITCH_MOD=1&#10;HISE_USE_ONLINE_DOC_UPDATER=0&#10;HISE_USE_OPENGL_FOR_PLUGIN=1&#10;HISE_DEFAULT_OPENGL_VALUE=0&#10;HISE_USE_MOUSE_WHEEL_FOR_TABLE_CURVE=1&#10;HISE_DEACTIVATE_OVERLAY=1"/>
+  <ExtraDefinitionsOSX value="AUDIOFFT_FFTW3=1&#10;HISE_ENABLE_FULL_CONTROL_RATE_PITCH_MOD=1&#10;HISE_USE_ONLINE_DOC_UPDATER=0&#10;JUCE_DISABLE_COREGRAPHICS_FONT_SMOOTHING=1&#10;HISE_USE_OPENGL_FOR_PLUGIN=1&#10;HISE_DEFAULT_OPENGL_VALUE=0&#10;HISE_USE_MOUSE_WHEEL_FOR_TABLE_CURVE=1&#10;HISE_DEACTIVATE_OVERLAY=1"/>
+  <ExtraDefinitionsIOS value=""/>
+  <ExtraDefinitionsLinux value="AUDIOFFT_FFTW3=1&#10;HISE_ENABLE_FULL_CONTROL_RATE_PITCH_MOD=1&#10;HISE_USE_ONLINE_DOC_UPDATER=0&#10;HISE_USE_OPENGL_FOR_PLUGIN=1&#10;HISE_DEFAULT_OPENGL_VALUE=0&#10;JUCE_DISABLE_NATIVE_FILECHOOSERS=0&#10;HISE_USE_MOUSE_WHEEL_FOR_TABLE_CURVE=1&#10;HISE_DEACTIVATE_OVERLAY=1"/>
+  <AppGroupID value=""/>
+  <RedirectSampleFolder value=""/>
+  <AAXCategoryFX value="AAX_ePlugInCategory_Modulation"/>
+  <SupportMonoFX value="No"/>
+  <EnableMidiInputFX value="No"/>
+  <EnableMidiOut value="No"/>
+  <EnableSoundGeneratorsFX value="No"/>
+  <VST3Support value="1"/>
+  <UseRawFrontend value="No"/>
+  <ExpansionType value="Full"/>
+  <EncryptionKey value="1234"/>
+  <LinkExpansionsToProject value="0"/>
+  <ReadOnlyFactoryPresets value="0"/>
+  <ForceStereoOutput value="No"/>
+  <AdminPermissions value="No"/>
+  <EmbedUserPresets value="1"/>
+  <EnableGlobalPreprocessor value="No"/>
+</ProjectSettings>
