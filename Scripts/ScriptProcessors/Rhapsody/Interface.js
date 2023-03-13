@@ -17,7 +17,7 @@
 
 Content.makeFrontInterface(1000, 710);
 
-const MODE = "release";
+const MODE = "development";
 
 Synth.deferCallbacks(true);
 
@@ -37,19 +37,11 @@ include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/Spinner.js");
 include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/FilePicker.js");
 include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/Card.js");
 include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/StatusBar.js");
+include("Database.js");
+include("UpdateChecker.js");
 include("SplashScreen.js");
 
 
-inline function onButton1Control(component, value)
-{
-	if (value)
-		Content.createScreenshot([0, 0, 1000, 710], FileSystem.getFolder(FileSystem.Desktop), "myimage");
-};
-
-Content.getComponent("Button1").setControlCallback(onButton1Control);
-const var Button1 = Content.getComponent("Button1");
-
-Button1.setLocalLookAndFeel(LookAndFeel.empty);
 function onNoteOn()
 {
 	
