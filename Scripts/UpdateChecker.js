@@ -23,15 +23,20 @@ namespace UpdateChecker
 		local now = Date.getSystemTimeMs();
 		local lastMs = 0;
 		local lastChecked = Database.get("cache", "lastChecked");
-		local frequency = 6;
+		local updateFrequency = UserSettings.getProperty("updateFrequency");
 		
-		if (isDefined(Expansions.getCurrent()))
+		if (!isDefined(updateFrequency))
+			updateFrequency = 6;
+		else
+			updateFrequency = (updateFrequency - 1) * 7;
+
+		if (updateFrequency == 0 || isDefined(Expansions.getCurrent()))
 			continue;
 
 		if (isDefined(lastChecked))
 			lastMs = Date.ISO8601ToMilliseconds(lastChecked);
 
-		if (lastMs == 0 || ((now - lastMs) / 86400000) > frequency)
+		if (lastMs == 0 || ((now - lastMs) / 86400000) > updateFrequency)
 			checkForAppUpdate();
 	}
 	
