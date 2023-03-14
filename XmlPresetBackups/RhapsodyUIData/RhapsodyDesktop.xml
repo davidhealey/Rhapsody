@@ -494,32 +494,6 @@
                  isMomentary="1" enableMidiLearn="0" bgColour="4292132542" itemColour="4288778641"
                  itemColour2="0" textColour="4278190080"/>
     </Component>
-    <Component type="ScriptPanel" id="pnlUpdateCheckerContainer" x="0.0" y="0.0"
-               width="1000.0" height="710.0" parentComponent="pnlContainer"
-               bgColour="2013265920" itemColour="0" itemColour2="0" textColour="0"
-               visible="0">
-      <Component type="ScriptPanel" id="pnlUpdateChecker" x="250.0" y="180.0"
-                 width="500.0" height="300.0" parentComponent="pnlUpdateCheckerContainer"
-                 bgColour="4281282356" itemColour="4279637529" textColour="4294504388"
-                 itemColour2="0" borderRadius="5.0" borderSize="0.0" text="Update Available">
-        <Component type="ScriptedViewport" id="vptChangeLog" x="10.0" y="15.0" width="475.0"
-                   height="230.0" parentComponent="pnlUpdateChecker" saveInPreset="0"
-                   scrollBarThickness="10.0" bgColour="0" itemColour="0" itemColour2="0"
-                   textColour="0">
-          <Component type="ScriptPanel" id="pnlChangeLog" x="0.0" y="0.0" width="450.0"
-                     height="100.0" parentComponent="vptChangeLog" itemColour="0"
-                     itemColour2="0" textColour="4294967295" bgColour="0" borderSize="0.0"
-                     text=""/>
-        </Component>
-        <Component type="ScriptButton" id="btnUpdateCheckerSubmit" x="260.0" y="260.0"
-                   width="130.0" height="30.0" parentComponent="pnlUpdateChecker"
-                   text="Go to download" saveInPreset="0" isMomentary="1" enableMidiLearn="0"/>
-        <Component type="ScriptButton" id="btnUpdateCheckerClose" x="400.0" y="260.0"
-                   width="90.0" height="30.0" parentComponent="pnlUpdateChecker"
-                   text="Close" saveInPreset="0" isMomentary="1" enableMidiLearn="0"
-                   bgColour="4279637529" itemColour="4288651185" itemColour2="4294967295"/>
-      </Component>
-    </Component>
     <Component type="ScriptPanel" id="pnlSpinnerContainer" x="0.0" y="0.0" text=""
                width="1000.0" height="710.0" bgColour="0" itemColour="2013265920"
                itemColour2="2013265920" textColour="0" parentComponent="pnlContainer"

@@ -17,76 +17,6 @@
 
 namespace UpdateChecker
 {
-	// pnlUpdateCheckerContainer
-	const pnlUpdateCheckerContainer = Content.getComponent("pnlUpdateCheckerContainer");
-	
-	pnlUpdateCheckerContainer.setPaintRoutine(function(g)
-	{
-		var a = [pnlUpdateChecker.get("x"), pnlUpdateChecker.get("y"), pnlUpdateChecker.getWidth(), pnlUpdateChecker.getHeight()];
-		
-		g.fillAll(this.get("bgColour"));
-
-		g.drawDropShadow(a, Colours.withAlpha(Colours.black, 0.8), 20);
-	});
-
-	// pnlUpdateChecker
-	const pnlUpdateChecker = Content.getComponent("pnlUpdateChecker");
-	
-	pnlUpdateChecker.setPaintRoutine(function(g)
-	{
-		var a = this.getLocalBounds(0);
-		
-		g.setColour(this.get("bgColour"));
-		g.fillRoundedRectangle(a, this.get("borderRadius"));
-		
-		g.setColour(this.get("itemColour"));
-		g.fillRoundedRectangle([vptChangeLog.get("x"), vptChangeLog.get("y") - 5, vptChangeLog.getWidth() + 5, vptChangeLog.getHeight() + 10], this.get("borderRadius"));
-	});
-	
-	// vptChangeLog
-	const vptChangeLog = Content.getComponent("vptChangeLog");
-	
-	// pnlChangeLog
-	const pnlChangeLog = Content.getComponent("pnlChangeLog");	
-	pnlChangeLog.set("text", "");
-
-	pnlChangeLog.setPaintRoutine(function(g)
-	{
-		var a = this.getLocalBounds(0);
-	
-		var md = Content.createMarkdownRenderer();
-		md.setTextBounds([a[0] + 10, a[1], a[2], a[3]]);
-		md.setText(this.get("text"));
-		md.setStyleData({"Font": "medium", "FontSize": 18.0});
-
-		g.drawMarkdownText(md);
-	});
-
-	// btnUpdateCheckerSubmit
-	const btnUpdateCheckerSubmit = Content.getComponent("btnUpdateCheckerSubmit");
-	btnUpdateCheckerSubmit.setLocalLookAndFeel(LookAndFeel.textButton);
-	btnUpdateCheckerSubmit.setControlCallback(onbtnUpdateCheckerCloseCoSubmit);
-	
-	inline function onbtnUpdateCheckerCloseCoSubmit(component, value)
-	{
-		if (!value)
-		{
-			Engine.openWebsite("https://librewave.com/rhapsody/");
-			hide();
-		}			
-	}
-	
-	// btnUpdateCheckerClose
-	const btnUpdateCheckerClose = Content.getComponent("btnUpdateCheckerClose");
-	btnUpdateCheckerClose.setLocalLookAndFeel(LookAndFeel.textButton);
-	btnUpdateCheckerClose.setControlCallback(onbtnUpdateCheckerCloseControl);
-	
-	inline function onbtnUpdateCheckerCloseControl(component, value)
-	{
-		if (!value)
-			hide();
-	}
-
 	// Functions
 	inline function autocheck()
 	{
@@ -95,6 +25,9 @@ namespace UpdateChecker
 		local lastChecked = Database.get("cache", "lastChecked");
 		local frequency = 6;
 		
+		if (isDefined(Expansions.getCurrent()))
+			continue;
+
 		if (isDefined(lastChecked))
 			lastMs = Date.ISO8601ToMilliseconds(lastChecked);
 
@@ -111,76 +44,24 @@ namespace UpdateChecker
 		{
 			if (status == 200)
 			{
-				var data = response[0];
-
-				if (data.tag_name > 0)//Engine.getVersion())
+				if (response[0].tag_name > Engine.getVersion())
 				{
-					//parseRelease(data.body, data.tag_name);
 					Database.put("cache", "lastChecked", Date.getSystemTimeISO8601(true));
-					Engine.showYesNoWindow("Update Available", "An update is available for Rhapsody, would you like to go to the download page?", function(response) {
-						if (response)
-							Engine.openWebsite("https://librewave.com/rhapsody/");			
-					});
-					//show();
+					showNotification();
 				}
 			}
 		});
 	}
-	
-	inline function parseRelease(body, tag)
+
+	inline function showNotification()
 	{
-		local heading = Engine.getName() + " " + tag + " is available with the following changes:";	
-		local lines = body.split("\r\n");
-		local numLines = lines.length + 3;
-		local changelog = "\r\n";
-		
-		for (line in lines)
+		Engine.showYesNoWindow("Update Available", "An update is available for Rhapsody, would you like to go to the download page?", function(response)
 		{
-			local text = line;
-
-			if (line.contains("#") || line.contains("made their first") || line.contains("Full Changelog"))
-			{
-				numLines--;
-				continue;
-			}
-
-			if (line.contains("by @"))
-				text = line.substring(0, line.indexOf("by @"));
-
-			if (text.length > 60)
-				text = text.substring(0, 55) + " ...";
-
-			if (text.charAt(0) != "*" && text.charAt(0) != "-")
-				text = "-" + text;
-
-			changelog += text;
-		}
-
-		changelog = changelog.replace("*", "-");
-
-		pnlChangeLog.set("text", heading + changelog);
-		pnlChangeLog.set("height", numLines * 25);
-		pnlChangeLog.repaint();
+			if (response)
+				Engine.openWebsite("https://librewave.com/rhapsody/");			
+		});
 	}
-	
-	inline function show()
-	{	
-		pnlUpdateCheckerContainer.fadeComponent(true, 250);
-	}
-	
-	inline function hide()
-	{
-		pnlUpdateCheckerContainer.fadeComponent(false, 250);
-	}
-	
-	inline function onButton1Control(component, value)
-	{
-		if (value)
-			show();
-	};
-	
-	Content.getComponent("Button1").setControlCallback(onButton1Control);
-	
+		
 	// Calls
 	autocheck();
 }
