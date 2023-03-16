@@ -9,37 +9,6 @@
         <Processor Type="ScriptProcessor" ID="Interface" Bypassed="0">
           <ChildProcessors/>
           <Content>
-            <Control type="ScriptPanel" id="pnlCard0" value="0.0"/>
-            <Control type="ScriptSlider" id="knbExpression" value="64.0"/>
-            <Control type="ScriptSlider" id="knbDynamics" value="64.0"/>
-            <Control type="ScriptPanel" id="pnlCard1" value="0.0"/>
-            <Control type="ScriptSliderPack" id="slpAHDSR" value="-1.0" data="1000......................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................."/>
-            <Control type="ScriptPanel" id="pnlCard2" value="0.0"/>
-            <Control type="ScriptPanel" id="pnlArticulationList" value="0.0"/>
-            <Control type="ScriptSliderPack" id="slpArticulationGain" value="-1.0"
-                     data="100......................................................................................................................................."/>
-            <Control type="ScriptPanel" id="pnlCard3" value="0.0"/>
-            <Control type="ScriptSlider" id="knbVibratoRate" value="0.5"/>
-            <Control type="ScriptSlider" id="knbVibratoDepth" value="0.0"/>
-            <Control type="ScriptSlider" id="knbGrowl" value="0.0"/>
-            <Control type="ScriptSlider" id="knbFlutter" value="0.0"/>
-            <Control type="ScriptPanel" id="pnlCard4" value="0.0"/>
-            <Control type="ScriptSlider" id="knbPan0" value="0.0"/>
-            <Control type="ScriptSlider" id="knbGain0" value="-2.999998569488525"/>
-            <Control type="ScriptButton" id="btnPurge0" value="0.0"/>
-            <Control type="ScriptComboBox" id="cmbOutput0" value="1.0"/>
-            <Control type="ScriptSlider" id="knbPan1" value="0.0"/>
-            <Control type="ScriptSlider" id="knbGain1" value="-2.999998569488525"/>
-            <Control type="ScriptButton" id="btnPurge1" value="0.0"/>
-            <Control type="ScriptComboBox" id="cmbOutput1" value="1.0"/>
-            <Control type="ScriptSlider" id="knbPan2" value="0.0"/>
-            <Control type="ScriptSlider" id="knbGain2" value="-2.999998569488525"/>
-            <Control type="ScriptButton" id="btnPurge2" value="0.0"/>
-            <Control type="ScriptComboBox" id="cmbOutput2" value="1.0"/>
-            <Control type="ScriptSlider" id="knbPan3" value="0.0"/>
-            <Control type="ScriptSlider" id="knbGain3" value="-2.999998569488525"/>
-            <Control type="ScriptButton" id="btnPurge3" value="0.0"/>
-            <Control type="ScriptComboBox" id="cmbOutput3" value="1.0"/>
             <Control type="ScriptSlider" id="knbMasterGain" value="-5.999998569488525"/>
             <Control type="ScriptSlider" id="knbMasterPan" value="0.0"/>
             <Control type="ScriptSlider" id="knbCoarseDetune" value="0.0"/>

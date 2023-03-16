@@ -22,16 +22,22 @@ namespace UpdateChecker
 	{
 		local now = Date.getSystemTimeMs();
 		local lastMs = 0;
-		local lastChecked = Database.get("cache", "lastChecked");
+		local lastChecked = UserSettings.getProperty("lastUpdateChecked");
 		local updateFrequency = UserSettings.getProperty("updateFrequency");
-		
+
+		if (!Server.isOnline())
+			return;
+
+		if (Engine.getName() != "Rhapsody" || isDefined(Expansions.getCurrent()))
+			return;
+
+		if (updateFrequency == 0)
+			return;
+
 		if (!isDefined(updateFrequency))
 			updateFrequency = 6;
 		else
 			updateFrequency = (updateFrequency - 1) * 7;
-
-		if (updateFrequency == 0 || isDefined(Expansions.getCurrent()))
-			continue;
 
 		if (isDefined(lastChecked))
 			lastMs = Date.ISO8601ToMilliseconds(lastChecked);
@@ -39,7 +45,7 @@ namespace UpdateChecker
 		if (lastMs == 0 || ((now - lastMs) / 86400000) > updateFrequency)
 			checkForAppUpdate();
 	}
-	
+
 	inline function checkForAppUpdate()
 	{
 		local endpoint = "/api/v1/repos/LibreWave/Rhapsody/releases?draft=false&pre-release=false";
@@ -49,11 +55,10 @@ namespace UpdateChecker
 		{
 			if (status == 200)
 			{
+				UserSettings.setProperty("lastUpdateChecked", Date.getSystemTimeISO8601(true));
+
 				if (response[0].tag_name > Engine.getVersion())
-				{
-					Database.put("cache", "lastChecked", Date.getSystemTimeISO8601(true));
 					showNotification();
-				}
 			}
 		});
 	}
@@ -63,10 +68,10 @@ namespace UpdateChecker
 		Engine.showYesNoWindow("Update Available", "An update is available for Rhapsody, would you like to go to the download page?", function(response)
 		{
 			if (response)
-				Engine.openWebsite("https://librewave.com/rhapsody/");			
+				Engine.openWebsite("https://librewave.com/rhapsody/");
 		});
 	}
-		
+
 	// Calls
 	autocheck();
 }

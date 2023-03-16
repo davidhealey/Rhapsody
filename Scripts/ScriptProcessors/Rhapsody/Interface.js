@@ -37,9 +37,9 @@ include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/Spinner.js");
 include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/FilePicker.js");
 include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/Card.js");
 include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/StatusBar.js");
-include("Database.js");
 include("UpdateChecker.js");
 include("SplashScreen.js");
+
 
 
 function onNoteOn()
