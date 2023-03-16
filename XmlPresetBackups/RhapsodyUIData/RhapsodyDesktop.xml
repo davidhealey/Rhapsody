@@ -143,23 +143,18 @@
                      ContentType="CustomSettings" bgColour="0" itemColour="0" itemColour2="0"
                      Data="{&#10;  &quot;Driver&quot;: false,&#10;  &quot;Device&quot;: false,&#10;  &quot;Output&quot;: false,&#10;  &quot;BufferSize&quot;: false,&#10;  &quot;SampleRate&quot;: false,&#10;  &quot;GlobalBPM&quot;: true,&#10;  &quot;StreamingMode&quot;: true,&#10;  &quot;ScaleFactor&quot;: true,&#10;  &quot;VoiceAmountMultiplier&quot;: true,&#10;  &quot;ClearMidiCC&quot;: false,&#10;  &quot;SampleLocation&quot;: false,&#10;  &quot;DebugMode&quot;: false,&#10;  &quot;UseOpenGL&quot;: true,&#10;  &quot;ScaleFactorList&quot;: [&#10;    0.5,&#10;    0.75,&#10;    1.0,&#10;    1.25,&#10;    1.5,&#10;    2.0,&#10;    2.5,&#10;    3.0,&#10;    4.0&#10;  ]&#10;}"
                      FontSize="16.0" Font="medium" textColour="4293059298"/>
-          <Component type="ScriptComboBox" id="cmbUpdateFrequency" x="148.0" y="215.0"
-                     width="188.0" height="30.0" max="5" parentComponent="pnlSettingsTab0"
-                     items="Never&#10;Every Week&#10;Every Two Weeks&#10;Every Three Weeks&#10;Every Month"
-                     text="Check for Updates" bgColour="4279637529" itemColour="4292072403"
-                     itemColour2="0" defaultValue="2.0" saveInPreset="0"/>
-          <Component type="ScriptSlider" id="knbCoarseDetune" x="157.0" y="265.0"
+          <Component type="ScriptSlider" id="knbCoarseDetune" x="157.0" y="218.0"
                      parentComponent="pnlSettingsTab0" min="-12.0" max="12.0" middlePosition="0.0"
                      stepSize="1.0" suffix=" st" text="COARSE" width="40.0" height="40.0"
                      bgColour="4279637529" itemColour2="4289967027" itemColour="4294967295"
                      textColour="4292138196" showValuePopup="Below" enableMidiLearn="0"
                      enabled="0"/>
-          <Component type="ScriptSlider" id="knbFineDetune" x="255.0" y="265.0" parentComponent="pnlSettingsTab0"
+          <Component type="ScriptSlider" id="knbFineDetune" x="255.0" y="218.0" parentComponent="pnlSettingsTab0"
                      min="-100.0" max="100.0" middlePosition="0.0" stepSize="1.0"
                      suffix=" ct" text="FINE" width="40.0" height="40.0" bgColour="4279637529"
                      itemColour2="4289967027" itemColour="4294967295" textColour="4292138196"
                      showValuePopup="Below" enableMidiLearn="0" enabled="0"/>
-          <Component type="ScriptSlider" id="knbTranspose" x="157.0" y="341.0" parentComponent="pnlSettingsTab0"
+          <Component type="ScriptSlider" id="knbTranspose" x="157.0" y="294.0" parentComponent="pnlSettingsTab0"
                      min="-2.0" max="2.0" middlePosition="0.0" stepSize="1.0" suffix=" st"
                      text="TRANSPOSE" width="40.0" height="40.0" bgColour="4279637529"
                      itemColour2="4289967027" itemColour="4294967295" textColour="4292138196"

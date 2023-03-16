@@ -23,21 +23,13 @@ namespace UpdateChecker
 		local now = Date.getSystemTimeMs();
 		local lastMs = 0;
 		local lastChecked = UserSettings.getProperty("lastUpdateChecked");
-		local updateFrequency = UserSettings.getProperty("updateFrequency");
+		local updateFrequency = 7;
 
 		if (!Server.isOnline())
 			return;
 
 		if (Engine.getName() != "Rhapsody" || isDefined(Expansions.getCurrent()))
 			return;
-
-		if (updateFrequency == 0)
-			return;
-
-		if (!isDefined(updateFrequency))
-			updateFrequency = 6;
-		else
-			updateFrequency = (updateFrequency - 1) * 7;
 
 		if (isDefined(lastChecked))
 			lastMs = Date.ISO8601ToMilliseconds(lastChecked);
