@@ -6,11 +6,11 @@
              itemColour2="4280098081" bgColour="0" textColour="0">
     <Component type="ScriptPanel" id="pnlHeader" x="0.0" y="0.0" width="1000.0"
                borderSize="0.0" borderRadius="0.0" parentComponent="pnlContainer"
-               bgColour="0" itemColour="0" itemColour2="0" textColour="0" text="Sofia Woodwinds"
-               height="60.0">
-      <Component type="ScriptButton" id="btnTitle" x="15.0" y="0.0" width="179.0"
+               bgColour="0" itemColour="0" itemColour2="0" textColour="4293059298"
+               text="Sofia Woodwinds" height="60.0">
+      <Component type="ScriptButton" id="btnTitle" x="20.0" y="0.0" width="179.0"
                  height="60.0" parentComponent="pnlHeader" saveInPreset="0" isMomentary="1"
-                 enableMidiLearn="0" text="Rhapsody" textColour="4293059298" itemColour2="4293059298"
+                 enableMidiLearn="0" text="Rhapsody" textColour="4293059298" itemColour2="0"
                  itemColour="0" bgColour="0"/>
       <Component type="ScriptPanel" id="pnlPresetDisplay" x="635.0" y="15.0" width="350.0"
                  height="30.0" parentComponent="pnlHeader" bgColour="4281282356"
