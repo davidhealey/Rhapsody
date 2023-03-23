@@ -36,14 +36,15 @@
                textColour="0"/>
     <Component type="ScriptPanel" id="pnlStatusBar" x="5.0" y="585.0" width="990.0"
                borderSize="0.0" borderRadius="0.0" height="39.0" parentComponent="pnlContainer"
-               bgColour="0" itemColour="4293978318" itemColour2="0" textColour="4293059571">
+               bgColour="0" itemColour="4281282356" itemColour2="4293978318"
+               textColour="4293059571" text="">
       <Component type="ScriptFloatingTile" id="fltStats" x="15.0" y="10.0" ContentType="PerformanceLabel"
                  width="225.0" height="20.0" parentComponent="pnlStatusBar" Font="medium"
                  textColour="1828716543" itemColour2="0" itemColour="0" bgColour="0"/>
       <Component type="ScriptFloatingTile" id="fltPeakMeter" x="730.0" y="13.0"
                  ContentType="MatrixPeakMeter" width="100.0" height="16.0" bgColour="0"
-                 itemColour="4280361253" itemColour2="4284571225" parentComponent="pnlStatusBar"
-                 Data="{&#10;  &quot;ProcessorId&quot;: &quot;Sine Wave Generator1&quot;,&#10;  &quot;Index&quot;: -1,&#10;  &quot;FollowWorkspace&quot;: false,&#10;  &quot;SegmentLedSize&quot;: 0.0,&#10;  &quot;UpDecayTime&quot;: 200.0,&#10;  &quot;DownDecayTime&quot;: 500.0,&#10;  &quot;UseSourceChannels&quot;: false,&#10;  &quot;SkewFactor&quot;: 0.3,&#10;  &quot;PaddingSize&quot;: 0.5,&#10;  &quot;ShowMaxPeak&quot;: 1.0,&#10;  &quot;ChannelIndexes&quot;: null&#10;}"
+                 itemColour="4280361253" itemColour2="4284112748" parentComponent="pnlStatusBar"
+                 Data="{&#10;  &quot;ProcessorId&quot;: &quot;Rhapsody&quot;,&#10;  &quot;Index&quot;: -1,&#10;  &quot;FollowWorkspace&quot;: false,&#10;  &quot;SegmentLedSize&quot;: 0.0,&#10;  &quot;UpDecayTime&quot;: 200.0,&#10;  &quot;DownDecayTime&quot;: 500.0,&#10;  &quot;UseSourceChannels&quot;: true,&#10;  &quot;SkewFactor&quot;: 0.3,&#10;  &quot;PaddingSize&quot;: 0.5,&#10;  &quot;ShowMaxPeak&quot;: 1.0,&#10;  &quot;ChannelIndexes&quot;: [&#10;    0,&#10;    1,&#10; ]&#10;}"
                  textColour="0"/>
       <Component type="ScriptSlider" id="knbMasterGain" x="730.0" y="13.0" style="Horizontal"
                  middlePosition="-18.0" stepSize="0.1000000014901161" min="-100.0"
@@ -59,7 +60,13 @@
                  tooltip="Master pan." isPluginParameter="1" pluginParameterName="Master Pan"
                  parentComponent="pnlStatusBar" dragDirection="Horizontal" showValuePopup="Below"
                  showTextBox="0" bgColour="4280361253" itemColour="4294498201"
-                 itemColour2="4292333756" textColour="4281611319"/>
+                 itemColour2="4292333756" textColour="4281611319" processorId="masterGain"
+                 parameterId="Balance"/>
+      <Component type="ScriptButton" id="btnLogo" x="437.5" y="12.0" text="logo"
+                 width="125.0" height="15.0" tooltip="Visit the developer's website."
+                 bgColour="0" itemColour="4293059571" itemColour2="4291875295"
+                 textColour="0" saveInPreset="0" parentComponent="pnlStatusBar"
+                 isMomentary="1" enableMidiLearn="0"/>
     </Component>
     <Component type="ScriptPanel" id="pnlFooter" x="0.0" y="625.0" width="1000.0"
                borderSize="0.0" borderRadius="0.0" height="85.0" parentComponent="pnlContainer"
@@ -213,11 +220,37 @@
       <Component type="ScriptButton" id="btnFilePickerSubmit" x="622.0" y="414.0"
                  text="Ok" width="90.0" height="30.0" saveInPreset="0" parentComponent="pnlFilePicker"
                  isMomentary="1" enableMidiLearn="0" bgColour="4290690772" itemColour="4287730081"
-                 itemColour2="0" textColour="4278190080" enabled="0"/>
+                 itemColour2="0" textColour="4278190080"/>
       <Component type="ScriptButton" id="btnFilePickerCancel" x="503.0" y="414.0"
                  text="Cancel" width="90.0" height="30.0" saveInPreset="0" parentComponent="pnlFilePicker"
                  isMomentary="1" enableMidiLearn="0" bgColour="4292132542" itemColour="4288778641"
                  itemColour2="0" textColour="4278190080"/>
+    </Component>
+    <Component type="ScriptPanel" id="pnlUpdateCheckerContainer" x="0.0" y="0.0"
+               width="1000.0" height="710.0" parentComponent="pnlContainer"
+               bgColour="2013265920" itemColour="0" itemColour2="0" textColour="0"
+               visible="0">
+      <Component type="ScriptPanel" id="pnlUpdateChecker" x="250.0" y="180.0"
+                 width="500.0" height="300.0" parentComponent="pnlUpdateCheckerContainer"
+                 bgColour="4281282356" itemColour="4279637529" textColour="4294504388"
+                 itemColour2="0" borderRadius="5.0" borderSize="0.0" text="Update Available">
+        <Component type="ScriptedViewport" id="vptChangeLog" x="10.0" y="61.0" width="475.0"
+                   height="224.0" parentComponent="pnlUpdateChecker" saveInPreset="0"
+                   scrollBarThickness="10.0" bgColour="0" itemColour="0" itemColour2="0"
+                   textColour="0">
+          <Component type="ScriptPanel" id="pnlChangeLog" x="0.0" y="0.0" width="450.0"
+                     height="175" parentComponent="vptChangeLog" itemColour="0" itemColour2="0"
+                     textColour="4294967295" bgColour="0" borderSize="0.0" text=""/>
+        </Component>
+        <Component type="ScriptButton" id="btnUpdateCheckerSubmit" x="10.0" y="10.0"
+                   width="140.0" height="36.0" parentComponent="pnlUpdateChecker"
+                   text="Get Update" saveInPreset="0" isMomentary="1" enableMidiLearn="0"
+                   bgColour="4279637529" itemColour="0" itemColour2="0"/>
+        <Component type="ScriptButton" id="btnUpdateCheckerClose" x="450.0" y="10.0"
+                   width="40.0" height="36.0" parentComponent="pnlUpdateChecker"
+                   text="x" saveInPreset="0" isMomentary="1" enableMidiLearn="0"
+                   bgColour="4279637529" itemColour="4288651185" itemColour2="4294967295"/>
+      </Component>
     </Component>
     <Component type="ScriptPanel" id="pnlSpinnerContainer" x="0.0" y="0.0" text=""
                width="1000.0" height="710.0" bgColour="0" itemColour="2013265920"
