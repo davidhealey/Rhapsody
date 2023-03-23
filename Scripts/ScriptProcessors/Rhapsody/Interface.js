@@ -24,16 +24,16 @@ Synth.deferCallbacks(true);
 Engine.loadAudioFilesIntoPool();
 
 // Includes
-include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/Ui.js");
-include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/Expansions.js");
-include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/LookAndFeel.js");
-include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/Paths.js");
-include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/Header.js");
-include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/Footer.js");
-include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/Presets.js");
-include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/UserSettings.js");
-include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/Spinner.js");
-include("{GLOBAL_SCRIPT_FOLDER}RhapsodyBoilerplate/includes/FilePicker.js");
+include("RhapsodyBoilerplate/includes/Ui.js");
+include("RhapsodyBoilerplate/includes/Expansions.js");
+include("RhapsodyBoilerplate/includes/LookAndFeel.js");
+include("RhapsodyBoilerplate/includes/Paths.js");
+include("RhapsodyBoilerplate/includes/Header.js");
+include("RhapsodyBoilerplate/includes/Footer.js");
+include("RhapsodyBoilerplate/includes/Presets.js");
+include("RhapsodyBoilerplate/includes/UserSettings.js");
+include("RhapsodyBoilerplate/includes/Spinner.js");
+include("RhapsodyBoilerplate/includes/FilePicker.js");
 include("UpdateChecker.js");
 include("SplashScreen.js");
 function onNoteOn()
