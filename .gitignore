@@ -14,4 +14,4 @@ Compiled/
 *.hr*
 *.ch*
 .DS_Store
-user_info.xml
+expansion_info.xml
