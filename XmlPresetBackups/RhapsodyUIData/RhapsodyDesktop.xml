@@ -239,8 +239,9 @@
                    scrollBarThickness="10.0" bgColour="0" itemColour="0" itemColour2="0"
                    textColour="0">
           <Component type="ScriptPanel" id="pnlChangeLog" x="0.0" y="0.0" width="450.0"
-                     height="175" parentComponent="vptChangeLog" itemColour="0" itemColour2="0"
-                     textColour="4294967295" bgColour="0" borderSize="0.0" text=""/>
+                     height="175.0" parentComponent="vptChangeLog" itemColour="0"
+                     itemColour2="0" textColour="4294967295" bgColour="0" borderSize="0.0"
+                     text=""/>
         </Component>
         <Component type="ScriptButton" id="btnUpdateCheckerSubmit" x="10.0" y="10.0"
                    width="140.0" height="36.0" parentComponent="pnlUpdateChecker"
