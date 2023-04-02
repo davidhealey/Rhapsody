@@ -2,7 +2,7 @@
 
 <ProjectSettings>
   <Name value="Rhapsody"/>
-  <Version value="1.1.0"/>
+  <Version value="1.1.1"/>
   <Description value="Virtual instrument player"/>
   <BundleIdentifier value="com.librewave.rhapsody"/>
   <PluginCode value="Lwrp"/>
