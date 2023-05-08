@@ -279,6 +279,6 @@
     <Component type="ScriptPanel" id="pnlSplashScreen" x="0.0" y="0.0" width="1000.0"
                height="710.0" parentComponent="pnlContainer" bgColour="4279966495"
                textColour="4291282887" itemColour="4293059298" text="Loading."
-               itemColour2="4293059298" visible="0"/>
+               itemColour2="4293059298"/>
   </Component>
 </ContentProperties>
