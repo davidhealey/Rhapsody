@@ -17,7 +17,7 @@
 
 Content.makeFrontInterface(1000, 710);
 
-const MODE = "development";
+const MODE = "release";
 
 Synth.deferCallbacks(true);
 
