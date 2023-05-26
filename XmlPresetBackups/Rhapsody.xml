@@ -29,9 +29,11 @@
       <ChildProcessors/>
     </Processor>
   </ChildProcessors>
-  <RoutingMatrix NumSourceChannels="6" Channel0="0" Send0="-1" Channel1="1" Send1="-1"
+  <RoutingMatrix NumSourceChannels="12" Channel0="0" Send0="-1" Channel1="1" Send1="-1"
                  Channel2="0" Send2="-1" Channel3="1" Send3="-1" Channel4="0"
-                 Send4="-1" Channel5="1" Send5="-1"/>
+                 Send4="-1" Channel5="1" Send5="-1" Channel6="0" Send6="-1" Channel7="1"
+                 Send7="-1" Channel8="0" Send8="-1" Channel9="1" Send9="-1" Channel10="0"
+                 Send10="-1" Channel11="1" Send11="-1"/>
   <macro_controls>
     <macro name="Macro 1" value="0.0" midi_cc="-1"/>
     <macro name="Macro 2" value="0.0" midi_cc="-1"/>
