@@ -31,10 +31,10 @@ namespace SplashScreen
 		g.fillPath(Paths.logoWithBg, [a[2] / 2 - 50 / 2, a[3] / 2 - 125, 50, 50]);
 		
 		g.setFont("title", Engine.getOS() == "WIN" ? 56 : 36);
-		g.drawAlignedText(Engine.getName().toUpperCase(), [a[0], a[1] - 20 - ((Engine.getOS() == "WIN") * 5), a[2], a[3]], "centred");
+		g.drawAlignedText(Engine.getName().toUpperCase(), [a[0], a[1] - 30 - ((Engine.getOS() == "WIN") * 5), a[2], a[3]], "centred");
 		
-		g.fillPath(Paths.icons.trademark, [605, 333, 12, 12]);
-		
+		g.fillPath(Paths.icons.trademark, [605, 348, 12, 12]);
+
 		var w = a[2] / 5;
 		var x = a[0] + a[2] / 2 - w / 2;
 		var y = a[3] - 65;
@@ -54,7 +54,7 @@ namespace SplashScreen
 		g.setColour(Colours.withAlpha(this.get("textColour"), 0.3));
 		g.drawAlignedText("v" + Engine.getVersion(), [a[0], a[1] + a[3] - 50, a[2] - 25, 50], "right");
 	});
-	
+
 	pnlSplashScreen.setTimerCallback(function()
 	{
 		if (this.data.progress >= 0.9)
@@ -73,7 +73,7 @@ namespace SplashScreen
 		this.repaint();
 	});
 
-	if (!isDefined(MODE) || MODE != "development")
+	if (!isDefined(App.mode) || App.mode != "development")
 	{
 		pnlSplashScreen.showControl(true);
 		Engine.isPlugin() ? pnlSplashScreen.startTimer(50) : pnlSplashScreen.startTimer(150);

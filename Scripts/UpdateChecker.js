@@ -29,10 +29,10 @@ namespace UpdateChecker
 	
 		g.drawDropShadow(a, Colours.withAlpha(Colours.black, 0.8), 20);
 	});
-	
+
 	// pnlUpdateChecker
 	const pnlUpdateChecker = Content.getComponent("pnlUpdateChecker");
-	
+
 	pnlUpdateChecker.setPaintRoutine(function(g)
 	{
 		var a = this.getLocalBounds(0);
@@ -94,13 +94,13 @@ namespace UpdateChecker
 	{
 		local now = Date.getSystemTimeMs();
 		local lastMs = 0;
-		local lastChecked = UserSettings.getProperty("rhapsody", "lastUpdateChecked");
+		local lastChecked = UserSettings.getProperty(Engine.getName(), "lastUpdateChecked");
 		local updateFrequency = 7;
 
-		if (!Server.isOnline())
+		if (!Account.isLoggedIn())
 			return;
 
-		if (Engine.getName() != "Rhapsody" || isDefined(Expansions.getCurrent()))
+		if (!Server.isOnline())
 			return;
 
 		if (isDefined(lastChecked))
@@ -119,9 +119,9 @@ namespace UpdateChecker
 		{
 			if (status == 200)
 			{
-				UserSettings.setProperty("rhapsody", "lastUpdateChecked", Date.getSystemTimeISO8601(true));
+				UserSettings.setProperty(Engine.getName(), "lastUpdateChecked", Date.getSystemTimeISO8601(true));
 
-				if (response[0].tag_name > Engine.getVersion())
+				if (isDefined(response[0].tag_name) && response[0].tag_name > Engine.getVersion())
 				{
 					parseBody(response[0].body, response[0].tag_name);
 					show();
@@ -175,6 +175,13 @@ namespace UpdateChecker
 	{
 		pnlUpdateCheckerContainer.fadeComponent(false, 250);
 	}
+	
+	// Listeners
+	App.broadcasters.loginChanged.addListener("Update Checker Login", "Respond to login changes", function(state)
+	{
+		if (state)
+			checkForAppUpdate();
+	});
 
 	// Calls
 	autocheck();

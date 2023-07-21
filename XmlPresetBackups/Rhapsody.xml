@@ -9,11 +9,7 @@
         <Processor Type="ScriptProcessor" ID="Interface" Bypassed="0">
           <ChildProcessors/>
           <Content>
-            <Control type="ScriptSlider" id="knbMasterGain" value="-5.999998569488525"/>
-            <Control type="ScriptSlider" id="knbMasterPan" value="0.0"/>
-            <Control type="ScriptSlider" id="knbCoarseDetune" value="0.0"/>
-            <Control type="ScriptSlider" id="knbFineDetune" value="0.0"/>
-            <Control type="ScriptSlider" id="knbTranspose" value="0.0"/>
+            <Control type="ScriptedViewport" id="vptGrid" value="0.0"/>
           </Content>
           <UIData Source="RhapsodyUIData"/>
         </Processor>
