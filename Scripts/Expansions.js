@@ -57,13 +57,13 @@ namespace Expansions
 		if (numExpansionsInDir == 1)
 			return singleInstall(f);
 
-		Engine.showYesNoWindow("Batch Install", "Would you like to install all instruments in the selected folder at once?", function[f](response)
+		/*Engine.showYesNoWindow("Batch Install", "Would you like to install all instruments in the selected folder at once?", function[f](response)
 		{
 			if (response)
 				batchInstall(f.getParentDirectory());
-			else
+			else*/
 				singleInstall(f);
-		});
+		//});
 	};
 	
 	inline function askForSampleDirectory(data, callback)
