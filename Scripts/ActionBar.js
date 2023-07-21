@@ -80,6 +80,7 @@ namespace ActionBar
 				Engine.showYesNoWindow("Presets", "Do you want to remove your custom presets?", function[data](response2)
 				{
 					Expansions.uninstall(data, response2);
+					Grid.deselectAll();
 				});
 			}
 		});
@@ -158,8 +159,6 @@ namespace ActionBar
 			btnDownload.fadeComponent(true, 100);
 		else
 			btnDownload.fadeComponent(false, 100);
-			
-		btnLoad.set("enabled", isDefined(data.uuid) && data.uuid != "");
 	}
 
 	inline function hideAll()
