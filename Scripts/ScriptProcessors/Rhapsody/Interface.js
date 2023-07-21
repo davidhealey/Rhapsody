@@ -1,5 +1,5 @@
 /*
-    Copyright 2021, 2022, 2023 David Healey
+    Copyright 2023 David Healey
 
     This file is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,27 +15,29 @@
     along with This file. If not, see <http://www.gnu.org/licenses/>.
 */
 
-Content.makeFrontInterface(1000, 710);
+Content.makeFrontInterface(1000, 800);
 
-const MODE = "release";
-
-Synth.deferCallbacks(true);
-
-Engine.loadAudioFilesIntoPool();
-
-// Includes
-include("RhapsodyBoilerplate/includes/Ui.js");
-include("RhapsodyBoilerplate/includes/Expansions.js");
-include("RhapsodyBoilerplate/includes/LookAndFeel.js");
-include("RhapsodyBoilerplate/includes/Paths.js");
-include("RhapsodyBoilerplate/includes/Header.js");
-include("RhapsodyBoilerplate/includes/Footer.js");
-include("RhapsodyBoilerplate/includes/Presets.js");
-include("RhapsodyBoilerplate/includes/UserSettings.js");
-include("RhapsodyBoilerplate/includes/Spinner.js");
-include("RhapsodyBoilerplate/includes/FilePicker.js");
+include("App.js");
+include("Paths.js");
+include("LookAndFeel.js");
+include("UserSettings.js");
+include("Spinner.js");
+include("FilePicker.js");
+include("LicenseHandler.js");
+include("Header.js");
+include("Filter.js");
+include("Expansions.js");
+include("ActionBar.js");
+include("Grid.js");
+include("Account.js");
+include("Library.js");
+include("Tile.js");
+include("Downloader.js");
 include("UpdateChecker.js");
+include("Tooltips.js");
+include("ZoomHandler.js");
 include("SplashScreen.js");
+
 function onNoteOn()
 {
 	
