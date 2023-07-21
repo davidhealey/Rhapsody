@@ -198,7 +198,7 @@ namespace LookAndFeel
     	obj.textColour = Colours.white;
     	var text = obj.text;
 
-		if (["Visit Website", "Confirmation", "Uninstall"].contains(obj.parentName))
+		if (["Visit Website", "Confirmation", "Uninstall", "Batch Install"].contains(obj.parentName))
 			text = obj.text == "OK" ? "Yes" : "No";		
 
    		drawTextButton(obj, text, a);

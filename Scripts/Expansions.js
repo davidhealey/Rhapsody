@@ -301,8 +301,6 @@ namespace Expansions
 		{
 			local props = e.getProperties();
 
-			if (props.Company != "Libre Wave" && props.Company != "https://librewave.com") continue;
-
 			local obj = {
 				"name": props.Name,
 				"projectName": props.ProjectName,
@@ -310,7 +308,8 @@ namespace Expansions
 				"company": props.Company,
 				"format": "expansion",
 				"installedVersion": props.Version,
-				"sampleDir": e.getSampleFolder()
+				"sampleDir": e.getSampleFolder(),
+				"uuid": props.UUID
 			};
 
 			if (!isDefined(obj.tags))
