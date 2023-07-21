@@ -118,7 +118,7 @@
       <Component type="ScriptButton" id="btnFilePickerSubmit" x="670.0" y="425.0"
                  text="Ok" width="100.0" height="32.0" bgColour="4293059298" itemColour="0"
                  itemColour2="0" saveInPreset="0" parentComponent="pnlFilePicker"
-                 isMomentary="1" enableMidiLearn="0" textColour="4278190080"/>
+                 isMomentary="1" enableMidiLearn="0" textColour="4278190080" enabled="0"/>
       <Component type="ScriptButton" id="btnFilePickerCancel" x="560.0" y="425.0"
                  text="Cancel" width="100.0" height="32.0" bgColour="4292132542"
                  itemColour="4288778641" itemColour2="0" textColour="4278190080"

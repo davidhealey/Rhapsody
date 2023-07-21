@@ -38,6 +38,7 @@ namespace Library
 				break;
 		}		
 
+		Grid.deselectAll();
 		component.setValue(-1);
 	}
 	

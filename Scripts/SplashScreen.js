@@ -76,6 +76,6 @@ namespace SplashScreen
 	if (!isDefined(App.mode) || App.mode != "development")
 	{
 		pnlSplashScreen.showControl(true);
-		Engine.isPlugin() ? pnlSplashScreen.startTimer(50) : pnlSplashScreen.startTimer(150);
+		Engine.isPlugin() ? pnlSplashScreen.startTimer(50) : pnlSplashScreen.startTimer(100);
 	}		
 }
