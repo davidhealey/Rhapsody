@@ -158,6 +158,8 @@ namespace ActionBar
 			btnDownload.fadeComponent(true, 100);
 		else
 			btnDownload.fadeComponent(false, 100);
+			
+		btnLoad.set("enabled", isDefined(data.uuid) && data.uuid != "");
 	}
 
 	inline function hideAll()
