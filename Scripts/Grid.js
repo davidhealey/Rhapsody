@@ -70,7 +70,7 @@ namespace Grid
 		
 		if (!isDefined(cp))
 			return;
-			
+
 		cp.repaint();
 	}
 	
@@ -169,18 +169,15 @@ namespace Grid
 		
 		return undefined;
 	}
-	
+
 	inline function getImagePath(projectName)
 	{
-		local path = getCachedImagePath(projectName);
+		local path = Expansions.getImagePath(projectName, "Icon");
 
-		if (!isDefined(path) && isDefined(projectName) && isDefined(Expansions.getExpansion(projectName)))
-			path = Expansions.getImagePath(projectName, "Icon");			
+		if (!isDefined(path))
+			return getCachedImagePath(projectName);
 
-		if (isDefined(path))
-			return path;
-
-		return undefined;
+		return path;
 	}
 	
 	inline function deselectAll()
