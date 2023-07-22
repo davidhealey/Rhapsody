@@ -153,7 +153,7 @@ namespace ActionBar
 		btnLoad.fadeComponent(isDefined(data.installedVersion), 100);
 		btnRemove.fadeComponent(isDefined(data.installedVersion), 100);
 		btnEdit.fadeComponent(isDefined(data.installedVersion), 100);
-		btnUpdate.fadeComponent(isDefined(data.hasUpdate), 100);
+		btnUpdate.fadeComponent(isDefined(data.hasUpdate) && data.hasUpdate, 100);
 		
 		if (!isDefined(data.installedVersion) && isDefined(data.hasLicense) && data.hasLicense)
 			btnDownload.fadeComponent(true, 100);

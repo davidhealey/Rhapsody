@@ -110,7 +110,7 @@ namespace Tile
 			g.setColour(Colours.withAlpha(Colours.white, this.data.hover ? 0.9 : 0.8));
 		else if (isDefined(this.data.hasLicense) && !isDefined(this.data.installedVersion))
 			g.setColour(Colours.withAlpha(Colours.lightgreen, this.data.hover ? 0.3 : 0.5));
-		else if (this.data.hasUpdate)
+		else if (isDefined(this.data.hasUpdate) && this.data.hasUpdate)
 			g.setColour(Colours.withAlpha(Colours.wheat, this.data.hover ? 0.5 : 0.7));
 		else
 			g.setColour(Colours.withAlpha(Colours.black, this.data.hover ? 0.3 : 0.5));
