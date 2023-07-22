@@ -13,9 +13,9 @@
                  bgColour="0" itemColour2="0" tooltip="Visit the Libre Wave website"
                  textColour="0"/>
       <Component type="ScriptButton" id="btnLogout" x="470.0" y="15.0" width="30.0"
-                 height="30.0" text="user" parentComponent="pnlHeader" saveInPreset="0"
+                 height="30.0" text="logout" parentComponent="pnlHeader" saveInPreset="0"
                  enableMidiLearn="0" isMomentary="1" itemColour="0" bgColour="4279637529"
-                 itemColour2="0" tooltip="Login"/>
+                 itemColour2="0" tooltip="Logout"/>
       <Component type="ScriptButton" id="btnSync" x="510.0" y="15.0" width="30.0"
                  height="30.0" text="sync" parentComponent="pnlHeader" saveInPreset="0"
                  enableMidiLearn="0" isMomentary="1" itemColour="0" bgColour="4279637529"
@@ -116,9 +116,9 @@
                  itemColour2="4291085511" textColour="0" saveInPreset="0" parentComponent="pnlFilePicker"
                  isMomentary="1" enableMidiLearn="0"/>
       <Component type="ScriptButton" id="btnFilePickerSubmit" x="670.0" y="425.0"
-                 text="Ok" width="100.0" height="32.0" bgColour="4293059298" itemColour="0"
-                 itemColour2="0" saveInPreset="0" parentComponent="pnlFilePicker"
-                 isMomentary="1" enableMidiLearn="0" textColour="4278190080" enabled="0"/>
+                 text="Install" width="100.0" height="32.0" bgColour="4293059298"
+                 itemColour="0" itemColour2="0" saveInPreset="0" parentComponent="pnlFilePicker"
+                 isMomentary="1" enableMidiLearn="0" textColour="4278190080"/>
       <Component type="ScriptButton" id="btnFilePickerCancel" x="560.0" y="425.0"
                  text="Cancel" width="100.0" height="32.0" bgColour="4292132542"
                  itemColour="4288778641" itemColour2="0" textColour="4278190080"
