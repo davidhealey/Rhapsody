@@ -28,6 +28,8 @@ namespace Account
 		if (value)
 			return;
 			
+		Grid.deselectAll();
+
 		if (isLoggedIn())		
 			logout();
 		else
@@ -141,16 +143,14 @@ namespace Account
 	// Functions
 	inline function show()
 	{
-		Grid.deselectAll();
 		lblUsername.set("text", "");
 		lblPassword.set("text", "");
-		pnlLogin.fadeComponent(true, 250);
+		pnlLogin.fadeComponent(true, 50);
 	}
 	
 	inline function hide()
 	{
-		Grid.deselectAll();
-		pnlLogin.fadeComponent(false, 250);
+		pnlLogin.fadeComponent(false, 50);
 	}
 		
 	inline function login(username, password)
@@ -204,6 +204,7 @@ namespace Account
 		writeToken(token);
 		btnLogout.set("text", "logout");
 		btnLogout.set("tooltip", "Logout");
+		btnLogout.sendRepaintMessage();
 		UserSettings.setProperty(Engine.getName().toLowerCase(), "offline-mode", false);
 		App.broadcasters.loginChanged.state = true;
 		hide();
