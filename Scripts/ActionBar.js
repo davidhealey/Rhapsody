@@ -77,7 +77,7 @@ namespace ActionBar
 		{
 			if (response1)
 			{
-				Engine.showYesNoWindow("Presets", "Do you want to remove your custom presets?", function[data](response2)
+				Engine.showYesNoWindow("Uninstall Presets", "Do you want to remove your custom presets?", function[data](response2)
 				{
 					Expansions.uninstall(data, response2);
 					Grid.deselectAll();
