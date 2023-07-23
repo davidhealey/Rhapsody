@@ -49,6 +49,6 @@ namespace Header
 		 g.fillPath(Paths.rhapsodyLogoWithBg, [a[0], a[1], a[3], a[3]]);
 
 		 g.setFont("title", Engine.getOS() == "WIN" ? 30 : 26);
-		 g.drawAlignedText("RHAPSODY", [a[0] + a[3] + 5, a[1], a[2] - a[3] - 20, a[3] + 6], "left");
+		 g.drawAlignedText("RHAPSODY", [a[0] + a[3] + 10, a[1], a[2] - a[3] - 20, a[3] + 6], "left");
 	});
 }

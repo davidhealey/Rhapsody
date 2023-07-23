@@ -135,16 +135,25 @@ namespace Grid
 
 		if (!isDefined(cp))
 			return;
-			
-		local img = getImagePath(projectName);
 
 		cp.unloadAllImages();
-		cp.loadImage(img, projectName);
+	
+		local img = Expansions.getImagePath(projectName, "Icon");
+
+		if (isDefined(img))
+			cp.loadImage(img, projectName);
 
 		local imageSize = cp.getImageSize(projectName);
 
-		if (imageSize[0] != imageSize[1])
+		if (imageSize[0] != imageSize[1] || !isDefined(img))
+		{
 			cp.unloadAllImages();
+
+			img = getCachedImagePath(projectName);
+
+			if (isDefined(img))
+				cp.loadImage(img, projectName);
+		}			
 
 		cp.data.img = img;
 		cp.repaint();
@@ -168,16 +177,6 @@ namespace Grid
 			return img.toString(image.FullPath);
 		
 		return undefined;
-	}
-
-	inline function getImagePath(projectName)
-	{
-		local path = Expansions.getImagePath(projectName, "Icon");
-
-		if (!isDefined(path))
-			return getCachedImagePath(projectName);
-
-		return path;
 	}
 	
 	inline function deselectAll()
