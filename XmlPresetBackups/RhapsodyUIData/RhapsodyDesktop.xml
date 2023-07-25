@@ -182,8 +182,5 @@
                height="800.0" parentComponent="pnlContainer" text="Loading."
                bgColour="4279966495" itemColour="4293059298" itemColour2="4293059298"
                textColour="4291282887" visible="0"/>
-    <Component type="ScriptPanel" id="pnlTooltips" x="10.0" y="758.0" width="980.0"
-               height="32.0" textColour="4294967295" enabled="0" bgColour="0"
-               text="" parentComponent="pnlContainer" visible="0"/>
   </Component>
 </ContentProperties>

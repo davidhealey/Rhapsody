@@ -34,7 +34,6 @@ include("Library.js");
 include("Tile.js");
 include("Downloader.js");
 include("UpdateChecker.js");
-include("Tooltips.js");
 include("ZoomHandler.js");
 include("SplashScreen.js");
 
