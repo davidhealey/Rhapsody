@@ -122,12 +122,18 @@ namespace Tile
 	inline function createEditMenu(parent)
 	{
 		local area = parent.getLocalBounds(0);
+		local data = parent.data;
 		local b = parent.addChildPanel();
+
+		local menuItems = "Locate Samples\nUninstall";
+
+		if (isDefined(data.url) && data.url != "")
+			menuItems += "\nVisit Webpage";
 
 		b.setPosition(area[2] - 17, area[2] + 9, 8, 16);
 		b.set("itemColour", 0xffefefef);
 		b.set("allowCallbacks", "All Callbacks");
-		b.set("popupMenuItems", "Locate Samples\nUninstall");
+		b.set("popupMenuItems", menuItems);
 		b.set("popupMenuAlign", true);
 		b.set("popupOnRightClick", false);
 		b.setControlCallback(oncmbEditControl);
@@ -138,7 +144,7 @@ namespace Tile
 			var a = this.getLocalBounds(0);
 
 			if (this.get("enabled"))
-				g.setColour(Colours.withAlpha(this.get("itemColour"), this.data.hover ? 1.0 - 0.3 * this.getValue() : 0.8));
+				g.setColour(Colours.withAlpha(this.get("itemColour"), this.data.hover ? 1.0 : 0.8));
 			else
 				g.setColour(Colours.withAlpha(this.get("itemColour"), 0.2));
 
@@ -313,6 +319,7 @@ namespace Tile
 		{
 			case 1: Expansions.edit(data.projectName); break;
 			case 2: uninstall(data); break;
+			case 3: Engine.openWebsite(data.url); break;
 		}
 	}
 	
