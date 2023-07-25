@@ -126,8 +126,6 @@ namespace Downloader
 
 		Spinner.show("Verifying License");
 
-		Grid.deselectAll();
-
 		Server.callWithGET(endpoint, p, function[data](status, response)
 		{
 			Spinner.hide();
@@ -182,9 +180,6 @@ namespace Downloader
 
 		data.installedVersion = Expansions.getInstalledVersion(data.projectName);
 		data.hasUpdate = false;
-
-		Grid.updateTile(data);
-		Grid.deselectAll();
 
 		removeFromQueue(data);
 

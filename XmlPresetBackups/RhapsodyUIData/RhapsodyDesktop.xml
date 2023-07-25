@@ -13,9 +13,9 @@
                  bgColour="0" itemColour2="0" tooltip="Visit the Libre Wave website"
                  textColour="0"/>
       <Component type="ScriptButton" id="btnLogout" x="470.0" y="15.0" width="30.0"
-                 height="30.0" text="logout" parentComponent="pnlHeader" saveInPreset="0"
+                 height="30.0" text="user" parentComponent="pnlHeader" saveInPreset="0"
                  enableMidiLearn="0" isMomentary="1" itemColour="0" bgColour="4279637529"
-                 itemColour2="0" tooltip="Logout"/>
+                 itemColour2="0" tooltip="Login"/>
       <Component type="ScriptButton" id="btnSync" x="510.0" y="15.0" width="30.0"
                  height="30.0" text="sync" parentComponent="pnlHeader" saveInPreset="0"
                  enableMidiLearn="0" isMomentary="1" itemColour="0" bgColour="4279637529"
@@ -34,39 +34,15 @@
       </Component>
     </Component>
     <Component type="ScriptPanel" id="pnlGridContainer" x="5.0" y="65.0" width="990.0"
-               height="683.0" parentComponent="pnlContainer" bgColour="0" itemColour="0"
+               height="730.0" parentComponent="pnlContainer" bgColour="0" itemColour="0"
                itemColour2="0" textColour="4294967295" borderSize="0.0" borderRadius="0.0"
                text="">
       <Component type="ScriptedViewport" id="vptGrid" x="0.0" y="0.0" width="990"
-                 height="683.0" parentComponent="pnlGridContainer" scrollBarThickness="10.0">
+                 height="730.0" parentComponent="pnlGridContainer" scrollBarThickness="10.0">
         <Component type="ScriptPanel" id="pnlGrid" x="0.0" y="0.0" width="990" height="253.0"
                    parentComponent="vptGrid" bgColour="0" itemColour="0" itemColour2="0"
                    textColour="0" borderSize="0.0" borderRadius="0.0"/>
       </Component>
-    </Component>
-    <Component type="ScriptPanel" id="pnlActionBar" x="0.0" y="758.0" width="1000.0"
-               height="32.0" parentComponent="pnlContainer" itemColour="0" bgColour="0"
-               itemColour2="0" textColour="0" borderSize="0.0" borderRadius="0.0">
-      <Component type="ScriptButton" id="btnLoad" x="858.0" y="0.0" width="132.0"
-                 height="32.0" parentComponent="pnlActionBar" text="Open" saveInPreset="0"
-                 enableMidiLearn="0" isMomentary="1" itemColour="0" bgColour="1428168736"
-                 itemColour2="0" visible="0"/>
-      <Component type="ScriptButton" id="btnDownload" x="858.0" y="0.0" width="132.0"
-                 height="32.0" parentComponent="pnlActionBar" text="Install" saveInPreset="0"
-                 enableMidiLearn="0" isMomentary="1" itemColour="0" bgColour="1428168736"
-                 itemColour2="0" visible="0"/>
-      <Component type="ScriptButton" id="btnRemove" x="716.0" y="0.0" width="132.0"
-                 height="32.0" parentComponent="pnlActionBar" text="Remove" saveInPreset="0"
-                 enableMidiLearn="0" isMomentary="1" itemColour="0" bgColour="1428168736"
-                 itemColour2="4294967295" visible="0"/>
-      <Component type="ScriptButton" id="btnEdit" x="574.0" y="0.0" width="132.0"
-                 height="32.0" parentComponent="pnlActionBar" text="Locate Samples"
-                 saveInPreset="0" enableMidiLearn="0" isMomentary="1" itemColour="0"
-                 bgColour="1428168736" itemColour2="0" visible="0"/>
-      <Component type="ScriptButton" id="btnUpdate" x="432.0" y="0.0" width="132.0"
-                 height="32.0" parentComponent="pnlActionBar" text="Update" saveInPreset="0"
-                 enableMidiLearn="0" isMomentary="1" itemColour="4283848278" bgColour="1428168736"
-                 visible="0"/>
     </Component>
     <Component type="ScriptPanel" id="pnlLogin" x="0.0" y="0.0" width="1000.0"
                height="800.0" parentComponent="pnlContainer" itemColour="0"
@@ -116,8 +92,8 @@
                  itemColour2="4291085511" textColour="0" saveInPreset="0" parentComponent="pnlFilePicker"
                  isMomentary="1" enableMidiLearn="0"/>
       <Component type="ScriptButton" id="btnFilePickerSubmit" x="670.0" y="425.0"
-                 text="Install" width="100.0" height="32.0" bgColour="4293059298"
-                 itemColour="0" itemColour2="0" saveInPreset="0" parentComponent="pnlFilePicker"
+                 text="Ok" width="100.0" height="32.0" bgColour="4293059298" itemColour="0"
+                 itemColour2="0" saveInPreset="0" parentComponent="pnlFilePicker"
                  isMomentary="1" enableMidiLearn="0" textColour="4278190080"/>
       <Component type="ScriptButton" id="btnFilePickerCancel" x="560.0" y="425.0"
                  text="Cancel" width="100.0" height="32.0" bgColour="4292132542"

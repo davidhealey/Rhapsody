@@ -27,7 +27,6 @@ include("LicenseHandler.js");
 include("Header.js");
 include("Filter.js");
 include("Expansions.js");
-include("ActionBar.js");
 include("Grid.js");
 include("Account.js");
 include("Library.js");

@@ -38,7 +38,6 @@ namespace Library
 				break;
 		}		
 
-		Grid.deselectAll();
 		component.setValue(-1);
 	}
 	
@@ -73,7 +72,7 @@ namespace Library
 
 	lafcmbAdd.registerFunction("getIdealPopupMenuItemSize", function(obj)
 	{
-		return [200, 30];
+		return [155, 30];
 	});
 	
 	App.broadcasters.isDownloading.addListener(cmbAdd, "Disable the add combo box while downloads are in progress", function(state)
@@ -189,7 +188,6 @@ namespace Library
 		}
 
 		Grid.update(items);
-		ActionBar.hideAll();
 	}
 
 	inline function mergeTags(obj1, obj2)	

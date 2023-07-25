@@ -63,17 +63,7 @@ namespace Grid
 
 		filterTiles();
 	}
-	
-	inline function updateTile(data)
-	{
-		local cp = getChildPanel(data.projectName);
-		
-		if (!isDefined(cp))
-			return;
 
-		cp.repaint();
-	}
-	
 	inline function filterTiles()
 	{
 		local childPanels = pnlGrid.getChildPanelList();	
@@ -177,43 +167,5 @@ namespace Grid
 			return img.toString(image.FullPath);
 		
 		return undefined;
-	}
-	
-	inline function deselectAll()
-	{
-		selected = -1;
-
-		for (x in pnlGrid.getChildPanelList())
-		{
-			x.data.selected = false;
-			x.repaint();
-		}
-
-		ActionBar.hideAll();		
-	}
-	
-	inline function setSelected(projectName)
-	{
-		local cp = getChildPanel(projectName);
-		
-		if (cp != selected && selected != -1)
-		{
-			selected.data.selected = false;	
-			selected.repaint();
-		}			
-
-		selected = selected == cp ? -1 : cp;
-		cp.data.selected = selected == -1 ? false : true;
-		cp.repaint();
-
-		if (selected != -1)
-			ActionBar.show(cp.data);
-		else
-			ActionBar.hideAll();
-	}
-	
-	inline function getSelected()
-	{
-		return selected;
 	}
 }

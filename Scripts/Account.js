@@ -27,8 +27,6 @@ namespace Account
 	{
 		if (value)
 			return;
-			
-		Grid.deselectAll();
 
 		if (isLoggedIn())		
 			logout();

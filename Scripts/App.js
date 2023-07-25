@@ -31,6 +31,7 @@ namespace App
 	const baseUrl = {
 		"development": "http://192.168.0.56/",
 		"testing": "http://192.168.0.56/",
+		"staging": "https://librewave.com/",
 		"release": "https://librewave.com/"
 	};
 	

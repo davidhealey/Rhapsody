@@ -139,7 +139,7 @@ namespace LookAndFeel
 	
 	laf.registerFunction("getIdealPopupMenuItemSize", function(obj)
 	{
-		return [250, 25];
+		return [145, 30];
 	});
 
     // Alert window    
@@ -242,6 +242,7 @@ namespace LookAndFeel
     		g.fillRoundedRectangle(area, 2);
     
     		g.setColour(Colours.withAlpha(component.get("textColour"), component.get("enabled") ? 0.8 : 0.5));
+    		g.drawLine(area[0] + 35, area[0] + 35, area[1] + 4, area[1] + area[3] - 4, 1);		
     		g.fillPath(Paths.icons[icon.id], [area[0] + 35 / 2 - icon.width / 2, area[1] + area[3] / 2 - icon.height / 2, icon.width, icon.height]);
     	}
     	
