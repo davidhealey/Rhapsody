@@ -347,9 +347,9 @@ namespace Expansions
 	inline function uninstallData(expansion, removePresets)
 	{
 		local rootDir = expansion.getRootFolder();
-		local name = expansion.getProperties().Name;
-		
-		if (!isDefined(rootDir) || !rootDir.isDirectory() || rootDir.toString(rootDir.NoExtension) != name)
+		local name = expansion.getProperties().Name.toLowerCase();
+
+		if (!isDefined(rootDir) || !rootDir.isDirectory() || rootDir.toString(rootDir.NoExtension).toLowerCase() != name)
 			return;
 
 		if (removePresets)
@@ -369,9 +369,9 @@ namespace Expansions
 	inline function uninstallSamples(expansion, data)
 	{
 		local sampleDir = expansion.getSampleFolder();
-		local name = expansion.getProperties().Name;
+		local name = expansion.getProperties().Name.toLowerCase();
 		
-		if (!isDefined(sampleDir) || !sampleDir.isDirectory() || sampleDir.toString(sampleDir.NoExtension) != name)
+		if (!isDefined(sampleDir) || !sampleDir.isDirectory() || sampleDir.toString(sampleDir.NoExtension).toLowerCase() != name)
 			return uninstallCleanUp(expansion, data);
 	
 		local files = FileSystem.findFiles(sampleDir, "*", false);
