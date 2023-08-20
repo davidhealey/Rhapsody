@@ -114,6 +114,7 @@ namespace UpdateChecker
 	{
 		local endpoint = "/api/v1/repos/LibreWave/Rhapsody/releases?draft=false&pre-release=false&limit=1";
 		Server.setBaseURL("https://codeberg.org");
+		Server.setHttpHeader("");
 
 		Server.callWithGET(endpoint, {}, function(status, response)
 		{
