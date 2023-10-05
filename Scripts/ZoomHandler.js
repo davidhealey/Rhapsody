@@ -4,10 +4,10 @@
 namespace ZoomHandler
 {
 	const var MIN_ZOOM = 0.75;
-	const var MAX_ZOOM = 1.5;
+	const var MAX_ZOOM = 2.0;
 	const var ZOOM_STEP = 0.10;
-	const var INTERFACE_WIDTH = 928;
-	const var INTERFACE_HEIGHT = 622;
+	const var INTERFACE_WIDTH = 1000;
+	const var INTERFACE_HEIGHT = 710;
 
 	const var ZoomPanel = Content.getComponent("pnlZoom");
 	
@@ -74,9 +74,14 @@ namespace ZoomHandler
 			
 			var zoomToUse = diagonalDrag;
 	
-			if(currentZoom != zoomToUse)
+			if (currentZoom != zoomToUse)
 			{
 				Settings.setZoomLevel(zoomToUse);
+
+				if (currentZoom <= 1.5 && zoomToUse > 1.5)
+					Grid.setNumCols(4);
+				else if (zoomToUse <= 1.5 && currentZoom > 1.5)
+					Grid.setNumCols(3);				
 			}
 		}
 		

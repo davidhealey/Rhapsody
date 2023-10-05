@@ -25,46 +25,6 @@ namespace Expansions
 	reg callback;
 	reg abort;
 	reg isManual = false;
-
-	inline function install()
-	{
-		isManual = true;
-
-		local lastLwzPath = UserSettings.getProperty(Engine.getName().toLowerCase(), "lastLwzPath");
-		local startFolder = FileSystem.getFolder(FileSystem.Downloads);
-	
-		if (isDefined(lastLwzPath) && lastLwzPath != "")
-			startFolder = FileSystem.fromAbsolutePath(lastLwzPath);
-	
-		FilePicker.show({
-			startFolder: startFolder,
-			mode: 0,
-			filter: "*.lwz",
-			title: "Installer",
-			icon: ["hdd", 60, 60],
-			message: "Select one of the lwz files you downloaded.",
-			buttonText: "Ok",
-			hideOnSubmit: false,
-			}, selectZipCallback);		
-	}
-	
-	inline function selectZipCallback(f)
-	{		
-		local numExpansionsInDir = getNumExpansionsInDirectory(f.getParentDirectory());
-	
-		UserSettings.setProperty(Engine.getName().toLowerCase(), "lastLwzPath", f.getParentDirectory().toString(f.FullPath));
-
-		if (numExpansionsInDir == 1)
-			return singleInstall(f);
-
-		/*Engine.showYesNoWindow("Batch Install", "Would you like to install all instruments in the selected folder at once?", function[f](response)
-		{
-			if (response)
-				batchInstall(f.getParentDirectory());
-			else*/
-				singleInstall(f);
-		//});
-	};
 	
 	inline function askForSampleDirectory(data, callback)
 	{
@@ -79,7 +39,7 @@ namespace Expansions
 			mode: 1,
 			filter: "",
 			title: "Install Instrument",
-			icon: ["hdd", 60, 60],
+			icon: ["hdd", 60, 42],
 			message: "Choose a location to install the samples.",
 			buttonText: "Install"
 		}, function[callback, data](dir) {
@@ -94,20 +54,33 @@ namespace Expansions
 		});
 	}
 	
-	inline function singleInstall(f)
+	inline function automatedInstall(data)
 	{
-		local filename = f.toString(f.NoExtension);
-		local expName = getExpansionNameFromFilename(filename);
+		isManual = false;
+	
+		local fileDir = data.tempDir;
+		local sampleDir = data.sampleDir;
+		local files = FileSystem.findFiles(fileDir, "*.lwz", false);
 		
-		if (expName == "")
+		if (!files.length)
+			return Console.print("Something has gone wrong!!");
+	
+		unpackArchives(files, sampleDir, data.bcProgress);
+	}
+	
+	inline function manualInstall(file, projectName)
+	{
+		isManual = true;
+		
+		if (projectName == "")
 		{
 			FilePicker.hide();
 			return Engine.showMessageBox("Invalid File", "The filename is not in the correct format.", 1);
 		}	
 
-		local hasSamples = FileSystem.findFiles(f.getParentDirectory(), expName.toLowerCase().replace(" ", "_") + "*_samples_*", false).length > 0;
-		local archives = getZipFilesForProduct(f.getParentDirectory(), expName);
-		local e = expHandler.getExpansion(expName);
+		local hasSamples = FileSystem.findFiles(file.getParentDirectory(), projectName.toLowerCase().replace(" ", "_") + "*_samples_*", false).length > 0;
+		local archives = getZipFilesForProduct(file.getParentDirectory(), projectName);
+		local e = expHandler.getExpansion(projectName);
 		
 		if (!hasSamples || isDefined(e))
 		{
@@ -136,25 +109,11 @@ namespace Expansions
 		
 		for (x in files)
 		{
-			local expName = getExpansionNameFromFilename(x.toString(x.Filename));
+			local expName = Installer.getProjectNameFromFilename(x.toString(x.Filename));
 			expansionNames.pushIfNotAlreadyThere(expName);
 		}
 
 		return expansionNames.length;
-	}
-
-	inline function automatedInstall(data)
-	{
-		isManual = false;
-
-		local fileDir = data.tempDir;
-		local sampleDir = data.sampleDir;
-		local files = FileSystem.findFiles(fileDir, "*.lwz", false);
-		
-		if (!files.length)
-			return Console.print("Something has gone wrong!!");
-
-		unpackArchives(files, sampleDir, data.bcProgress);
 	}
 
 	inline function unpackArchives(archives, defaultSampleDir, broadcaster)
@@ -173,7 +132,7 @@ namespace Expansions
 		for (x in archives)
 		{
 			local filename = x.toString(x.Filename);
-			local expName = getExpansionNameFromFilename(filename);
+			local expName = Installer.getProjectNameFromFilename(filename);
 			local e = expHandler.getExpansion(expName);
 			local sampleDir = defaultSampleDir;
 			local dataDir = getDataDirectory(expName);
@@ -200,11 +159,9 @@ namespace Expansions
 			local targetDir;
 
 			if (filename.contains("_data_"))
-				targetDir = dataDir;
+				targetDir = dataDir;				
 			else if (filename.contains("_samples_"))
-			{
 				targetDir = sampleDir;
-			}
 
 			if (!isDefined(targetDir) || !targetDir.isDirectory() || targetDir == "")
 			{
@@ -275,16 +232,6 @@ namespace Expansions
 		return getRhapsodyExpansionsDirectory().createDirectory(expName);
 	}
 		
-	inline function getExpansionNameFromFilename(filename)
-	{
-		local matches = Engine.getRegexMatches(filename, ".+data|.+samples");
-		
-		if (isDefined(matches))
-			return matches[0].replace("_data").replace("_samples").replace("_", " ").trim().capitalize();
-	
-		return "";
-	}	
-
 	inline function refresh()
 	{
 		expHandler.refreshExpansions();
@@ -419,7 +366,7 @@ namespace Expansions
 			mode: 1,
 			filter: "",
 			title: "Locate Samples",
-			icon: ["hdd", 60, 60],
+			icon: ["hdd", 60, 42],
 			message: "Select the folder containing the .ch sample files for " + name,
 			buttonText: "Ok",
 			hideOnSubmit: true,

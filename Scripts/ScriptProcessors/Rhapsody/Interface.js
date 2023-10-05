@@ -15,7 +15,7 @@
     along with This file. If not, see <http://www.gnu.org/licenses/>.
 */
 
-Content.makeFrontInterface(1000, 800);
+Content.makeFrontInterface(1000, 710);
 
 include("App.js");
 include("Paths.js");
@@ -27,6 +27,8 @@ include("LicenseHandler.js");
 include("Header.js");
 include("Filter.js");
 include("Expansions.js");
+include("Plugins.js");
+include("Installer.js");
 include("Grid.js");
 include("Account.js");
 include("Library.js");

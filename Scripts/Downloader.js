@@ -67,7 +67,10 @@ namespace Downloader
 			if (downloads.length != 0)
 				return;
 
-			return Expansions.automatedInstall(queue[0]);
+			if (data.format == "expansion")
+				return Expansions.automatedInstall(queue[0]);
+			else
+				return Plugins.automatedInstall(queue[0]);
 		}
 
 		if (!downloads.length)
@@ -139,7 +142,7 @@ namespace Downloader
 					return Engine.showMessageBox("Server Error: " + status, response.message, 1);
 				else
 					return Engine.showMessageBox("Server Error: " + status, "A server error occurred. Please try again later.", 1);
-			}				
+			}
 				
 			if (!isDefined(response[0]) || !response[0])
 				return Engine.showMessageBox("Verification Required", response.message, 1);

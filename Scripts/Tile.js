@@ -23,7 +23,7 @@ namespace Tile
 		
 		cp.setPosition(area[0], area[1], area[2], area[3]);
 		cp.set("text", data.projectName);
-		cp.set("tooltip", data.shortDescription);
+		cp.set("tooltip", data.shortDescription || "");			
 		cp.set("allowCallbacks", "All Callbacks");
 
 		for (x in data)
@@ -31,10 +31,12 @@ namespace Tile
 				
 		cp.setPaintRoutine(function(g)
 		{
-			var a = this.getLocalBounds(2);
-
-			g.setColour(Colours.withAlpha(0xff161619, this.data.hover ? 0.8 : 1.0));
-			g.fillRoundedRectangle([a[0], a[1], a[2], a[3] - 25], {CornerSize: 2, Rounded:[0, 0, 1, 1]});
+			var a = this.getLocalBounds(0);
+			var image = this.get("text");
+			var imageSize = this.getImageSize(image);
+			
+			g.setColour(Colours.withAlpha(0xff1d1d21, this.data.hover ? 0.8 : 1.0));
+			g.fillRoundedRectangle([a[0], a[1], a[2], a[3]], 5);
 
 			if (!isDefined(this.data.progress))
 			{
@@ -42,23 +44,23 @@ namespace Tile
 					g.setColour(Colours.withAlpha(Colours.white, 0.3));
 				else
 					g.setColour(Colours.withAlpha(Colours.white, this.data.hover ? 0.9 + 0.1 * this.getValue() : 1.0));
-			}				
+			}
 
-			if (this.isImageLoaded(this.get("text")))
-				g.drawImage(this.get("text"), [a[0] + 2, a[1] + 2, a[2] - 4, a[2] - 4], 0, 0);
+			if (this.isImageLoaded(image))
+				g.drawImage(image, [0, 0, a[2], a[3] - 40], 0, imageSize[0] == imageSize[1] ? imageSize[0] / 4 : 0);
 			else
-				drawPlaceholderImage();			
+				drawPlaceholderImage();
 
-			g.setFont("semibold", Engine.getOS() == "WIN" ? 18 : 16);
+			g.setFont("regular", Engine.getOS() == "WIN" ? 21 : 18);
 
-			g.setColour(Colours.withAlpha(Colours.white, this.data.hover ? 0.9 : 1.0));
+			g.setColour(Colours.withAlpha(0xffa8b2bd, this.data.hover ? 0.9 : 1.0));
 			
 			var textWidth = a[2] - 30 - (30 * (isDefined(this.data.hasUpdate) && this.data.hasUpdate)) - (12 * (this.data.hasLicense && !isDefined(this.data.installedVersion)));
 
-			g.drawFittedText(this.data.name, [a[0] + 10, a[2], textWidth, 41], "left", 1, 1);
+			g.drawFittedText(this.data.name, [a[0] + 10, a[3] - 40, textWidth, 40], "left", 1, 1);
 
 			if (isDefined(this.data.progress))
-				drawProgressIndicator(a, this.data.progress);				
+				drawProgressIndicator(a, this.data.progress);	
 		});
 
 		cp.setMouseCallback(function(event)
@@ -68,27 +70,24 @@ namespace Tile
 
 			var a = this.getLocalBounds(0);
 
-			this.setMouseCursor(event.hover && event.y < a[2] ? "PointingHandCursor" : "NormalCursor", Colours.white, [0, 0]);
-			this.data.hover = event.hover && this.get("enabled") && event.y < a[2];
+			this.setMouseCursor(event.hover && event.y < (a[3] - 40) ? "PointingHandCursor" : "NormalCursor", Colours.white, [0, 0]);
+			this.data.hover = event.hover && this.get("enabled") && event.y < (a[3] - 40);
 
-			if (event.y > a[2])
+			if (event.y > (a[3] - 40))
 				return this.repaint();
 
-			if (event.clicked)
-				this.setValue(1);
-
-			if (event.mouseUp)
-				this.setValue(0);
+			this.repaint();
 
 			if (event.clicked && !event.rightClick)
 			{
 				if (Engine.isHISE())
-					Console.print(this.data.name);
-				else
+					return Console.print(this.data.name);
+				
+				if (this.data.format == "expansion")
 					Expansions.setCurrent(this.data.projectName);
+				else
+					Plugins.load(this.data.projectName);
 			}
-
-			this.repaint();
 		});
 
 		addListeners(cp);
@@ -100,40 +99,43 @@ namespace Tile
 	inline function addButtons(cp, isOnline)
 	{
 		local data = cp.data;
-
-		if (isDefined(data.installedVersion))
+		
+		if (data.isInstalled)
 			data.btnEdit = createEditMenu(cp);
 
 		if (!isOnline)
 			return;
-			
+
 		if ((!isDefined(data.hasLicense) || !data.hasLicense) && data.regularPrice != "0")
 			return;
 
-		if (!isDefined(data.installedVersion))
+		if (!data.isInstalled)
 			data.btnInstall = createInstallButton(cp, "Install");
-		else if (isDefined(data.installedVersion) && isDefined(data.hasUpdate) && data.hasUpdate)
+		else if (data.isInstalled && isDefined(data.hasUpdate) && data.hasUpdate)
 			data.btnInstall = createInstallButton(cp, "Update");
 			
-		if (!isDefined(data.installedVersion) || (isDefined(data.hasUpdate) && data.hasUpdate))
+		if (!data.isInstalled || (isDefined(data.hasUpdate) && data.hasUpdate))
 			data.btnAbort = createAbortButton(cp);
 	}
-	
+
 	inline function createEditMenu(parent)
 	{
 		local area = parent.getLocalBounds(0);
 		local data = parent.data;
 		local b = parent.addChildPanel();
 
-		local menuItems = "Locate Samples\nUninstall";
+		local menuItems = ["Add to Favourites", "Locate Samples", "Uninstall"];
+
+		if (isDefined(data.favourite) && data.favourite)
+			menuItems[0] = "Remove Favourite";
 
 		if (isDefined(data.url) && data.url != "")
-			menuItems += "\nVisit Webpage";
+			menuItems.push("Visit Webpage");
 
-		b.setPosition(area[2] - 17, area[2] + 9, 8, 16);
-		b.set("itemColour", 0xffefefef);
+		b.setPosition(area[2] - 17, area[3] - 27, 8, 16);
+		b.set("itemColour", 0xffa8b2bd);
 		b.set("allowCallbacks", "All Callbacks");
-		b.set("popupMenuItems", menuItems);
+		b.set("popupMenuItems", menuItems.join("\n"));
 		b.set("popupMenuAlign", true);
 		b.set("popupOnRightClick", false);
 		b.setControlCallback(oncmbEditControl);
@@ -150,7 +152,7 @@ namespace Tile
 
 			g.fillPath(Paths.icons[this.data.icon], [a[0] + a[2] / 4, a[1], a[2] / 2, a[3]]);
 		});
-		
+
 		b.setMouseCallback(function(event)
 		{
 			this.setMouseCursor("PointingHandCursor", Colours.white, [0, 0]);
@@ -170,25 +172,25 @@ namespace Tile
 			this.set("enabled", !state);
 			this.repaint();
 		});
-		
+
 		return b;
 	}
-		
+
 	inline function createInstallButton(parent, type)
 	{
 		local area = parent.getLocalBounds(0);
 		local b = parent.addChildPanel();
 
 		if (type == "Install")
-			b.setPosition(area[2] - 25, area[2] + 9, 13, 16);
+			b.setPosition(area[2] - 28, area[3] - 27, 16, 16);
 		else
-			b.setPosition(area[2] - 42, area[2] + 9, 13, 16);
+			b.setPosition(area[2] - 42, area[3] - 27, 16, 16);
 			
 		b.set("tooltip", type + " " + parent.get("text") + ".");
-		b.set("itemColour", 0xffefefef);
+		b.set("itemColour", 0xff7fff74);
 		b.set("allowCallbacks", "Clicks & Hover");
 		b.setControlCallback(onbtnInstallControl);
-		b.data.icon = type == "Install" ? Paths.icons.download : Paths.icons.bell;
+		b.data.icon = Paths.icons.download;
 			
 		b.setPaintRoutine(function(g)
 		{
@@ -218,7 +220,7 @@ namespace Tile
 			this.showControl(!state);
 			this.repaint();
 		});
-		
+
 		return b;		
 	}
 	
@@ -226,7 +228,7 @@ namespace Tile
 	{	
 		local area = parent.getLocalBounds(0);	
 		local b = parent.addChildPanel();
-			
+
 		b.setPosition(area[2] - 25, area[1] + 10, 14, 14);
 		b.set("allowCallbacks", "Clicks & Hover");
 		b.set("itemColour", Colours.white);
@@ -267,25 +269,27 @@ namespace Tile
 
 	inline function drawPlaceholderImage()
 	{
+		local h = (a[3] - 40);
+
 		g.setColour(0x882F2F34);
-		g.fillRoundedRectangle([a[0], a[1], a[2], a[2]], {CornerSize: 5, Rounded: [1, 1, 0, 0]});
-		
+		g.fillRoundedRectangle([a[0], a[1], a[2], h], 5);
+
 		g.setColour(0xffe2e2e2);
-		g.fillPath(Paths.rhapsodyLogoWithBg, [a[0] + a[2] / 2 - a[2] / 5 / 2, a[0] + a[2] / 2 - a[2] / 5 / 2, a[2] / 5, a[2] / 5]);
+		g.fillPath(Paths.rhapsodyLogoWithBg, [a[0] + a[2] / 2 - a[2] / 5 / 2, a[1] + h / 2 - a[2] / 5 / 2, a[2] / 5, a[2] / 5]);
 	}
 	
 	inline function drawProgressIndicator(a, progress)
 	{
 		local v = progress.value / 100;
-		local diameter = a[2] / 1.3;
-		local arcArea = [a[0] + a[2] / 2 - diameter / 2, a[1] + (a[3] - 25) / 2 - diameter / 2, diameter, diameter];
+		local diameter = a[3] / 1.3;
+		local arcArea = [a[0] + a[2] / 2 - diameter / 2, a[1] + (a[3]) / 2 - diameter / 2, diameter, diameter];
 		local path = Content.createPath();
 		local arcThickness = 0.05;
 		local startOffset = 3.15;
 		local endOffset = -startOffset + 2.0 * startOffset * v;
 
 		g.setColour(Colours.withAlpha(Colours.black, 0.8));
-		g.fillRect([a[0], a[1], a[2], a[3] - 25]);
+		g.fillRoundedRectangle([a[0], a[1], a[2], a[3]], 5);
 
 		g.setColour(Colours.withAlpha(Colours.darkgrey, 0.6));
 		g.drawEllipse(arcArea, 13);
@@ -295,7 +299,7 @@ namespace Tile
 	    endOffset = Math.max(endOffset, -startOffset + 0.01);
 	    path.addArc(arcArea, -startOffset, endOffset);
 
-	    g.drawPath(path, pathArea, a[2] * arcThickness);
+	    g.drawPath(path, arcArea, a[2] * arcThickness);
 
 		g.setColour(Colours.white);
 		g.setFont("bold", Engine.getOS() == "WIN" ? 34 : 30);
@@ -313,24 +317,44 @@ namespace Tile
 	
 	inline function oncmbEditControl(component, value)
 	{
-		local data = component.getParentPanel().data;
+		local parent = component.getParentPanel();
+		local data = parent.data;
+		local items = component.get("popupMenuItems").split("\n");
 
-		switch (value)
+		switch (items[value - 1])
 		{
-			case 1: Expansions.edit(data.projectName); break;
-			case 2: uninstall(data); break;
-			case 3: Engine.openWebsite(data.url); break;
+			case "Add to Favourites":
+			case "Remove Favourite":
+				data.favourite = Library.toggleFavourite(data.projectName);
+				removeButtons(parent);
+				addButtons(parent, true);
+
+				if (!data.favourite)
+					Grid.filterTiles();
+				break;
+
+			case "Locate Samples":
+				Expansions.edit(data.projectName);
+				break;
+
+			case "Uninstall":
+				uninstall(data);
+				break;
+
+			case "Visit Webpage":
+				Engine.openWebsite(data.url);
+				break;
 		}
 	}
-	
+
 	inline function onbtnInstallControl(component, value)
 	{
 		if (value)
 			return;
 	
 		local data = component.getParentPanel().data;
-				
-		if (isDefined(data.sampleDir) && data.sampleDir.isDirectory())
+
+		if ((isDefined(data.sampleDir) && data.sampleDir.isDirectory()) || data.format == "plugin")
 			Downloader.addToQueue(data);
 		else
 			promptForSampleDirectory(data);
@@ -358,7 +382,10 @@ namespace Tile
 			{
 				Engine.showYesNoWindow("Uninstall Presets", "Do you want to remove your custom presets?", function[data](response2)
 				{
-					Expansions.uninstall(data, response2);
+					if (data.format == "expansion")
+						Expansions.uninstall(data, response2);
+					else
+						Plugins.uninstall(data, response2);
 				});
 			}
 		});
@@ -383,7 +410,7 @@ namespace Tile
 	{
 		local data = cp.data;
 
-		if (!data.hasLicense || (isDefined(data.installedVersion)) && (!isDefined(data.hasUpdate) || !data.hasUpdate))
+		if (!data.hasLicense || (data.isInstalled) && (!isDefined(data.hasUpdate) || !data.hasUpdate))
 			return;
 
 		data.bcIsDownloading = Engine.createBroadcaster({"id": data.name + "Download State", "args": ["state"]});

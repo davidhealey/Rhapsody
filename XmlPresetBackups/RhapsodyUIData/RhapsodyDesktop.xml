@@ -2,61 +2,73 @@
 
 <ContentProperties DeviceType="Desktop">
   <Component type="ScriptPanel" id="pnlContainer" x="0.0" y="0.0" width="1000.0"
-             height="800.0" itemColour="4281282356" itemColour2="4281282356"
+             height="710.0" itemColour="4279374356" itemColour2="4279374356"
              textColour="0" bgColour="0" borderSize="0.0" borderRadius="0.0">
     <Component type="ScriptPanel" id="pnlHeader" x="0.0" y="0.0" width="1000.0"
-               height="60.0" parentComponent="pnlContainer" bgColour="0" itemColour="0"
-               itemColour2="0" textColour="0" borderSize="0.0" borderRadius="0.0">
-      <Component type="ScriptButton" id="btnLogo" x="12.0" y="15.0" width="210.0"
+               height="60.0" parentComponent="pnlContainer" bgColour="4280098081"
+               itemColour="0" itemColour2="0" textColour="0" borderSize="0.0"
+               borderRadius="0.0">
+      <Component type="ScriptButton" id="btnLogo" x="12.0" y="15.0" width="206.0"
                  height="30.0" text="rhapsodyLogoWithBg" parentComponent="pnlHeader"
-                 saveInPreset="0" enableMidiLearn="0" isMomentary="1" itemColour="4225424090"
+                 saveInPreset="0" enableMidiLearn="0" isMomentary="1" itemColour="4226674157"
                  bgColour="0" itemColour2="0" tooltip="Visit the Libre Wave website"
                  textColour="0"/>
-      <Component type="ScriptButton" id="btnLogout" x="470.0" y="15.0" width="30.0"
-                 height="30.0" text="user" parentComponent="pnlHeader" saveInPreset="0"
-                 enableMidiLearn="0" isMomentary="1" itemColour="0" bgColour="4279637529"
-                 itemColour2="0" tooltip="Login"/>
-      <Component type="ScriptButton" id="btnSync" x="510.0" y="15.0" width="30.0"
+      <Component type="ScriptButton" id="btnSync" x="251.0" y="15.0" width="54.0"
                  height="30.0" text="sync" parentComponent="pnlHeader" saveInPreset="0"
-                 enableMidiLearn="0" isMomentary="1" itemColour="0" bgColour="4279637529"
+                 enableMidiLearn="0" isMomentary="1" itemColour="4289245885" bgColour="4279637529"
                  itemColour2="0" tooltip="Check for updates"/>
-      <Component type="ScriptComboBox" id="cmbAdd" x="550.0" y="15.0" width="30.0"
-                 height="30.0" max="2" parentComponent="pnlHeader" items="Manual Install&#10;Add a license key"
-                 text="Add" saveInPreset="0" bgColour="4279637529" textColour="0"
-                 itemColour="4294967295" itemColour2="0" tooltip="Add a product"/>
-      <Component type="ScriptPanel" id="pnlFilter" x="590.0" y="0.0" width="400.0"
-                 height="60.0" bgColour="0" itemColour="0" itemColour2="4294967295"
-                 textColour="0" borderSize="0.0" borderRadius="0.0" parentComponent="pnlHeader"
-                 allowCallbacks="Clicks Only">
-        <Component type="ScriptLabel" id="lblFilter" x="40.0" y="15.0" width="355.0"
-                   height="30.0" parentComponent="pnlFilter" fontName="regular"
-                   fontSize="18.0" alignment="left" text="" updateEachKey="1" itemColour2="4279637529"/>
+      <Component type="ScriptComboBox" id="cmbAdd" x="326.0" y="15.0" width="107.0"
+                 height="30.0" max="2" parentComponent="pnlHeader" items="Manual Install&#10;Add a License"
+                 text="Add Product" saveInPreset="0" bgColour="4279637529" textColour="0"
+                 itemColour="4289245885" itemColour2="0" tooltip="Add a product"/>
+      <Component type="ScriptButton" id="btnFavourites" x="453.0" y="15.0" width="93.0"
+                 height="30.0" text="favourites" parentComponent="pnlHeader" enableMidiLearn="0"
+                 itemColour="4289245885" bgColour="4279637529" itemColour2="0"
+                 tooltip="Check for updates" saveInPreset="0"/>
+      <Component type="ScriptButton" id="btnLogout" x="566.0" y="15.0" width="74"
+                 height="30.0" text="log out" parentComponent="pnlHeader" saveInPreset="0"
+                 enableMidiLearn="0" isMomentary="1" itemColour="4289245885" bgColour="4279637529"
+                 itemColour2="0" tooltip="Sign out of Rhapsody"/>
+      <Component type="ScriptPanel" id="pnlFilter" x="683.0" y="11.0" width="306.0"
+                 height="38.0" bgColour="4280953393" itemColour="0" itemColour2="4294967295"
+                 textColour="4289245885" borderSize="0.0" borderRadius="0.0" parentComponent="pnlHeader"
+                 text="Search...">
+        <Component type="ScriptLabel" id="lblFilter" x="53.0" y="9.0" width="240.0"
+                   height="20.0" parentComponent="pnlFilter" fontName="regular"
+                   fontSize="18.0" alignment="topLeft" text="" updateEachKey="1"
+                   itemColour2="4279637529" textColour="4289245885"/>
+        <Component type="ScriptButton" id="btnFilterClear" x="281.0" y="13.0" width="16.0"
+                   height="12.0" parentComponent="pnlFilter" enableMidiLearn="0"
+                   saveInPreset="0" isMomentary="1" text="backspace" itemColour="4289245885"
+                   itemColour2="4285298048" textColour="0" bgColour="0" visible="0"/>
       </Component>
     </Component>
-    <Component type="ScriptPanel" id="pnlGridContainer" x="5.0" y="65.0" width="990.0"
-               height="730.0" parentComponent="pnlContainer" bgColour="0" itemColour="0"
+    <Component type="ScriptPanel" id="pnlGridContainer" x="0.0" y="60.0" width="1000.0"
+               height="640.0" parentComponent="pnlContainer" bgColour="0" itemColour="0"
                itemColour2="0" textColour="4294967295" borderSize="0.0" borderRadius="0.0"
                text="">
-      <Component type="ScriptedViewport" id="vptGrid" x="0.0" y="0.0" width="990"
-                 height="730.0" parentComponent="pnlGridContainer" scrollBarThickness="10.0">
-        <Component type="ScriptPanel" id="pnlGrid" x="0.0" y="0.0" width="990" height="253.0"
-                   parentComponent="vptGrid" bgColour="0" itemColour="0" itemColour2="0"
-                   textColour="0" borderSize="0.0" borderRadius="0.0"/>
+      <Component type="ScriptedViewport" id="vptGrid" x="0.0" y="10.0" width="995.0"
+                 height="630.0" parentComponent="pnlGridContainer" scrollBarThickness="6.0">
+        <Component type="ScriptPanel" id="pnlGrid" x="0.0" y="0.0" width="980.0"
+                   height="680.0" parentComponent="vptGrid" bgColour="4280098081"
+                   itemColour="0" itemColour2="0" textColour="0" borderSize="0.0"
+                   borderRadius="0.0"/>
       </Component>
     </Component>
     <Component type="ScriptPanel" id="pnlLogin" x="0.0" y="0.0" width="1000.0"
-               height="800.0" parentComponent="pnlContainer" itemColour="0"
-               itemColour2="0" bgColour="4281282356" textColour="4294967295"
-               borderSize="0.0" borderRadius="0.0">
+               height="710.0" parentComponent="pnlContainer" itemColour="0"
+               itemColour2="0" bgColour="4279374356" textColour="4294967295"
+               borderSize="0.0" borderRadius="0.0" visible="0">
       <Component type="ScriptLabel" id="lblUsername" x="369.0" y="337.0" width="300.0"
-                 height="30.0" parentComponent="pnlLogin" text="" itemColour2="4279637529"
-                 fontName="regular" fontSize="18.0" alignment="left"/>
+                 height="30.0" parentComponent="pnlLogin" text="customer" itemColour2="4280953393"
+                 fontName="regular" fontSize="18.0" alignment="left" bgColour="4280953393"
+                 textColour="4289245885"/>
       <Component type="ScriptLabel" id="lblPassword" x="369.0" y="387.0" width="265.0"
-                 height="30.0" parentComponent="pnlLogin" text="" itemColour2="4279637529"
+                 height="30.0" parentComponent="pnlLogin" text="123456" itemColour2="4280953393"
                  fontName="regular" fontSize="18.0" alignment="left" updateEachKey="1"
-                 fontStyle="Password"/>
+                 bgColour="4280953393" textColour="4289245885" fontStyle="Password"/>
       <Component type="ScriptButton" id="btnLoginSubmit" x="572.0" y="435.0" width="100.0"
-                 height="32.0" parentComponent="pnlLogin" saveInPreset="0" enableMidiLearn="0"
+                 height="26.0" parentComponent="pnlLogin" saveInPreset="0" enableMidiLearn="0"
                  isMomentary="1" text="Log In" bgColour="4293059298" itemColour="0"
                  itemColour2="0" textColour="4212199697"/>
       <Component type="ScriptButton" id="btnShowPassword" x="643.0" y="395.0"
@@ -64,14 +76,14 @@
                  enableMidiLearn="0" isMomentary="1" text="eye" textColour="0"
                  itemColour="4289442233" itemColour2="4285231221" bgColour="0"/>
       <Component type="ScriptButton" id="btnLoginRecovery" x="329.0" y="433.0"
-                 width="144.0" height="18.0" parentComponent="pnlLogin" saveInPreset="0"
+                 width="171.0" height="18.0" parentComponent="pnlLogin" saveInPreset="0"
                  enableMidiLearn="0" isMomentary="1" text="Forgotten password?"
                  itemColour="0" itemColour2="0" bgColour="0" textColour="4293323756"/>
-      <Component type="ScriptButton" id="btnRegisterAccount" x="50.0" y="650.0"
-                 width="128.0" height="18.0" parentComponent="pnlLogin" saveInPreset="0"
+      <Component type="ScriptButton" id="btnRegisterAccount" x="50.0" y="604.0"
+                 width="147.0" height="18.0" parentComponent="pnlLogin" saveInPreset="0"
                  enableMidiLearn="0" isMomentary="1" text="Create an account"
                  itemColour="0" itemColour2="0" bgColour="0" textColour="4293323756"/>
-      <Component type="ScriptButton" id="btnOfflineMode" x="50.0" y="690.0" width="89.0"
+      <Component type="ScriptButton" id="btnOfflineMode" x="50.0" y="644.0" width="103.0"
                  height="18.0" parentComponent="pnlLogin" saveInPreset="0" enableMidiLearn="0"
                  isMomentary="1" text="Work Offline" itemColour="0" itemColour2="0"
                  bgColour="0" textColour="4293323756"/>
@@ -80,39 +92,40 @@
                width="1000.0" height="700.0" parentComponent="pnlContainer"
                visible="0"/>
     <Component type="ScriptPanel" id="pnlFilePicker" x="0.0" y="0.0" text=""
-               width="1000.0" height="800.0" bgColour="4281282356" itemColour="0"
+               width="1000.0" height="800.0" bgColour="4279374356" itemColour="0"
                itemColour2="0" textColour="4294967295" parentComponent="pnlContainer"
                visible="0">
       <Component type="ScriptLabel" id="lblFilePicker" x="235.0" y="350.0" width="500.0"
-                 height="30.0" bgColour="4279637529" itemColour2="0" parentComponent="pnlFilePicker"
-                 fontName="regular" fontSize="18.0" alignment="left" editable="0"
-                 text=""/>
+                 height="30.0" bgColour="4280953393" itemColour2="4280953393"
+                 parentComponent="pnlFilePicker" fontName="regular" fontSize="18.0"
+                 alignment="left" editable="0" text="" textColour="4289245885"/>
       <Component type="ScriptButton" id="btnFilePicker" x="740.0" y="355.0" text="folder"
                  width="24.0" height="19.0" bgColour="0" itemColour="4293585647"
                  itemColour2="4291085511" textColour="0" saveInPreset="0" parentComponent="pnlFilePicker"
                  isMomentary="1" enableMidiLearn="0"/>
       <Component type="ScriptButton" id="btnFilePickerSubmit" x="670.0" y="425.0"
-                 text="Ok" width="100.0" height="32.0" bgColour="4293059298" itemColour="0"
+                 text="Ok" width="100.0" height="26.0" bgColour="4293059298" itemColour="0"
                  itemColour2="0" saveInPreset="0" parentComponent="pnlFilePicker"
                  isMomentary="1" enableMidiLearn="0" textColour="4278190080"/>
       <Component type="ScriptButton" id="btnFilePickerCancel" x="560.0" y="425.0"
-                 text="Cancel" width="100.0" height="32.0" bgColour="4292132542"
+                 text="Cancel" width="100.0" height="26.0" bgColour="4292132542"
                  itemColour="4288778641" itemColour2="0" textColour="4278190080"
                  saveInPreset="0" parentComponent="pnlFilePicker" isMomentary="1"
                  enableMidiLearn="0"/>
     </Component>
     <Component type="ScriptPanel" id="pnlAddLicense" x="0.0" y="0.0" width="1000.0"
-               height="800.0" parentComponent="pnlContainer" bgColour="4281282356"
+               height="800.0" parentComponent="pnlContainer" bgColour="4279374356"
                itemColour="0" itemColour2="0" textColour="4294967295" visible="0">
       <Component type="ScriptLabel" id="lblAddLicense" x="325.0" y="350.0" width="350.0"
-                 height="30.0" bgColour="4279637529" itemColour2="0" parentComponent="pnlAddLicense"
-                 fontName="regular" fontSize="18.0" text=""/>
+                 height="30.0" bgColour="4280953393" itemColour2="4280953393"
+                 parentComponent="pnlAddLicense" fontName="regular" fontSize="18.0"
+                 text="" textColour="4289245885"/>
       <Component type="ScriptButton" id="btnAddLicenseSubmit" x="575.0" y="425.0"
-                 text="Ok" width="100.0" height="32.0" bgColour="4293059298" itemColour="0"
+                 text="Ok" width="100.0" height="26.0" bgColour="4293059298" itemColour="0"
                  itemColour2="0" saveInPreset="0" parentComponent="pnlAddLicense"
                  isMomentary="1" enableMidiLearn="0" textColour="4278190080"/>
       <Component type="ScriptButton" id="btnAddLicenseCancel" x="465.0" y="425.0"
-                 text="Cancel" width="100.0" height="32.0" bgColour="4292132542"
+                 text="Cancel" width="100.0" height="26.0" bgColour="4292132542"
                  itemColour="4288778641" itemColour2="0" textColour="4278190080"
                  saveInPreset="0" parentComponent="pnlAddLicense" isMomentary="1"
                  enableMidiLearn="0"/>
@@ -152,10 +165,10 @@
                  height="800.0" bgColour="0" itemColour="0" itemColour2="0" textColour="4286611584"
                  parentComponent="pnlSpinnerContainer" borderSize="0.0" borderRadius="0.0"/>
     </Component>
-    <Component type="ScriptPanel" id="pnlZoom" x="990.0" y="790.0" width="10.0"
+    <Component type="ScriptPanel" id="pnlZoom" x="990.0" y="700.0" width="10.0"
                height="10.0" parentComponent="pnlContainer" allowCallbacks="All Callbacks"/>
     <Component type="ScriptPanel" id="pnlSplashScreen" x="0.0" y="0.0" width="1000.0"
-               height="800.0" parentComponent="pnlContainer" text="Loading."
+               height="710.0" parentComponent="pnlContainer" text="Loading."
                bgColour="4279966495" itemColour="4293059298" itemColour2="4293059298"
                textColour="4291282887" visible="0"/>
   </Component>

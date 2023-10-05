@@ -53,13 +53,13 @@ namespace LookAndFeel
     linkButton.registerFunction("drawToggleButton", function(g, obj)
     {
 	    var a = obj.area;
-	    var text = obj.text;
-	    	    
+
 	    g.setFont("medium", Engine.getOS() == "WIN" ? 20 : 18);
 	    g.setColour(Colours.withAlpha(obj.textColour, obj.over ? 1.0 - (0.3 * obj.value) : 0.8));
-	    g.drawAlignedText(text, a, "left");
+	    g.drawAlignedText(obj.text, a, "left");
 
-	    g.drawHorizontalLine(a[3] - 2, a[0], a[2] - (Engine.getOS() == "WIN") * 3);
+	    var stringWidth = g.getStringWidth(obj.text);
+	    g.drawHorizontalLine(a[3] - 2, a[0], stringWidth);
     });
 
     // iconButton
@@ -94,6 +94,44 @@ namespace LookAndFeel
 		g.setColour(Colours.withAlpha(colour, obj.over && obj.enabled ? 1.0 - (0.2 * obj.down) : 0.8 - (0.2 * obj.down) - (0.3 * !obj.enabled)));
 
 		g.fillPath(Paths.icons[icon], a);  
+    });
+    
+    // textIconButton
+    const textIconButton = Content.createLocalLookAndFeel();
+    
+    textIconButton.registerFunction("drawToggleButton", function(g, obj)
+    {
+		var a = obj.area;
+		var icon = obj.text;
+		var text = obj.text;
+		var size = [12, 12];
+		
+		switch (obj.text)
+		{
+			case "sync":
+				break;
+
+			case "favourites":
+				icon = obj.value ? "heartFilled" : "heart";
+				size = [12, 11];
+				break;
+
+			case "log out":
+				icon = "logout";
+				size = [12, 11];
+				break;
+
+			case "login":
+				text = "Sign In";
+				size = [12, 11];
+				break;
+		}
+
+		g.setColour(Colours.withAlpha(obj.itemColour1, obj.over && obj.enabled ? 0.7 + 0.3 * down: 0.9 - (0.3 * !obj.enabled)));
+		g.fillPath(Paths.icons[icon], [a[0], a[3] / 2 - size[1] / 2, size[0], size[1]]);
+		
+		g.setFont("regular", 18 + 3 * (Engine.getOS() == "WIN"));
+		g.drawAlignedText(text.capitalize(), a, "right");
     });
     
     // filledIconButton
@@ -138,7 +176,7 @@ namespace LookAndFeel
 	
 	laf.registerFunction("getIdealPopupMenuItemSize", function(obj)
 	{
-		return [145, 30];
+		return [163, 30];
 	});
 
     // Alert window    
@@ -214,6 +252,9 @@ namespace LookAndFeel
     	
     	g.fillAll(this.get("bgColour"));
     	
+    	if (!isDefined(title))
+    		return;
+    	
     	g.setFont("semibold", 26 + 3 * (Engine.getOS() == "WIN"));
     	g.setColour(this.get("textColour"));
     	g.drawAlignedText(title, [0, 70, area[2], 50], "centred");
@@ -262,7 +303,7 @@ namespace LookAndFeel
 
         g.setColour(Colours.withAlpha(obj.textColour, obj.over && obj.enabled ? 0.8 + 0.2 * down: 0.9 - (0.3 * !obj.enabled)));
         g.setFont("semibold", 16 + 3 * (Engine.getOS() == "WIN"));
-        g.drawAlignedText(text, [area[0], area[1], area[2], area[3] - 1], alignment);
+        g.drawAlignedText(text, [area[0], area[1], area[2], area[3]], alignment);
     }
 
     inline function drawPopupMenuBackground()
@@ -280,13 +321,30 @@ namespace LookAndFeel
     	local a = obj.area;
     
 		if (obj.isHighlighted)
-			g.fillAll(Colours.withAlpha(Colours.white, 0.6));
-    
+			g.fillAll(Colours.withAlpha(0xffa8b2bd, 0.8));
+
+    	local iconData = {
+	    	"Manual Install": ["deploy", 11, 12],
+			"Add a License": ["key", 15, 8],
+    		"Add to Favourites": ["heart", 12, 11],
+    		"Remove Favourite": ["heartFilled", 12, 11],
+    		"Locate Samples": ["search", 12, 12],
+    		"Uninstall": ["trash", 10, 12],
+    		"Visit Webpage": ["openInBrowser", 12, 12]
+    	};
+
     	if (!obj.isSeparator)
     	{
 	    	g.setFont("medium", 18 + 3 * (Engine.getOS() == "WIN"));
 	    	obj.isHighlighted ? g.setColour(Colours.black): g.setColour(Colours.lightgrey);
-	    	g.drawFittedText(obj.text, [a[0] + 10, a[1], a[2] - 20, a[3]], "left", 1, 1.0);
+
+	    	if (!isDefined(Paths.icons[iconData[obj.text][0]]))
+		    	return g.drawFittedText(obj.text, [a[0] + 10, a[1], a[2] - 20, a[3]], "left", 1, 1.0);	
+
+			local icon = iconData[obj.text];
+
+			g.fillPath(Paths.icons[icon[0]], [a[0] + 10, a[3] / 2 - icon[2] / 2, icon[1], icon[2]]);
+			g.drawFittedText(obj.text, [a[0] + 30, a[1], a[2] - 20, a[3]], "left", 1, 1.0);	    	
     	}
     	else
     	{	
@@ -301,10 +359,10 @@ namespace LookAndFeel
     	local ha = obj.handle;
     	local w = a[2] > 10 ? 10 : a[2];
 
-    	g.setColour(Colours.withAlpha(bgColour, 0.5));
-    	g.fillRoundedRectangle([a[0] + a[2] - w + 2, a[1], w - 4, a[3]], 3);
+    	g.setColour(Colours.withAlpha(bgColour, 0.8));
+    	g.fillRoundedRectangle([a[0] + a[2] - w + 2, a[1], w - 4, a[3]], 2);
 
     	g.setColour(Colours.withAlpha(0xff696970, obj.over ? 0.8 + (0.2 * obj.down) : 0.5));
-    	g.fillRoundedRectangle([ha[0] + a[2] - w, ha[1], w, ha[3]], 5);
+    	g.fillRoundedRectangle([ha[0] + a[2] - w, ha[1], w, ha[3]], 3);
     }
 }

@@ -20,6 +20,11 @@ namespace Header
 	// pnlHeader
 	const pnlHeader = Content.getComponent("pnlHeader");
 	
+	pnlHeader.setPaintRoutine(function(g)
+	{
+		g.fillAll(this.get("bgColour"));
+	});
+	
 	// btnLogo
 	const btnLogo = Content.getComponent("btnLogo");
 	btnLogo.setControlCallback(onbtnLogoControl);
@@ -38,7 +43,7 @@ namespace Header
 
 	const lafbtnLogo = Content.createLocalLookAndFeel();
 	btnLogo.setLocalLookAndFeel(lafbtnLogo);
-	
+
 	lafbtnLogo.registerFunction("drawToggleButton", function(g, obj)
 	{
 		 var a = obj.area;
@@ -48,7 +53,7 @@ namespace Header
 		 		 
 		 g.fillPath(Paths.rhapsodyLogoWithBg, [a[0], a[1], a[3], a[3]]);
 
-		 g.setFont("title", Engine.getOS() == "WIN" ? 30 : 26);
+		 g.setFont("title", Engine.getOS() == "WIN" ? 29 : 25);
 		 g.drawAlignedText("RHAPSODY", [a[0] + a[3] + 10, a[1], a[2] - a[3] - 20, a[3] + 6], "left");
 	});
 }

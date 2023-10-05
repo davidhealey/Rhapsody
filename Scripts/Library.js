@@ -18,7 +18,7 @@
 namespace Library
 {
 	const appData = FileSystem.getFolder(FileSystem.AppData);
-	
+
 	reg cache = appData.createDirectory("cache");
 	
 	// cmbAdd
@@ -30,7 +30,7 @@ namespace Library
 		switch (value)
 		{
 			case 1:
-				Expansions.install();
+				Installer.install();
 				break;
 
 			case 2:
@@ -47,18 +47,15 @@ namespace Library
 	lafcmbAdd.registerFunction("drawComboBox", function(g, obj)
 	{
 		var a = obj.area;
+
 		var down = obj.down || obj.value;
 
-		g.setColour(Colours.withAlpha(obj.bgColour, obj.hover && obj.enabled ? 0.7 + 0.3 * down: 0.9 - (0.3 * !obj.enabled)));
-		g.fillRoundedRectangle(a, 2);
-
-		g.setColour(Colours.withAlpha(Colours.black, obj.enabled ? 1.0 : 0.6));
-		g.drawRoundedRectangle([a[0] + 0.5, a[1] + 0.5, a[2] - 1, a[3] - 1], 2, 1);
-		
-		var wh = a[3] / 2;
 		g.setColour(Colours.withAlpha(obj.itemColour1, obj.hover && obj.enabled ? 0.8 + 0.2 * down: 0.9 - (0.3 * !obj.enabled)));
-		g.fillPath(Paths.icons.add, [a[0] + a[2] / 2 - wh / 2, a[1] + a[3] / 2 - wh / 2, wh, wh]);  		
-	});	
+		g.fillPath(Paths.icons.add, [a[0], a[3] / 2 - 12 / 2, 12, 12]);
+		
+		g.setFont("regular", 18 + 3 * (Engine.getOS() == "WIN"));
+		g.drawAlignedText(obj.text, a, "right");
+	});
 	
 	lafcmbAdd.registerFunction("drawPopupMenuBackground", function(g, obj)
 	{
@@ -72,18 +69,18 @@ namespace Library
 
 	lafcmbAdd.registerFunction("getIdealPopupMenuItemSize", function(obj)
 	{
-		return [155, 30];
+		return [140, 30];
 	});
 	
 	App.broadcasters.isDownloading.addListener(cmbAdd, "Disable the add combo box while downloads are in progress", function(state)
 	{
 		this.set("enabled", !state);
 	});
-
+	
 	// btnSync
 	const btnSync = Content.getComponent("btnSync");
 	btnSync.set("enabled", true);
-	btnSync.setLocalLookAndFeel(LookAndFeel.filledIconButton);
+	btnSync.setLocalLookAndFeel(LookAndFeel.textIconButton);
 	btnSync.setControlCallback(onbtnSyncControl);
 
 	inline function onbtnSyncControl(component, value)
@@ -122,8 +119,12 @@ namespace Library
 		this.stopTimer();
 	});
 
+	// Functions
 	inline function autoSync()
 	{
+		if (!Account.isLoggedIn())
+			return;
+
 		if (!Server.isOnline() || cooldownTimer.isTimerRunning())
 			return;
 
@@ -137,11 +138,11 @@ namespace Library
 	inline function updateCatalogue()
 	{
 		local items = [];
-
+		local manifest = loadManifest();
 		local installedExpansions = Expansions.getInstalledExpansionsData();
 
 		for (expName in installedExpansions)
-			items.push(installedExpansions[expName]);		
+			items.push(installedExpansions[expName]);
 
 		local f = cache.getChildFile("cache.json");
 		local cacheData;
@@ -154,7 +155,7 @@ namespace Library
 
 		for (x in cacheData)
 		{
-			if (!isDefined(x.format) || x.format != "expansion") continue;
+			if (!isDefined(x.format) || !isDefined(x.projectName)) continue;
 			if (!isDefined(x.hasLicense) || !x.hasLicense) continue;
 
 			if (!isDefined(x.tags) || x.tags == "")
@@ -184,7 +185,22 @@ namespace Library
 			}
 
 			if (item.latestVersion > item.installedVersion)
-				item.hasUpdate = true;
+				item.hasUpdate = true;				
+		}
+
+		// Apppend manifest data
+		for (item in items)
+		{
+			for (projectName in manifest)
+			{
+				if (item.projectName != projectName)
+					continue;
+			
+				for (key in manifest[projectName])
+					item[key] = manifest[projectName][key];
+			}
+			
+			item.isInstalled = isDefined(item.installedVersion) && item.installedVersion > 0;
 		}
 
 		Grid.update(items);
@@ -238,9 +254,9 @@ namespace Library
 
 				var imageUrls = getImageUrls(response);
 				downloadImages(imageUrls);
-				
+
 				btnSync.set("enabled", false);
-				cooldownTimer.startTimer(5000);
+				cooldownTimer.startTimer(15000);
 				UserSettings.setProperty(Engine.getName(), "lastSync", Date.getSystemTimeMs());
 			}
 			else
@@ -321,6 +337,51 @@ namespace Library
 					Spinner.hide();
 			});
 		}
+	}
+
+	inline function toggleFavourite(projectName)
+	{
+		local value = getManifestValue(projectName, "favourite");
+		
+		if (isDefined(value))
+			value = !value;
+		else
+			value = 1;	
+
+		setManifestValue(projectName, "favourite", value);
+
+		return value;
+	}
+
+	inline function getManifestValue(projectName, key)
+	{
+		local obj = loadManifest();
+				
+		return obj[projectName][key];
+	}
+
+	inline function setManifestValue(projectName, key, value)
+	{
+		local f = appData.getChildFile("manifest.json");
+		local obj = loadManifest();
+		
+		if (!isDefined(obj[projectName]))
+			obj[projectName] = {};
+			
+		obj[projectName][key] = value;
+
+		f.writeObject(obj);
+	}
+
+	inline function loadManifest()
+	{
+		local f = appData.getChildFile("manifest.json");
+		local obj = {};
+		
+		if (isDefined(f) && f.isFile())
+			obj = f.loadAsObject();
+			
+		return obj;
 	}
 
 	// Listeners	

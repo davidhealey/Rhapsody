@@ -17,11 +17,9 @@
 
 namespace Grid
 {
-	const NUM_COLS = 5;
 	const MARGIN = 10;
-	const VERTICAL_MARGIN = 25;
 
-	reg selected = -1;
+	reg NUM_COLS = Settings.getZoomLevel() > 1.5 ? 4 : 3;
 
 	// pnlGridContainer
 	const pnlGridContainer = Content.getComponent("pnlGridContainer");
@@ -31,7 +29,7 @@ namespace Grid
 		var a = this.getLocalBounds(0);
 		
 		g.fillAll(this.get("bgColour"));
-
+		
 		g.setColour(Colours.withAlpha(this.get("textColour"), 0.6));
 		g.setFont("bold", Engine.getOS() == "WIN" ? 34 : 32);
 		g.drawAlignedText(this.get("text"), [a[0], a[1], a[2], a[3] - 45], "centred");
@@ -42,22 +40,38 @@ namespace Grid
 
 	// pnlGrid
 	const pnlGrid = Content.getComponent("pnlGrid");
+	
+	pnlGrid.setPaintRoutine(function(g)
+	{
+		for (cp in this.getChildPanelList())
+		{
+			if (!cp.get("visible"))
+				continue;
 
-	// Tile sizing
-	reg COL_WIDTH = pnlGrid.getWidth() / NUM_COLS;
-	const ROW_HEIGHT = COL_WIDTH + 55;
-	const ROW_WIDTH = COL_WIDTH - MARGIN;
+			var a = [cp.get("x"), cp.get("y"), cp.getWidth(), cp.getHeight()];
+			g.drawDropShadow([a[0], a[1] + 8, a[2], a[3] - 10], Colours.withAlpha(Colours.black, 0.8), 15);
+			
+			g.setColour(this.get("bgColour"));
+			g.fillRoundedRectangle(a, 5);
+		}
+	});
+
+	reg TILE_WIDTH = pnlGrid.getWidth() / NUM_COLS - MARGIN;
+	reg TILE_HEIGHT = TILE_WIDTH - 100;
 	
 	// Functions
 	inline function update(data)
 	{
-		local isOnline = Server.isOnline();
+		local isOnline = false;
+
+		if (Account.isLoggedIn())
+			isOnline = Server.isOnline();
 
 		removeAllTiles();
 
 		for (x in data)
 		{
-			local cp = Tile.create(pnlGrid, [0, 0, ROW_WIDTH, ROW_HEIGHT], x, isOnline);
+			local cp = Tile.create(pnlGrid, [0, 0, TILE_WIDTH, TILE_HEIGHT], x, isOnline);
 			updateImage(x.projectName);
 		}
 
@@ -83,21 +97,21 @@ namespace Grid
 		pnlGridContainer.set("text", filteredChildren.length > 0 ? "" : "Nothing to see here.");
 		pnlGridContainer.repaint();
 
-		pnlGrid.set("height", Math.max(ROW_HEIGHT, numRows * ROW_HEIGHT));
-		pnlGrid.set("width", 975 + ((numRows < 3) * 15));
-		vptGrid.set("width", 985 + ((numRows < 3) * 5));
-		COL_WIDTH = pnlGrid.getWidth() / NUM_COLS;
+		pnlGrid.set("height", Math.max(TILE_HEIGHT, numRows * TILE_HEIGHT + MARGIN * numRows));
 
 		for (i = 0; i < filteredChildren.length; i++)
 		{
+			local index = (i % NUM_COLS);
 			local childPanel = filteredChildren[i];
-			local x = (i % NUM_COLS) * COL_WIDTH + COL_WIDTH / 2 - ROW_WIDTH / 2;
-			local y = Math.floor(i / NUM_COLS) * ROW_HEIGHT + Config.VERTICAL_MARGIN * Math.floor(i / NUM_COLS);
-			
-			childPanel.setPosition(x, y, ROW_WIDTH, ROW_HEIGHT);
+			local x = MARGIN + (index * TILE_WIDTH) + (index * MARGIN);
+			local y = Math.floor(i / NUM_COLS) * (TILE_HEIGHT + MARGIN);
+
+			childPanel.setPosition(x, y, TILE_WIDTH, TILE_HEIGHT);
 			childPanel.showControl(true);
 			childPanel.repaint();
 		}
+		
+		pnlGrid.repaint();
 	}
 
 	inline function sortChildPanels(a, b)
@@ -118,6 +132,15 @@ namespace Grid
 
 		return undefined;
 	}
+	
+	inline function updateTileData(projectName, data)
+	{
+		local cp = getChildPanel(projectName);
+		cp.data = data;
+		Tile.removeButtons(cp);
+		Tile.addButtons(cp, Server.isOnline());
+		cp.repaint();	
+	}
 
 	inline function updateImage(projectName)
 	{
@@ -133,9 +156,7 @@ namespace Grid
 		if (isDefined(img))
 			cp.loadImage(img, projectName);
 
-		local imageSize = cp.getImageSize(projectName);
-
-		if (imageSize[0] != imageSize[1] || !isDefined(img))
+		if (!isDefined(img))
 		{
 			cp.unloadAllImages();
 
@@ -143,7 +164,7 @@ namespace Grid
 
 			if (isDefined(img))
 				cp.loadImage(img, projectName);
-		}			
+		}
 
 		cp.data.img = img;
 		cp.repaint();
@@ -164,8 +185,16 @@ namespace Grid
 		local img = cache.getChildFile(projectName + ".jpg");
 
 		if (isDefined(img) && img.isFile())
-			return img.toString(image.FullPath);
+			return img.toString(img.FullPath);
 		
 		return undefined;
+	}
+
+	inline function setNumCols(value)
+	{
+		NUM_COLS = value;
+		TILE_WIDTH = pnlGrid.getWidth() / NUM_COLS - MARGIN;
+		TILE_HEIGHT = TILE_WIDTH - 100;
+		Library.updateCatalogue();
 	}
 }

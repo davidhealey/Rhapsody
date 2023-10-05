@@ -97,10 +97,7 @@ namespace UpdateChecker
 		local lastChecked = UserSettings.getProperty(Engine.getName(), "lastUpdateChecked");
 		local updateFrequency = 7;
 
-		if (!Account.isLoggedIn())
-			return;
-
-		if (!Server.isOnline())
+		if (!Account.isLoggedIn() || !Server.isOnline())
 			return;
 
 		if (isDefined(lastChecked))

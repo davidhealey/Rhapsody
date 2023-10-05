@@ -35,25 +35,7 @@ namespace Account
 	}
 
 	const lafbtnLogout = Content.createLocalLookAndFeel();
-	btnLogout.setLocalLookAndFeel(lafbtnLogout);
-	
-	lafbtnLogout.registerFunction("drawToggleButton", function(g, obj)
-	{
-		var a = obj.area;
-		var icon = obj.text;
-		var down = obj.down || obj.value;
-
-		g.setColour(Colours.withAlpha(obj.bgColour, obj.over && obj.enabled ? 0.7 + 0.3 * down: 0.9 - (0.3 * !obj.enabled)));
-		g.fillRoundedRectangle(a, 2);
-
-		g.setColour(Colours.withAlpha(Colours.black, obj.enabled ? 1.0 : 0.6));
-		g.drawRoundedRectangle([a[0] + 0.5, a[1] + 0.5, a[2] - 1, a[3] - 1], 2, 1);
-
-		var wh = a[3] / 1.8;
-		var w = wh * 0.7;
-		g.setColour(Colours.withAlpha(obj.textColour, obj.over && obj.enabled ? 0.8 + 0.2 * down: 0.9 - (0.3 * !obj.enabled)));
-		g.fillPath(Paths.icons[icon], [a[0] + a[2] / 2 - w / 2, a[1] + a[3] / 2 - wh / 2, w, wh]);
-	});
+	btnLogout.setLocalLookAndFeel(LookAndFeel.textIconButton);
 
 	App.broadcasters.isDownloading.addListener(btnLogout, "Disable logout button while downloads are in progress", function(state)
 	{
@@ -67,9 +49,9 @@ namespace Account
 	{
     	var a = this.getLocalBounds(0);
     	
-    	LookAndFeel.fullPageBackground("Login", "Login to your Libre Wave account.", ["user", 38, 50]);
-    	LookAndFeel.drawInput(lblUsername, {id: "email", width: 18, height: 14}, true, 0);
-    	LookAndFeel.drawInput(lblPassword, {id: "lock", width: 18, height: 20}, true, 35);
+    	LookAndFeel.fullPageBackground("Login", "Login to your Libre Wave account.", ["user", 50, 50]);
+    	LookAndFeel.drawInput(lblUsername, {id: "email", width: 18, height: 14}, false, 0);
+    	LookAndFeel.drawInput(lblPassword, {id: "lock", width: 16, height: 20}, false, 35);
 	});
 	
 	// lblUsername
@@ -131,8 +113,9 @@ namespace Account
 		if (value)
 			return;
 
-		btnLogout.set("text", "user");
+		btnLogout.set("text", "login");
 		btnLogout.set("tooltip", "Login");
+		btnLogout.set("width", 67);
 		UserSettings.setProperty(Engine.getName().toLowerCase(), "offline-mode", true);
 		App.broadcasters.loginChanged.state = false;
 		hide();
@@ -143,14 +126,14 @@ namespace Account
 	{
 		lblUsername.set("text", "");
 		lblPassword.set("text", "");
-		pnlLogin.fadeComponent(true, 50);
+		pnlLogin.showControl(true);
 	}
 	
 	inline function hide()
 	{
-		pnlLogin.fadeComponent(false, 50);
+		pnlLogin.showControl(false);
 	}
-		
+
 	inline function login(username, password)
 	{
 		local p = {"username": username.trim(), "password": password};
@@ -200,8 +183,9 @@ namespace Account
 	inline function onLoginSuccess(token)
 	{
 		writeToken(token);
-		btnLogout.set("text", "logout");
-		btnLogout.set("tooltip", "Logout");
+		btnLogout.set("text", "log out");
+		btnLogout.set("tooltip", "Sign out of Rhapsody");
+		btnLogout.set("width", 74);
 		btnLogout.sendRepaintMessage();
 		UserSettings.setProperty(Engine.getName().toLowerCase(), "offline-mode", false);
 		App.broadcasters.loginChanged.state = true;
