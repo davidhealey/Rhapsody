@@ -17,7 +17,7 @@
 
 namespace App
 {
-	const mode = "development";
+	const mode = "release";
 	
 	Synth.deferCallbacks(true);
 	
