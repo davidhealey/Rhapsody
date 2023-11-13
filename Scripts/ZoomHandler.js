@@ -73,16 +73,9 @@ namespace ZoomHandler
 			diagonalDrag = Math.range(diagonalDrag, MIN_ZOOM, MAX_ZOOM);
 			
 			var zoomToUse = diagonalDrag;
-	
-			if (currentZoom != zoomToUse)
-			{
-				Settings.setZoomLevel(zoomToUse);
 
-				if (currentZoom <= 1.5 && zoomToUse > 1.5)
-					Grid.setNumCols(4);
-				else if (zoomToUse <= 1.5 && currentZoom > 1.5)
-					Grid.setNumCols(3);				
-			}
+			if (currentZoom != zoomToUse)
+				Settings.setZoomLevel(zoomToUse);
 		}
 		
 		this.repaint();
