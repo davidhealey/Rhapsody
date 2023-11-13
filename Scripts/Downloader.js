@@ -63,11 +63,11 @@ namespace Downloader
 		downloads.remove(this);
 
 		if (this.data.success)
-		{			
+		{
 			if (downloads.length != 0)
 				return;
 
-			if (data.format == "expansion")
+			if (queue[0].format == "expansion")
 				return Expansions.automatedInstall(queue[0]);
 			else
 				return Plugins.automatedInstall(queue[0]);
@@ -76,14 +76,9 @@ namespace Downloader
 		if (!downloads.length)
 			cleanUp();
 
-		if (abort == true)
-		{
-			local msg = abort ? "The download was cancelled" : "The download failed";
-
-			Engine.showMessageBox("Failed", msg, 1);
-
-			abort = -1;
-		}
+		local msg = abort ? "The download was cancelled" : "The download failed";
+		Engine.showMessageBox("Failed", msg, 1);
+		abort = -1;
 	}
 
 	inline function updateProgress(data)
@@ -151,7 +146,7 @@ namespace Downloader
 			data.bcIsDownloading.state = true;
 			data.bcProgress.progress = {value: 0, message: "Waiting to Start"};
 			queue.push(data);
-
+ 
 			if (queue.length == 1)
 				downloadProduct(data);
 		});
@@ -181,7 +176,11 @@ namespace Downloader
 		if (isDefined(data.tempDir) && data.tempDir.isDirectory())
 			data.tempDir.deleteFileOrDirectory();
 
-		data.installedVersion = Expansions.getInstalledVersion(data.projectName);
+		if (data.format == "expansion")
+			data.installedVersion = Expansions.getInstalledVersion(data.projectName);
+		else
+			data.installedVersion = data.latestVersion;
+
 		data.hasUpdate = false;
 
 		removeFromQueue(data);
@@ -190,14 +189,14 @@ namespace Downloader
 			return downloadProduct(queue[0]);
 
 		App.broadcasters.isDownloading.state = false;
-		clearTempFolder();		
+		clearTempFolder();
 	}
 
 	inline function clearTempFolder()
 	{
 		if (isDefined(tempDir) && tempDir.isDirectory())
 			tempDir.deleteFileOrDirectory();
-			
+
 		tempDir = FileSystem.getFolder(FileSystem.Temp).createDirectory("Libre Wave");
 	}
 

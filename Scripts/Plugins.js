@@ -18,14 +18,15 @@
 namespace Plugins
 {
 	reg isManual = false;
+	reg numZips;
+	reg extractionCount;
 
 	inline function automatedInstall(data)
 	{
-		local fileDir = data.tempDir;
-		local files = FileSystem.findFiles(fileDir, "*.lwz", false);
-		
+		local files = FileSystem.findFiles(data.tempDir, "*.lwz", false);
+
 		isManual = false;
-		
+
 		if (!files.length)
 			return Console.print("Something has gone wrong!!");
 		
@@ -44,12 +45,15 @@ namespace Plugins
 		data.latestVersion = Installer.getVersionFromFilename(file.toString(file.Filename));
 		
 		Spinner.show("Installing");
-		
+
 		unpackArchives([file], data);
 	}
 	
 	inline function unpackArchives(archives, data)
 	{
+		numZips = archives.length;
+		extractionCount = 0;
+
 		for (x in archives)
 		{
 			x.extractZipFile(data.tempDir, true, function[data](obj)
@@ -68,6 +72,11 @@ namespace Plugins
 			
 		if (obj.Status != 2)
 			return;
+			
+		extractionCount++;
+		
+		if (extractionCount < numZips)
+			return;
 
 		moveFiles(obj.Target, projectName, version);
 
@@ -79,27 +88,36 @@ namespace Plugins
 		local tempDir = FileSystem.fromAbsolutePath(tempDirPath);
 		local files = FileSystem.findFiles(tempDir, "*", false);
 		local installedFiles = [];
-		
+
 		for (f in files)
 		{
 			local ext = f.toString(f.Extension);
 
-			if (ext != ".vst3" && ext != ".txt") continue;
+			if (ext != ".vst3" && ext != ".au" && ext != ".png") continue;
 
-			local dir = getPluginLocation(ext == ".au");
+			local dir;
+
+			if (ext == ".png")
+				dir = getImageDirectory(projectName);
+			else
+				dir = getPluginLocation(ext == ".au");
+
 			local target = dir.getChildFile(f.toString(f.Filename));
 
 			f.move(target);
-			installedFiles.push(target.toString(target.FullPath));
+
+			if (ext != ".png")
+				installedFiles.push(target.toString(target.FullPath));
 		}
-		
-		Library.setManifestValue(projectName, "files", installedFiles);
+
+		Library.setManifestValue(projectName, "format", "plugin");
 		Library.setManifestValue(projectName, "installedVersion", version);
-		
-		if (!isManual)
-			Downloader.cleanUp();
-		else
+		Library.setManifestValue(projectName, "files", installedFiles);
+
+		if (isManual)
 			Library.updateCatalogue();
+		else
+			Downloader.cleanUp();
 	}
 
 	inline function getPluginLocation(type)
@@ -109,10 +127,14 @@ namespace Plugins
 		switch (Engine.getOS())
 		{
 			case "OSX":
+				local home = FileSystem.getFolder(FileSystem.UserHome);
+
 				if (type == 1)
-					path = "/Library/Audio/Plug-Ins/Components";
+					path = home.getChildFile("Library").createDirectory("Audio/Plug-ins/Components");
 				else
-					path = "/Library/Audio/Plug-ins/VST3";
+					path = home.getChildFile("Library").createDirectory("Audio/Plug-ins/VST3");
+
+				path = path.toString(path.FullPath);
 			break;
 
 			case "LINUX":
@@ -120,7 +142,7 @@ namespace Plugins
 				break;
 
 			case "WIN":
-				path = "C:\Program Files\Common Files\VST3";
+				path = "C:/Program Files/Common Files/VST3";
 				break;
 		}
 
@@ -129,34 +151,80 @@ namespace Plugins
 			
 		return undefined;
 	}
-	
+
+	inline function uninstall(projectName, removePresets)
+	{
+		deletePluginFiles(projectName);
+		uninstallData(projectName, removePresets);
+		Library.removeManifestEntry(projectName);
+		Library.updateCatalogue();
+	}
+
 	inline function deletePluginFiles(projectName)
 	{
-		local result = false;
 		local filePaths = Library.getManifestValue(projectName, "files");
+
+		if (!isDefined(filePaths))
+			return;
 
 		for (fp in filePaths)
 		{
 			local f = FileSystem.fromAbsolutePath(fp);
-			
-			if (!isDefined(f) || !f.isFile()) continue;
+			local ext = f.toString(f.Extension);
 
-			result = f.deleteFileOrDirectory();
+			if (!isDefined(f) || (ext != ".vst3" && ext != ".au"))
+				continue;
+
+			f.deleteFileOrDirectory();
 		}
-		
-		return result;
 	}
 
-	inline function uninstall(data, removePresets)
+	inline function uninstallData(projectName, removePresets)
 	{
-		deletePluginFiles(data.projectName);
-		Library.setManifestValue(data.projectName, "installedVersion", -1);
-		Library.setManifestValue(data.projectName, "files", []);
-		Library.updateCatalogue();
+		local rootDir = getAppDataDirectory(projectName);
+		local name = projectName.toLowerCase();
+
+		if (!isDefined(rootDir) || !rootDir.isDirectory() || rootDir.toString(rootDir.NoExtension).toLowerCase() != name)
+			return;
+
+		if (removePresets)
+			return rootDir.deleteFileOrDirectory();
+			
+		local files = FileSystem.findFiles(rootDir, "*", false);
+		
+		for (x in files)
+		{
+			local filename = x.toString(x.Filename);
+
+			if (["UserPresets", "User Presets"].contains(filename))
+				continue;
+
+			x.deleteFileOrDirectory();
+		}
 	}
 	
 	inline function load(projectName)
 	{
 		Engine.showMessageBox("Load Plugin", projectName + " can't run inside Rhapsody. It needs to be loaded directly within a DAW or plugin host.", 0);
+	}
+	
+	inline function getAppDataDirectory(projectName)
+	{
+		return FileSystem.getFolder(FileSystem.AppData).getParentDirectory().createDirectory(projectName);
+	}
+	
+	inline function getImageDirectory(projectName)
+	{		
+		return getAppDataDirectory(projectName).createDirectory("Images");
+	}
+	
+	inline function getImagePath(projectName, imageName)
+	{
+		local img = getImageDirectory(projectName).getChildFile(imageName + ".png");
+		
+		if (isDefined(img) && img.isFile())
+			return img.toString(img.FullPath);
+		
+		return undefined;
 	}
 }

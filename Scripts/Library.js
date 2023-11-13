@@ -53,7 +53,7 @@ namespace Library
 		g.setColour(Colours.withAlpha(obj.itemColour1, obj.hover && obj.enabled ? 0.8 + 0.2 * down: 0.9 - (0.3 * !obj.enabled)));
 		g.fillPath(Paths.icons.add, [a[0], a[3] / 2 - 12 / 2, 12, 12]);
 		
-		g.setFont("regular", 18 + 3 * (Engine.getOS() == "WIN"));
+		g.setFont("regular", 18);
 		g.drawAlignedText(obj.text, a, "right");
 	});
 	
@@ -79,7 +79,7 @@ namespace Library
 	
 	// btnSync
 	const btnSync = Content.getComponent("btnSync");
-	btnSync.set("enabled", true);
+	btnSync.set("enabled", Account.isLoggedIn());
 	btnSync.setLocalLookAndFeel(LookAndFeel.textIconButton);
 	btnSync.setControlCallback(onbtnSyncControl);
 
@@ -99,11 +99,11 @@ namespace Library
 
 		if (Content.isCtrlDown())
 			clearCache();
-			
-		updateCache();
+
+		updateCache(false);
 		Expansions.refresh();
 		UpdateChecker.checkForAppUpdate();
-	}	
+	}
 	
 	App.broadcasters.isDownloading.addListener(btnSync, "Disable sync button while downloads are in progress", function(state)
 	{
@@ -132,31 +132,68 @@ namespace Library
 		local now = Date.getSystemTimeMs();
 
 		if ((now - lastSync) / 86400000 > 1)
-			updateCache();
+			updateCache(true);
+	}
+
+	inline function getCombinedCacheAndManifestData()
+	{
+		local manifest = loadManifest();
+		local f = cache.getChildFile("cache.json");
+		local result = [];
+
+		if (isDefined(f) && f.isFile())
+			result = f.loadEncryptedObject(App.systemId);
+
+		if (!isDefined(manifest))
+			return result;
+			
+		for (projectName in manifest)
+		{
+			local item;
+		
+			for (x in result)
+			{
+				if (x.projectName == projectName)
+				{
+					item = x;
+					break;
+				}					
+			}
+		
+			if (!isDefined(item) && isDefined(manifest[projectName].format))
+			{
+				item = {"projectName": projectName, "name": projectName, "source": "offline"};
+				result.push(item);
+			}
+		
+			if (!isDefined(item))
+				continue;
+			
+			for (key in manifest[projectName])
+				item[key] = manifest[projectName][key];
+		}
+		
+		return result;
 	}
 
 	inline function updateCatalogue()
 	{
 		local items = [];
-		local manifest = loadManifest();
+		local localData = getCombinedCacheAndManifestData();
 		local installedExpansions = Expansions.getInstalledExpansionsData();
 
 		for (expName in installedExpansions)
 			items.push(installedExpansions[expName]);
 
-		local f = cache.getChildFile("cache.json");
-		local cacheData;
-		
-		if (isDefined(f) && f.isFile())
-			cacheData = f.loadEncryptedObject(App.systemId);
-
-		if (!isDefined(cacheData) || !Account.isLoggedIn() || !Server.isOnline())
+		if (!localData.length)
 			return Grid.update(items);
 
-		for (x in cacheData)
+		for (x in localData)
 		{
-			if (!isDefined(x.format) || !isDefined(x.projectName)) continue;
-			if (!isDefined(x.hasLicense) || !x.hasLicense) continue;
+			if (!isDefined(x.format) || !isDefined(x.projectName) || isDefined(x.hidden)) continue;
+			
+			if (x.regularPrice != "0")
+				if ((!isDefined(x.hasLicense) || !x.hasLicense) && !isDefined(x.source)) continue;				
 
 			if (!isDefined(x.tags) || x.tags == "")
 				x.tags = [];
@@ -185,22 +222,7 @@ namespace Library
 			}
 
 			if (item.latestVersion > item.installedVersion)
-				item.hasUpdate = true;				
-		}
-
-		// Apppend manifest data
-		for (item in items)
-		{
-			for (projectName in manifest)
-			{
-				if (item.projectName != projectName)
-					continue;
-			
-				for (key in manifest[projectName])
-					item[key] = manifest[projectName][key];
-			}
-			
-			item.isInstalled = isDefined(item.installedVersion) && item.installedVersion > 0;
+				item.hasUpdate = true;
 		}
 
 		Grid.update(items);
@@ -227,7 +249,7 @@ namespace Library
 		cache = appData.createDirectory("cache");
 	}
 
-	inline function updateCache()
+	inline function updateCache(suppressErrors)
 	{
 		local token = Account.readToken();
 		
@@ -243,7 +265,7 @@ namespace Library
 		
 		Spinner.show("Syncing with Server");
 
-		Server.callWithGET(endpoint, p, function(status, response)
+		Server.callWithGET(endpoint, p, function[suppressErrors](status, response)
 		{
 			if (status == 200 && typeof response == "object" && response.length > 0)
 			{
@@ -261,13 +283,16 @@ namespace Library
 			}
 			else
 			{
+				if (isDefined(response.message) && response.message.contains("You are not currently logged in"))
+					Account.autoLogout();
+
+				if (suppressErrors)
+					return Spinner.hide();
+					
 				if (isDefined(response.message))
 					Engine.showMessageBox("Error", response.message, 3);
 				else
 					Engine.showMessageBox("Error", "The server reported an error, please try again later or contact support.", 3);
-
-				if (isDefined(response.message) && response.message.contains("You are not currently logged in"))
-					Account.autoLogout();
 			}
 			
 			Spinner.hide();
@@ -362,15 +387,32 @@ namespace Library
 
 	inline function setManifestValue(projectName, key, value)
 	{
-		local f = appData.getChildFile("manifest.json");
 		local obj = loadManifest();
-		
+		local f = appData.getChildFile("manifest.json");
+
 		if (!isDefined(obj[projectName]))
 			obj[projectName] = {};
 			
 		obj[projectName][key] = value;
 
 		f.writeObject(obj);
+	}
+
+	inline function removeManifestEntry(projectName)
+	{
+		local obj = loadManifest();
+		local f = appData.getChildFile("manifest.json");
+		local newObj = {};
+		
+		for (x in obj)
+		{
+			if (x == projectName)
+				continue;
+				
+			newObj[x] = obj[x];
+		}
+
+		f.writeObject(newObj);
 	}
 
 	inline function loadManifest()
@@ -390,12 +432,14 @@ namespace Library
 		clearCache();
 
 		if (state)
-			updateCache();
+			updateCache(true);
 		else
-			updateCatalogue();	
+			updateCatalogue();
+			
+		btnSync.set("enabled", state);
 	});
 	
-	// Calls	
+	// Calls
 	updateCatalogue();
 	autoSync();
 }
