@@ -15,22 +15,32 @@
     along with This file. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 namespace LicenseHandler
 {
 	// pnlAddLicense
 	const pnlAddLicense = Content.getComponent("pnlAddLicense");
-	//pnlAddLicense.showControl(false);
+	pnlAddLicense.showControl(false);
 
 	pnlAddLicense.setPaintRoutine(function(g)
 	{
 		var a = this.getLocalBounds(0);
-		var lblArea = [lblAddLicense.get("x") - 5, lblAddLicense.get("y"), lblAddLicense.getWidth() + 10, lblAddLicense.getHeight()];
+		
+		LookAndFeel.fullPageBackground();
+		
+		var lblArea = [lblAddLicense.get("x") - 10, lblAddLicense.get("y") - 8, lblAddLicense.getWidth() + 20, lblAddLicense.getHeight() + 16];
+		g.setColour(this.get("itemColour"));
+		g.fillRoundedRectangle(lblArea, 5);
 
-		LookAndFeel.fullPageBackground("Add a License Key", "The license will be added to your account.", ["key", 50, 28]);
+		g.setFont("semibold", 26);
+		g.setColour(Colours.withAlpha(this.get("textColour"), 1.0));
+		g.drawAlignedText("Add a License Key", [lblArea[0] + 2, lblArea[1] - 90, a[2], 30], "left");
 
-		g.setColour(lblAddLicense.get("bgColour"));
-		g.fillRoundedRectangle(lblArea, 2);
+		g.setColour(Colours.withAlpha(this.get("itemColour2"), 0.9));
+		
+		g.fillPath(Paths.icons.infoCircle, [lblArea[0] + 2, lblArea[1] - 37, 13, 13]);
+		
+		g.setFont("regular", 16);
+		g.drawAlignedText("Enter your license key and click submit.", [lblArea[0] + 22, lblArea[1] - 40, lblArea[2], 20], "left");
 	});
 	
 	// lblAddLicense
@@ -107,7 +117,7 @@ namespace LicenseHandler
     			if (isDefined(response.status))
 					return Engine.showMessageBox("Server Error: " + status, response, 1);
 
-   				Library.updateCache();
+   				Library.updateCache(false);
    				return Engine.showMessageBox("Success", "The license was added to your account", 0);
     		}
     		else

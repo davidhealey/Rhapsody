@@ -37,7 +37,6 @@ include("Downloader.js");
 include("UpdateChecker.js");
 include("ZoomHandler.js");
 include("SplashScreen.js");
-
 function onNoteOn()
 {
 	

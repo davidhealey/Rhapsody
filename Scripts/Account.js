@@ -18,12 +18,13 @@
 namespace Account
 {
 	const appData = FileSystem.getFolder(FileSystem.AppData);
-		
-	// btnLogout
-	const btnLogout = Content.getComponent("btnLogout");
-	btnLogout.setControlCallback(onbtnLogoutControl);
+	reg workingOffline = UserSettings.getProperty(Engine.getName().toLowerCase(), "offline-mode");
+	
+	// btnAccount
+	const btnAccount = Content.getComponent("btnAccount");
+	btnAccount.setControlCallback(onbtnAccountControl);
 
-	inline function onbtnLogoutControl(component, value)
+	inline function onbtnAccountControl(component, value)
 	{
 		if (value)
 			return;
@@ -34,10 +35,10 @@ namespace Account
 			autoLogout();
 	}
 
-	const lafbtnLogout = Content.createLocalLookAndFeel();
-	btnLogout.setLocalLookAndFeel(LookAndFeel.textIconButton);
+	const lafbtnAccount = Content.createLocalLookAndFeel();
+	btnAccount.setLocalLookAndFeel(LookAndFeel.textIconButton);
 
-	App.broadcasters.isDownloading.addListener(btnLogout, "Disable logout button while downloads are in progress", function(state)
+	App.broadcasters.isDownloading.addListener(btnAccount, "Disable logout button while downloads are in progress", function(state)
 	{
 		this.set("enabled", !state);
 	});
@@ -48,10 +49,39 @@ namespace Account
 	pnlLogin.setPaintRoutine(function(g)
 	{
     	var a = this.getLocalBounds(0);
+
+		LookAndFeel.fullPageBackground();
+
+		// Label backgrounds
+		g.setColour(this.get("itemColour"));    	
+		
+    	var usernameArea = [lblUsername.get("x") - 36, lblUsername.get("y") - 8, lblUsername.getWidth() + 50, lblUsername.getHeight() + 16];
+    	g.fillRoundedRectangle(usernameArea, 5);
     	
-    	LookAndFeel.fullPageBackground("Login", "Login to your Libre Wave account.", ["user", 50, 50]);
-    	LookAndFeel.drawInput(lblUsername, {id: "email", width: 18, height: 14}, false, 0);
-    	LookAndFeel.drawInput(lblPassword, {id: "lock", width: 16, height: 20}, false, 35);
+    	var passwordArea = [lblPassword.get("x") - 36, lblPassword.get("y") - 8, lblPassword.getWidth() + 71, lblPassword.getHeight() + 16];
+    	g.fillRoundedRectangle(passwordArea, 5);
+
+    	// Label icons
+    	g.setColour(this.get("itemColour2"));
+    	g.fillPath(Paths.icons.email, [usernameArea[0] + 12, usernameArea[1] + usernameArea[3] / 2 - 7, 18, 14]);    	
+    	g.fillPath(Paths.icons.encrypted, [passwordArea[0] + 12, passwordArea[1] + passwordArea[3] / 2 - 10, 16, 20]);
+
+    	// Title
+    	g.setColour(this.get("textColour"));
+    	g.setFont("bold", 20);
+    	g.drawAlignedText("Login", [usernameArea[0] + 1, usernameArea[1] - 30, 100, 20], "left");
+    	
+    	// Labels
+    	var submitArea = [btnLoginSubmit.get("x"), btnLoginSubmit.get("y"), btnLoginSubmit.getWidth(), btnLoginSubmit.getHeight()];
+    	
+    	g.setColour(Colours.withAlpha(this.get("textColour"), 0.4));
+    	g.setFont("medium", 14);
+    	
+    	var stringWidth = g.getStringWidth("No Account? Sign Up");
+    	g.drawAlignedText("No Account?", [submitArea[0] + submitArea[2] / 2 - stringWidth / 2, submitArea[1] + submitArea[3] + 24, stringWidth, 25], "left");
+    	
+    	g.setFont("regular", 14);
+    	g.drawAlignedText("v" + Engine.getVersion(), [a[0], a[3] - 40, a[2] - 34, 25], "right");
 	});
 	
 	// lblUsername
@@ -83,7 +113,6 @@ namespace Account
 	
 	// btnLoginRecovery
 	const btnLoginRecovery = Content.getComponent("btnLoginRecovery");
-	btnLoginRecovery.setLocalLookAndFeel(LookAndFeel.linkButton);
 	btnLoginRecovery.setControlCallback(onbtnLoginRecoveryControl);
 
 	inline function onbtnLoginRecoveryControl(component, value)
@@ -91,6 +120,18 @@ namespace Account
 		if (!value)
 			Engine.openWebsite(App.baseUrl[App.mode] + "my-account/lost-password/");
 	}
+	
+	const lafbtnLoginRecovery = Content.createLocalLookAndFeel();
+	btnLoginRecovery.setLocalLookAndFeel(lafbtnLoginRecovery);
+	
+	lafbtnLoginRecovery.registerFunction("drawToggleButton", function(g, obj)
+	{
+		var a = obj.area;
+
+		g.setColour(Colours.withAlpha(obj.textColour, obj.over ? 1.0 - 0.2 * obj.value : 0.8));		
+		g.setFont("medium", 14);
+		g.drawAlignedText(obj.text, a, "left");
+	});
 	
 	// btnRegisterAccount
 	const btnRegisterAccount = Content.getComponent("btnRegisterAccount");
@@ -105,7 +146,6 @@ namespace Account
 	
 	// btnOfflineMode
 	const btnOfflineMode = Content.getComponent("btnOfflineMode");
-	btnOfflineMode.setLocalLookAndFeel(LookAndFeel.linkButton);
 	btnOfflineMode.setControlCallback(onbtnOfflineModeControl);
 	
 	inline function onbtnOfflineModeControl(component, value)
@@ -113,12 +153,47 @@ namespace Account
 		if (value)
 			return;
 
-		btnLogout.set("text", "login");
-		btnLogout.set("tooltip", "Login");
-		btnLogout.set("width", 67);
+		showLoginButton();
 		UserSettings.setProperty(Engine.getName().toLowerCase(), "offline-mode", true);
+		workingOffline = true;
 		App.broadcasters.loginChanged.state = false;
 		hide();
+	}
+	
+	const lafbtnOfflineMode = Content.createLocalLookAndFeel();
+	btnOfflineMode.setLocalLookAndFeel(lafbtnOfflineMode);
+	
+	lafbtnOfflineMode.registerFunction("drawToggleButton", function(g, obj)
+	{
+		var a = obj.area;
+				
+		g.setColour(Colours.withAlpha(obj.textColour, obj.over ? 1.0 - 0.2 * obj.value : 0.8));
+		g.fillPath(Paths.icons.offline, [a[0], a[3] / 2 - 6, 15, 12]);
+		
+		g.setFont("medium", 14);
+		g.drawAlignedText(obj.text, [20, a[1], a[2], a[3]], "left");
+	});
+	
+	// btnGettingStarted
+	const btnGettingStarted = Content.getComponent("btnGettingStarted");
+	btnGettingStarted.setLocalLookAndFeel(LookAndFeel.linkButton);
+	btnGettingStarted.setControlCallback(onbtnGettingStartedControl);
+	
+	inline function onbtnGettingStartedControl(component, value)
+	{
+		if (!value)
+			Engine.openWebsite(App.baseUrl[App.mode] + "rhapsody/");
+	}
+	
+	// btnDocumentation
+	const btnDocumentation = Content.getComponent("btnDocumentation");
+	btnDocumentation.setLocalLookAndFeel(LookAndFeel.linkButton);
+	btnDocumentation.setControlCallback(onbtnDocumentationControl);
+	
+	inline function onbtnDocumentationControl(component, value)
+	{
+		if (!value)
+			Engine.openWebsite(App.baseUrl[App.mode] + "knowledge-base/");
 	}
 
 	// Functions
@@ -183,13 +258,26 @@ namespace Account
 	inline function onLoginSuccess(token)
 	{
 		writeToken(token);
-		btnLogout.set("text", "log out");
-		btnLogout.set("tooltip", "Sign out of Rhapsody");
-		btnLogout.set("width", 74);
-		btnLogout.sendRepaintMessage();
+		showLogoutButton();
+		btnAccount.sendRepaintMessage();
+		workingOffline = false;
 		UserSettings.setProperty(Engine.getName().toLowerCase(), "offline-mode", false);
 		App.broadcasters.loginChanged.state = true;
 		hide();
+	}
+	
+	inline function showLoginButton()
+	{
+		btnAccount.set("text", "login");
+		btnAccount.set("tooltip", "Login");
+		btnAccount.set("width", 67);
+	}
+	
+	inline function showLogoutButton()
+	{
+		btnAccount.set("text", "log out");
+		btnAccount.set("tooltip", "Sign out of Rhapsody");
+		btnAccount.set("width", 74);
 	}
 
 	inline function onLoginFailed(response)
@@ -243,14 +331,24 @@ namespace Account
 
 		return data.token;
 	}
-	
+
 	inline function isLoggedIn()
 	{
 		return isDefined(readToken()) && !pnlLogin.get("visible");
 	}
 
-	if (isDefined(readToken()) || UserSettings.getProperty(Engine.getName().toLowerCase(), "offline-mode"))
-		hide();
-	else
+	inline function init()
+	{
+		if (isDefined(readToken()) || workingOffline)
+		{
+			hide();
+			workingOffline ? showLoginButton() : showLogoutButton();
+			return;
+		}
+
 		show();
+	}
+	
+	// Calls
+	init();		
 }

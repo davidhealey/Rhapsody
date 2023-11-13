@@ -28,12 +28,12 @@ namespace SplashScreen
 		
 		g.setColour(this.get("textColour"));
 		
-		g.fillPath(Paths.logoWithBg, [a[2] / 2 - 50 / 2, a[3] / 2 - 125, 50, 50]);
+		g.fillPath(Paths.rhapsodyLogoWithBg, [a[2] / 2 - 50 / 2, a[3] / 2 - 125, 50, 50]);
 		
 		g.setFont("title", Engine.getOS() == "WIN" ? 56 : 36);
 		g.drawAlignedText(Engine.getName().toUpperCase(), [a[0], a[1] - 30 - ((Engine.getOS() == "WIN") * 5), a[2], a[3]], "centred");
 		
-		g.fillPath(Paths.icons.trademark, [605, 348, 12, 12]);
+		g.fillPath(Paths.icons.trademark, [605, 305, 12, 12]);
 
 		var w = a[2] / 5;
 		var x = a[0] + a[2] / 2 - w / 2;
@@ -77,5 +77,5 @@ namespace SplashScreen
 	{
 		pnlSplashScreen.showControl(true);
 		Engine.isPlugin() ? pnlSplashScreen.startTimer(50) : pnlSplashScreen.startTimer(100);
-	}		
+	}
 }

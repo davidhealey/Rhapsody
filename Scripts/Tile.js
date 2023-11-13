@@ -46,12 +46,12 @@ namespace Tile
 					g.setColour(Colours.withAlpha(Colours.white, this.data.hover ? 0.9 + 0.1 * this.getValue() : 1.0));
 			}
 
-			if (this.isImageLoaded(image))
-				g.drawImage(image, [0, 0, a[2], a[3] - 40], 0, imageSize[0] == imageSize[1] ? imageSize[0] / 4 : 0);
+			if (this.isImageLoaded(image) && imageSize[0] == imageSize[1])
+				g.drawImage(image, [0, 0, a[2], a[3] - 40], 0, 0);
 			else
 				drawPlaceholderImage();
 
-			g.setFont("regular", Engine.getOS() == "WIN" ? 21 : 18);
+			g.setFont("regular", 18);
 
 			g.setColour(Colours.withAlpha(0xffa8b2bd, this.data.hover ? 0.9 : 1.0));
 			
@@ -99,8 +99,9 @@ namespace Tile
 	inline function addButtons(cp, isOnline)
 	{
 		local data = cp.data;
-		
-		if (data.isInstalled)
+		local isInstalled = isDefined(data.installedVersion) && data.installedVersion > 0;
+
+		if (isInstalled)
 			data.btnEdit = createEditMenu(cp);
 
 		if (!isOnline)
@@ -109,12 +110,12 @@ namespace Tile
 		if ((!isDefined(data.hasLicense) || !data.hasLicense) && data.regularPrice != "0")
 			return;
 
-		if (!data.isInstalled)
+		if (!isInstalled)
 			data.btnInstall = createInstallButton(cp, "Install");
-		else if (data.isInstalled && isDefined(data.hasUpdate) && data.hasUpdate)
+		else if (isInstalled && isDefined(data.hasUpdate) && data.hasUpdate)
 			data.btnInstall = createInstallButton(cp, "Update");
 			
-		if (!data.isInstalled || (isDefined(data.hasUpdate) && data.hasUpdate))
+		if (!isInstalled || (isDefined(data.hasUpdate) && data.hasUpdate))
 			data.btnAbort = createAbortButton(cp);
 	}
 
@@ -124,13 +125,18 @@ namespace Tile
 		local data = parent.data;
 		local b = parent.addChildPanel();
 
-		local menuItems = ["Add to Favourites", "Locate Samples", "Uninstall"];
+		local menuItems = ["Add to Favourites"];
+
+		if (data.format == "expansion")
+			menuItems[1] = "Locate Samples";
 
 		if (isDefined(data.favourite) && data.favourite)
 			menuItems[0] = "Remove Favourite";
 
 		if (isDefined(data.url) && data.url != "")
 			menuItems.push("Visit Webpage");
+			
+		menuItems.push("Uninstall");
 
 		b.setPosition(area[2] - 17, area[3] - 27, 8, 16);
 		b.set("itemColour", 0xffa8b2bd);
@@ -182,9 +188,9 @@ namespace Tile
 		local b = parent.addChildPanel();
 
 		if (type == "Install")
-			b.setPosition(area[2] - 28, area[3] - 27, 16, 16);
+			b.setPosition(area[2] - 28, area[3] - 28, 16, 16);
 		else
-			b.setPosition(area[2] - 42, area[3] - 27, 16, 16);
+			b.setPosition(area[2] - 42, area[3] - 28, 16, 16);
 			
 		b.set("tooltip", type + " " + parent.get("text") + ".");
 		b.set("itemColour", 0xff7fff74);
@@ -272,7 +278,7 @@ namespace Tile
 		local h = (a[3] - 40);
 
 		g.setColour(0x882F2F34);
-		g.fillRoundedRectangle([a[0], a[1], a[2], h], 5);
+		g.fillRoundedRectangle([a[0], a[1], a[2], h], {CornerSize: 5, Rounded:[1, 1, 0, 0]});
 
 		g.setColour(0xffe2e2e2);
 		g.fillPath(Paths.rhapsodyLogoWithBg, [a[0] + a[2] / 2 - a[2] / 5 / 2, a[1] + h / 2 - a[2] / 5 / 2, a[2] / 5, a[2] / 5]);
@@ -281,37 +287,37 @@ namespace Tile
 	inline function drawProgressIndicator(a, progress)
 	{
 		local v = progress.value / 100;
-		local diameter = a[3] / 1.3;
-		local arcArea = [a[0] + a[2] / 2 - diameter / 2, a[1] + (a[3]) / 2 - diameter / 2, diameter, diameter];
-		local path = Content.createPath();
+		local diameter = a[3] / 1.4;
+		local arcArea = [a[2] / 2 - diameter / 2, a[3] / 2 - diameter / 2 - 10, diameter, diameter];
+		local path = Content.createPath(a[2]);
 		local arcThickness = 0.05;
 		local startOffset = 3.15;
 		local endOffset = -startOffset + 2.0 * startOffset * v;
 
 		g.setColour(Colours.withAlpha(Colours.black, 0.8));
-		g.fillRoundedRectangle([a[0], a[1], a[2], a[3]], 5);
+		g.fillRoundedRectangle(a, 2);
 
 		g.setColour(Colours.withAlpha(Colours.darkgrey, 0.6));
 		g.drawEllipse(arcArea, 13);
 
-	    g.setColour(Colours.withAlpha(Colours.white, 1.0));
+	    g.setColour(Colours.withAlpha(0xffc8d4e2, 1.0));
 
 	    endOffset = Math.max(endOffset, -startOffset + 0.01);
 	    path.addArc(arcArea, -startOffset, endOffset);
 
-	    g.drawPath(path, arcArea, a[2] * arcThickness);
+	    g.drawPath(path, 0, a[2] * arcThickness);
 
 		g.setColour(Colours.white);
-		g.setFont("bold", Engine.getOS() == "WIN" ? 34 : 30);
-	    g.drawAlignedText(progress.value + "%", [a[0], a[1] - 35, a[2], a[3] - 25], "centred");
+		g.setFont("bold", 30);
+	    g.drawAlignedText(progress.value + "%", [a[0], a[1] + 60, a[2], 25], "centred");
 
-		g.setFont("semibold", Engine.getOS() == "WIN" ? 18 : 16);
-		g.drawAlignedText(progress.message, [a[0], a[1], a[2], a[3] - 25], "centred");
+		g.setFont("semibold", 18);
+		g.drawAlignedText(progress.message, [a[0], a[1] - 5, a[2], a[3] - 10], "centred");
 
 		if (isDefined(progress.speed))
 		{
-			g.setFont("medium", Engine.getOS() == "WIN" ? 18 : 16);
-			g.drawAlignedText(progress.speed, [a[0], a[2] - 45, a[2], 25], "centred");
+			g.setFont("medium", 18);
+			g.drawAlignedText(progress.speed, [a[0], a[3] - 110, a[2], 25], "centred");
 		}
 	}
 	
@@ -351,7 +357,7 @@ namespace Tile
 	{
 		if (value)
 			return;
-	
+
 		local data = component.getParentPanel().data;
 
 		if ((isDefined(data.sampleDir) && data.sampleDir.isDirectory()) || data.format == "plugin")
@@ -383,9 +389,9 @@ namespace Tile
 				Engine.showYesNoWindow("Uninstall Presets", "Do you want to remove your custom presets?", function[data](response2)
 				{
 					if (data.format == "expansion")
-						Expansions.uninstall(data, response2);
+						Expansions.uninstall(data.projectName, response2);
 					else
-						Plugins.uninstall(data, response2);
+						Plugins.uninstall(data.projectName, response2);
 				});
 			}
 		});
@@ -409,9 +415,11 @@ namespace Tile
 	inline function addListeners(cp)
 	{
 		local data = cp.data;
+		local isInstalled = isDefined(data.installedVersion) && data.installedVersion > 0;
 
-		if (!data.hasLicense || (data.isInstalled) && (!isDefined(data.hasUpdate) || !data.hasUpdate))
-			return;
+		if (data.regularPrice != "0")
+			if (!data.hasLicense || (isInstalled && (!isDefined(data.hasUpdate) || !data.hasUpdate)))
+				return;
 
 		data.bcIsDownloading = Engine.createBroadcaster({"id": data.name + "Download State", "args": ["state"]});
 		data.bcProgress = Engine.createBroadcaster({"id": data.name + "Download Progress", "args": ["progress"]});

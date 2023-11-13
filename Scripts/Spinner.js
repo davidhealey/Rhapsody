@@ -47,7 +47,7 @@ namespace Spinner
 
 		if (this.data.msg != "")
 		{
-			g.setFont("medium", Engine.getOS() == "WIN" ? 28 : 26);
+			g.setFont("medium", 26);
 			g.drawAlignedText(this.data.msg, [0, a[1] + a[3] + 50, this.getWidth(), 30], "centred");
 		}        	
 	});

@@ -54,12 +54,12 @@ namespace LookAndFeel
     {
 	    var a = obj.area;
 
-	    g.setFont("medium", Engine.getOS() == "WIN" ? 20 : 18);
+	    g.setFont("medium", 14);
 	    g.setColour(Colours.withAlpha(obj.textColour, obj.over ? 1.0 - (0.3 * obj.value) : 0.8));
 	    g.drawAlignedText(obj.text, a, "left");
 
 	    var stringWidth = g.getStringWidth(obj.text);
-	    g.drawHorizontalLine(a[3] - 2, a[0], stringWidth);
+	    g.drawHorizontalLine(a[3] - 5, a[0], stringWidth);
     });
 
     // iconButton
@@ -130,7 +130,7 @@ namespace LookAndFeel
 		g.setColour(Colours.withAlpha(obj.itemColour1, obj.over && obj.enabled ? 0.7 + 0.3 * down: 0.9 - (0.3 * !obj.enabled)));
 		g.fillPath(Paths.icons[icon], [a[0], a[3] / 2 - size[1] / 2, size[0], size[1]]);
 		
-		g.setFont("regular", 18 + 3 * (Engine.getOS() == "WIN"));
+		g.setFont("regular", 18);
 		g.drawAlignedText(text.capitalize(), a, "right");
     });
     
@@ -190,7 +190,7 @@ namespace LookAndFeel
         g.setColour(0xff161619);
         g.fillRect([a[0], a[1], a[2], h]);
 
-        g.setFont("semibold", 20 + 3 * (Engine.getOS() == "WIN"));
+        g.setFont("semibold", 20);
         g.setColour(Colours.white);
         g.drawAlignedText(obj.title, [a[0] + 15, a[1], a[2], h], "left");        
         
@@ -241,68 +241,16 @@ namespace LookAndFeel
    		drawTextButton(obj, text, a);
     });
     
-    /**
-    * title		String		Title to display at top centre
-    * text		String		Text to display below icon/above content
-    * icon		Array		[icon name, icon width, icon height]. Will be centred horizontally.
-    */
-    inline function fullPageBackground(title, text, icon)
-    {
-    	local area = this.getLocalBounds(0);
-    	
-    	g.fillAll(this.get("bgColour"));
-    	
-    	if (!isDefined(title))
-    		return;
-    	
-    	g.setFont("semibold", 26 + 3 * (Engine.getOS() == "WIN"));
-    	g.setColour(this.get("textColour"));
-    	g.drawAlignedText(title, [0, 70, area[2], 50], "centred");
-    	
-    	g.setFont("regular", 20 + 3 * (Engine.getOS() == "WIN"));
-    	g.setColour(this.get("textColour"));
-    	g.drawAlignedText(text, [0, 265, this.getWidth(), 30], "centred");
-    	
-    	g.fillPath(Paths.icons[icon[0]], [area[0] + area[2] / 2 - icon[1] / 2, 160, icon[1], icon[2]]);
-	}
-
-    inline function drawInput(component, icon, outline, extraWidth)
-    {
-    	g.setColour(component.get("itemColour2"));
-
-    	local area = [component.get("x") - 10, component.get("y"), component.getWidth() + 13 + extraWidth, component.getHeight()];
-    	g.fillRoundedRectangle(area, 2);
-
-    	if (icon != "")
-    	{
-    		area[0] -= 30;
-    		area[2] += 30;
-
-    		g.setColour(component.get("itemColour2"));
-    		g.fillRoundedRectangle(area, 2);
-    
-    		g.setColour(Colours.withAlpha(component.get("textColour"), component.get("enabled") ? 0.8 : 0.5));
-    		g.drawLine(area[0] + 35, area[0] + 35, area[1] + 4, area[1] + area[3] - 4, 1);		
-    		g.fillPath(Paths.icons[icon.id], [area[0] + 35 / 2 - icon.width / 2, area[1] + area[3] / 2 - icon.height / 2, icon.width, icon.height]);
-    	}
-    	
-    	if (outline)
-    	{
-    		g.setColour(Colours.withAlpha(Colours.black, 0.5));
-    		g.drawRoundedRectangle([area[0] + 0.5, area[1] + 0.5, area[2] - 1, area[3] - 1], 2, 1);
-    	}
-    }
-    
     inline function drawTextButton(obj, text, area)
     {
 		local alignment = "centred";
 		local down = obj.down || obj.value;
 
 		g.setColour(Colours.withAlpha(obj.bgColour, obj.over && obj.enabled ? 0.7 + 0.3 * down: 0.9 - (0.3 * !obj.enabled)));
-        g.fillRoundedRectangle(area, 2);
+        g.fillRoundedRectangle(area, 5);
 
         g.setColour(Colours.withAlpha(obj.textColour, obj.over && obj.enabled ? 0.8 + 0.2 * down: 0.9 - (0.3 * !obj.enabled)));
-        g.setFont("semibold", 16 + 3 * (Engine.getOS() == "WIN"));
+        g.setFont("semibold", 16);
         g.drawAlignedText(text, [area[0], area[1], area[2], area[3]], alignment);
     }
 
@@ -335,7 +283,7 @@ namespace LookAndFeel
 
     	if (!obj.isSeparator)
     	{
-	    	g.setFont("medium", 18 + 3 * (Engine.getOS() == "WIN"));
+	    	g.setFont("medium", 18);
 	    	obj.isHighlighted ? g.setColour(Colours.black): g.setColour(Colours.lightgrey);
 
 	    	if (!isDefined(Paths.icons[iconData[obj.text][0]]))
@@ -352,6 +300,17 @@ namespace LookAndFeel
 	    	g.drawHorizontalLine(a[3] / 2, a[0] + 5, a[2] - 10);
     	}
     }
+        
+	inline function fullPageBackground()
+	{
+		g.fillAll(this.get("bgColour"));
+		
+		// Logo
+		g.setColour(Colours.withAlpha(this.get("textColour"), 0.8));
+		g.fillPath(Paths.rhapsodyLogoWithBg, [a[2] / 2 - 36 / 2, 80, 36, 36]);    	
+		g.setFont("title", Engine.getOS() == "WIN" ? 42 : 28);
+		g.drawAlignedText(Engine.getName().toUpperCase(), [0, 135 - 7 * (Engine.getOS() == "WIN"), a[2], 30], "centred");
+	}
         
     inline function drawScrollbar(g, obj, bgColour)
     {

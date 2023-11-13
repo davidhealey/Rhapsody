@@ -53,7 +53,7 @@ namespace Header
 		 		 
 		 g.fillPath(Paths.rhapsodyLogoWithBg, [a[0], a[1], a[3], a[3]]);
 
-		 g.setFont("title", Engine.getOS() == "WIN" ? 29 : 25);
-		 g.drawAlignedText("RHAPSODY", [a[0] + a[3] + 10, a[1], a[2] - a[3] - 20, a[3] + 6], "left");
+		 g.setFont("title", Engine.getOS() == "WIN" ? 38 : 25);
+		 g.drawAlignedText("RHAPSODY", [a[0] + 40, a[1], a[2] - 40, a[3] + 5 - (10 * (Engine.getOS() == "WIN"))], "left");
 	});
 }

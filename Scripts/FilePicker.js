@@ -32,12 +32,23 @@ namespace FilePicker
 	pnlFilePicker.setPaintRoutine(function(g)
 	{
 		var a = this.getLocalBounds(0);
-		var lblArea = [lblFilePicker.get("x") - 5, lblFilePicker.get("y"), lblFilePicker.getWidth() + 40, lblFilePicker.getHeight()];
+				
+		LookAndFeel.fullPageBackground();
+		
+		var lblArea = [lblFilePicker.get("x") - 5, lblFilePicker.get("y") - 8, lblFilePicker.getWidth() + 40, lblFilePicker.getHeight() + 16];
+		g.setColour(this.get("itemColour"));
+		g.fillRoundedRectangle(lblArea, 5);
 
-		LookAndFeel.fullPageBackground(this.data.title, this.data.message, this.data.icon);
-
-		g.setColour(lblFilePicker.get("bgColour"));
-		g.fillRoundedRectangle(lblArea, 2);
+		g.setFont("semibold", 26);
+		g.setColour(Colours.withAlpha(this.get("textColour"), 1.0));
+		g.drawAlignedText(this.data.title, [lblArea[0] + 2, lblArea[1] - 90, a[2], 30], "left");
+		
+		g.setColour(Colours.withAlpha(this.get("itemColour2"), 0.9));
+		
+		g.fillPath(Paths.icons.infoCircle, [lblArea[0] + 2, lblArea[1] - 37, 13, 13]);
+		
+		g.setFont("regular", 16);
+		g.drawAlignedText(this.data.message, [lblArea[0] + 22, lblArea[1] - 40, lblArea[2], 20], "left");
 	});
 	
 	// lblFilePicker

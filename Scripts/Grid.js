@@ -18,8 +18,7 @@
 namespace Grid
 {
 	const MARGIN = 10;
-
-	reg NUM_COLS = Settings.getZoomLevel() > 1.5 ? 4 : 3;
+	const NUM_COLS = 4;
 
 	// pnlGridContainer
 	const pnlGridContainer = Content.getComponent("pnlGridContainer");
@@ -31,7 +30,7 @@ namespace Grid
 		g.fillAll(this.get("bgColour"));
 		
 		g.setColour(Colours.withAlpha(this.get("textColour"), 0.6));
-		g.setFont("bold", Engine.getOS() == "WIN" ? 34 : 32);
+		g.setFont("bold", 32);
 		g.drawAlignedText(this.get("text"), [a[0], a[1], a[2], a[3] - 45], "centred");
 	});
 
@@ -49,7 +48,7 @@ namespace Grid
 				continue;
 
 			var a = [cp.get("x"), cp.get("y"), cp.getWidth(), cp.getHeight()];
-			g.drawDropShadow([a[0], a[1] + 8, a[2], a[3] - 10], Colours.withAlpha(Colours.black, 0.8), 15);
+			g.drawDropShadow([a[0], a[1] + 8, a[2], a[3] - 10], Colours.withAlpha(Colours.black, 0.8), 20);
 			
 			g.setColour(this.get("bgColour"));
 			g.fillRoundedRectangle(a, 5);
@@ -57,8 +56,8 @@ namespace Grid
 	});
 
 	reg TILE_WIDTH = pnlGrid.getWidth() / NUM_COLS - MARGIN;
-	reg TILE_HEIGHT = TILE_WIDTH - 100;
-	
+	reg TILE_HEIGHT = TILE_WIDTH + 15;
+
 	// Functions
 	inline function update(data)
 	{
@@ -151,7 +150,12 @@ namespace Grid
 
 		cp.unloadAllImages();
 	
-		local img = Expansions.getImagePath(projectName, "Icon");
+		local img;
+		
+		if (cp.data.format == "expansion")
+			img = Expansions.getImagePath(projectName, "Icon");
+		else
+			img = Plugins.getImagePath(projectName, "Icon");
 
 		if (isDefined(img))
 			cp.loadImage(img, projectName);
@@ -188,13 +192,5 @@ namespace Grid
 			return img.toString(img.FullPath);
 		
 		return undefined;
-	}
-
-	inline function setNumCols(value)
-	{
-		NUM_COLS = value;
-		TILE_WIDTH = pnlGrid.getWidth() / NUM_COLS - MARGIN;
-		TILE_HEIGHT = TILE_WIDTH - 100;
-		Library.updateCatalogue();
 	}
 }

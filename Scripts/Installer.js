@@ -12,10 +12,9 @@ namespace Installer
 			startFolder: startFolder,
 			mode: 0,
 			filter: "*.lwz",
-			title: "Installer",
-			icon: ["hdd", 60, 42],
-			message: "Select one of the lwz files you downloaded.",
-			buttonText: "Ok",
+			title: "Manual Installer",
+			message: "Please select one of the .lwz files you downloaded.",
+			buttonText: "Next",
 			hideOnSubmit: false,
 			}, selectZipCallback);
 	}

@@ -38,8 +38,7 @@ namespace Expansions
 			startFolder: startFolder,
 			mode: 1,
 			filter: "",
-			title: "Install Instrument",
-			icon: ["hdd", 60, 42],
+			title: "Manual Installer",
 			message: "Choose a location to install the samples.",
 			buttonText: "Install"
 		}, function[callback, data](dir) {
@@ -196,11 +195,11 @@ namespace Expansions
 
 		refresh();
 
-		if (!isManual)
-			Downloader.cleanUp();
-		else
+		if (isManual)
 			Library.updateCatalogue();
-		
+		else
+			Downloader.cleanUp();			
+
 		isManual = false;
 		Spinner.hide();
 	}
@@ -280,17 +279,18 @@ namespace Expansions
 		return e.getProperties().Version;
 	}
 	
-	inline function uninstall(data, removePresets)
+	inline function uninstall(projectName, removePresets)
 	{
-		local e = expHandler.getExpansion(data.projectName);
+		local e = expHandler.getExpansion(projectName);
 
 		if (!isDefined(e))
 			return Engine.showMessageBox("Failed", "The library was not found on your system.", 3);
 
 		uninstallData(e, removePresets);
-		uninstallSamples(e, data);
+		uninstallSamples(e);
+		Library.removeManifestEntry(projectName);
 	}
-	
+
 	inline function uninstallData(expansion, removePresets)
 	{
 		local rootDir = expansion.getRootFolder();
@@ -308,18 +308,20 @@ namespace Expansions
 		{
 			local filename = x.toString(x.Filename);
 			
-			if (filename == "UserPresets") continue;			
+			if (["UserPresets", "User Presets"].contains(filename))
+				continue;
+
 			x.deleteFileOrDirectory();
 		}
 	}
 	
-	inline function uninstallSamples(expansion, data)
+	inline function uninstallSamples(expansion)
 	{
 		local sampleDir = expansion.getSampleFolder();
 		local name = expansion.getProperties().Name.toLowerCase();
 		
 		if (!isDefined(sampleDir) || !sampleDir.isDirectory() || sampleDir.toString(sampleDir.NoExtension).toLowerCase() != name)
-			return uninstallCleanUp(expansion, data);
+			return uninstallCleanUp(expansion);
 	
 		local files = FileSystem.findFiles(sampleDir, "*", false);
 		
@@ -337,10 +339,10 @@ namespace Expansions
 		if (!files.length)
 			sampleDir.deleteFileOrDirectory();
 	
-		uninstallCleanUp(expansion, data);
+		uninstallCleanUp(expansion);
 	}
 	
-	inline function uninstallCleanUp(expansion, data)
+	inline function uninstallCleanUp(expansion)
 	{
 		expansion.unloadExpansion();
 		refresh();
