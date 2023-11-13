@@ -17,6 +17,8 @@
 
 namespace UpdateChecker
 {
+	reg sessionCheck = false; // Only allow one check per session
+
 	// pnlUpdateCheckerContainer
 	const pnlUpdateCheckerContainer = Content.getComponent("pnlUpdateCheckerContainer");
 	pnlUpdateCheckerContainer.showControl(false);
@@ -109,6 +111,9 @@ namespace UpdateChecker
 
 	inline function checkForAppUpdate()
 	{
+		if (sessionCheck)
+			return;
+
 		local endpoint = "/api/v1/repos/LibreWave/Rhapsody/releases?draft=false&pre-release=false&limit=1";
 		Server.setBaseURL("https://codeberg.org");
 		Server.setHttpHeader("");
@@ -124,6 +129,8 @@ namespace UpdateChecker
 					parseBody(response[0].body, response[0].tag_name);
 					show();
 				}
+				
+				sessionCheck = true;
 			}
 		});
 	}
