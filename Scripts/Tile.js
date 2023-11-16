@@ -90,6 +90,12 @@ namespace Tile
 			}
 		});
 
+		App.broadcasters.isDownloading.addListener(cp, "Disable the panel while downloads are in progress", function(state)
+		{
+			this.set("enabled", !state);
+			this.repaint();
+		});
+
 		addListeners(cp);
 		addButtons(cp, isOnline);
 
@@ -190,7 +196,7 @@ namespace Tile
 		if (type == "Install")
 			b.setPosition(area[2] - 28, area[3] - 28, 16, 16);
 		else
-			b.setPosition(area[2] - 42, area[3] - 28, 16, 16);
+			b.setPosition(area[2] - 48, area[3] - 28, 16, 16);
 			
 		b.set("tooltip", type + " " + parent.get("text") + ".");
 		b.set("itemColour", 0xff7fff74);
