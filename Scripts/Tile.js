@@ -107,7 +107,7 @@ namespace Tile
 		local data = cp.data;
 		local isInstalled = isDefined(data.installedVersion) && data.installedVersion > 0;
 
-		if (isInstalled)
+		if (isInstalled || data.format == "plugin")
 			data.btnEdit = createEditMenu(cp);
 
 		if (!isOnline)
@@ -131,10 +131,10 @@ namespace Tile
 		local data = parent.data;
 		local b = parent.addChildPanel();
 
-		local menuItems = ["Add to Favourites"];
+		local menuItems = [];
 
 		if (data.format == "expansion")
-			menuItems[1] = "Locate Samples";
+			menuItems = ["Add to Favourites", "Locate Samples"];
 
 		if (isDefined(data.favourite) && data.favourite)
 			menuItems[0] = "Remove Favourite";
