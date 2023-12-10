@@ -93,12 +93,14 @@ namespace Plugins
 		{
 			local ext = f.toString(f.Extension);
 
-			if (ext != ".vst3" && ext != ".au" && ext != ".png") continue;
+			if (![".vst3", ".au", ".png", ".dat"].contains(ext)) continue;
 
 			local dir;
 
 			if (ext == ".png")
 				dir = getImageDirectory(projectName);
+			else if (ext == ".dat")
+				dir = getAppDataDirectory(projectName);
 			else
 				dir = getPluginLocation(ext == ".au");
 
