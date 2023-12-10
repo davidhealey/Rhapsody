@@ -272,8 +272,15 @@ namespace Library
 
 				updateCatalogue();
 
-				var imageUrls = getImageUrls(response);
-				downloadImages(imageUrls);
+				if (haveAnyImagesBeenDownloaded())
+				{
+					var imageUrls = getImageUrls(response);
+					downloadIndividualImages(imageUrls);
+				}
+				else
+				{
+					downloadZippedImages();
+				}
 
 				btnSync.set("enabled", false);
 				cooldownTimer.startTimer(15000);
@@ -296,16 +303,11 @@ namespace Library
 			Spinner.hide();
 		});
 	}
-	
-	inline function getCachedImageNames()
+			
+	inline function haveAnyImagesBeenDownloaded()
 	{
-		local result = [];	
 		local files = FileSystem.findFiles(cache, "*.jpg", false);
-
-		for (x in files)
-			result.push(x.toString(x.NoExtension));
-	
-		return result;
+		return files.length > 0;
 	}
 	
 	inline function getImageUrls(data)
@@ -328,13 +330,29 @@ namespace Library
 		return result;		
 	}
 	
-	inline function downloadImages(urls)
+	inline function getCachedImageNames()
 	{
+		local result = [];	
+		local files = FileSystem.findFiles(cache, "*.jpg", false);
+	
+		for (x in files)
+			result.push(x.toString(x.NoExtension));
+	
+		return result;
+	}
+		
+	inline function downloadIndividualImages(urls)
+	{
+		if (!urls.length)
+			return;
+
 		Server.cleanFinishedDownloads();
 		Server.setBaseURL(App.baseUrl[App.mode]);
 
 		local completed = [];
 		local total = urls.length;
+		
+		App.broadcasters.isDownloading.state = true;
 
 		for (x in urls)
 		{
@@ -357,9 +375,49 @@ namespace Library
 				}
 				
 				if (completed.length >= total)
+				{
 					Spinner.hide();
+					App.broadcasters.isDownloading.state = false;
+				}					
 			});
 		}
+	}
+
+	inline function downloadZippedImages()
+	{
+		Server.cleanFinishedDownloads();
+		Server.setBaseURL(App.baseUrl[App.mode]);
+				
+		App.broadcasters.isDownloading.state = true;
+
+		local url = "wp-content/uploads/product_images.zip";
+		local f = cache.getChildFile("product_images.zip");
+
+		Server.downloadFile(url, {}, f, function()
+		{
+			Spinner.show("Downloading Images");
+		
+			if (this.data.finished)
+			{
+				if (this.data.success)
+					extractImageArchive(this.getDownloadedTarget());
+
+				App.broadcasters.isDownloading.state = false;
+			}
+		});
+	}
+
+	inline function extractImageArchive(archive)
+	{
+		archive.extractZipFile(cache, true, function[archive](obj)
+		{
+			if (obj.Status == 2)
+			{
+				archive.deleteFileOrDirectory();
+				updateCatalogue();
+				Spinner.hide();
+			}				
+		});
 	}
 
 	inline function toggleFavourite(projectName)
