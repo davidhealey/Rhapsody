@@ -172,6 +172,28 @@
     </Component>
     <Component type="ScriptPanel" id="pnlZoom" x="990.0" y="700.0" width="10.0"
                height="10.0" parentComponent="pnlContainer" allowCallbacks="All Callbacks"/>
+    <Component type="ScriptPanel" id="pnlAboutContainer" x="0.0" y="0.0" width="1000.0"
+               height="710.0" parentComponent="pnlContainer" bgColour="2013265920"
+               itemColour="0" itemColour2="0" textColour="0" borderSize="0.0"
+               borderRadius="0.0" allowCallbacks="Clicks Only" visible="0">
+      <Component type="ScriptPanel" id="pnlAbout" x="215.0" y="185.0" width="570.0"
+                 height="340.0" parentComponent="pnlAboutContainer" bgColour="4279374356"
+                 itemColour="4280098081" itemColour2="1566334044" textColour="4294967295"
+                 borderSize="0.0" borderRadius="0.0" text="RHAPSODY">
+        <Component type="ScriptFloatingTile" id="fltAboutInfo" x="46.0" y="131.0"
+                   width="152.0" height="101.0" parentComponent="pnlAbout" ContentType="AboutPagePanel"
+                   bgColour="0" itemColour="4286479998" itemColour2="0" Data="{&#10;  &quot;CopyrightNotice&quot;: &quot;&quot;,&#10;  &quot;ShowLicensedEmail&quot;: true,&#10;  &quot;ShowVersion&quot;: true,&#10;  &quot;BuildDate&quot;: true,&#10;  &quot;WebsiteURL&quot;: &quot;https://librewave.com&quot;,&#10;  &quot;ShowProductName&quot;: false,&#10;  &quot;UseCustomImage&quot;: false&#10;}"
+                   Font="regular" FontSize="12.0" textColour="4286479998"/>
+        <Component type="ScriptButton" id="btnAboutDocumentation" x="120.0" y="295.0"
+                   width="85.0" height="20.0" parentComponent="pnlAbout" text="Documentation"
+                   saveInPreset="0" enableMidiLearn="0" textColour="4286746008"
+                   isMomentary="1" bgColour="0" itemColour="0" itemColour2="0"/>
+        <Component type="ScriptButton" id="btnAboutSupport" x="405.0" y="295.0"
+                   width="45.0" height="20.0" parentComponent="pnlAbout" text="Support"
+                   saveInPreset="0" enableMidiLearn="0" isMomentary="1" bgColour="0"
+                   itemColour="0" itemColour2="0" textColour="4286746008"/>
+      </Component>
+    </Component>
     <Component type="ScriptPanel" id="pnlSplashScreen" x="0.0" y="0.0" width="1000.0"
                height="710.0" parentComponent="pnlContainer" text="Loading."
                bgColour="4279374356" itemColour="4293059298" itemColour2="4293059298"

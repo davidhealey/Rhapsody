@@ -21,6 +21,7 @@ include("App.js");
 include("Paths.js");
 include("LookAndFeel.js");
 include("UserSettings.js");
+include("About.js");
 include("Spinner.js");
 include("FilePicker.js");
 include("LicenseHandler.js");

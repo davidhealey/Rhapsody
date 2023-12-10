@@ -34,11 +34,7 @@ namespace Header
 		if (value)
 			return;
 			
-		Engine.showYesNoWindow("Visit Website", "Would you like to visit the Libre Wave website?", function(response)
-		{
-			if (response)
-				Engine.openWebsite(App.baseUrl[App.mode]);
-		});		
+		About.show();	
 	}
 
 	const lafbtnLogo = Content.createLocalLookAndFeel();
