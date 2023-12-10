@@ -2,7 +2,7 @@
 
 <ProjectSettings>
   <Name value="Rhapsody"/>
-  <Version value="2.2.3"/>
+  <Version value="2.3.0"/>
   <Description value="Application for downloading and managing Rhapsody sample libraries"/>
   <BundleIdentifier value="com.librewave.rhapsody"/>
   <PluginCode value="Lwrp"/>
@@ -38,4 +38,6 @@
   <DefaultUserPreset value=""/>
   <VST3Category value="Sampler"/>
   <OverwriteOldUserPresets value="No"/>
+  <CompileWithPerfetto value="No"/>
+  <CompileWithDebugSymbols value="No"/>
 </ProjectSettings>
