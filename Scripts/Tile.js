@@ -107,7 +107,7 @@ namespace Tile
 		local data = cp.data;
 		local isInstalled = isDefined(data.installedVersion) && data.installedVersion > 0;
 
-		if (isInstalled || data.format == "plugin")
+		if (isInstalled)
 			data.btnEdit = createEditMenu(cp);
 
 		if (!isOnline)
