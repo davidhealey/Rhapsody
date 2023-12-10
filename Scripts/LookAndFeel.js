@@ -127,7 +127,7 @@ namespace LookAndFeel
 				break;
 		}
 
-		g.setColour(Colours.withAlpha(obj.itemColour1, obj.over && obj.enabled ? 0.7 + 0.3 * down: 0.9 - (0.3 * !obj.enabled)));
+		g.setColour(Colours.withAlpha(obj.itemColour1, obj.over && obj.enabled ? 1.0 : 0.9 - (0.3 * !obj.enabled)));
 		g.fillPath(Paths.icons[icon], [a[0], a[3] / 2 - size[1] / 2, size[0], size[1]]);
 		
 		g.setFont("regular", 18);
@@ -143,7 +143,7 @@ namespace LookAndFeel
 		var icon = obj.text;
 		var down = obj.down || obj.value;
 
-		g.setColour(Colours.withAlpha(obj.bgColour, obj.over && obj.enabled ? 0.7 + 0.3 * down: 0.9 - (0.3 * !obj.enabled)));
+		g.setColour(Colours.withAlpha(obj.bgColour, obj.over && obj.enabled ? 1.0 - 0.2 * down : 0.9 - (0.3 * !obj.enabled)));
 		g.fillRoundedRectangle(a, 2);
 
 		g.setColour(Colours.withAlpha(Colours.black, obj.enabled ? 1.0 : 0.6));
@@ -246,10 +246,10 @@ namespace LookAndFeel
 		local alignment = "centred";
 		local down = obj.down || obj.value;
 
-		g.setColour(Colours.withAlpha(obj.bgColour, obj.over && obj.enabled ? 0.7 + 0.3 * down: 0.9 - (0.3 * !obj.enabled)));
+		g.setColour(Colours.withAlpha(obj.bgColour, obj.over && obj.enabled ? 1.0 - 0.2 * down : 0.8 - (0.4 * !obj.enabled)));
         g.fillRoundedRectangle(area, 5);
 
-        g.setColour(Colours.withAlpha(obj.textColour, obj.over && obj.enabled ? 0.8 + 0.2 * down: 0.9 - (0.3 * !obj.enabled)));
+        g.setColour(Colours.withAlpha(obj.textColour, obj.over && obj.enabled ? 1.0 - 0.2 * down : 0.9 - (0.3 * !obj.enabled)));
         g.setFont("semibold", 16);
         g.drawAlignedText(text, [area[0], area[1], area[2], area[3]], alignment);
     }

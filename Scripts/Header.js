@@ -45,7 +45,7 @@ namespace Header
 		 var a = obj.area;
 		 var down = obj.down || obj.value;
 		 
-		 g.setColour(Colours.withAlpha(obj.itemColour1, obj.over && obj.enabled ? 0.8 + 0.3 * down: 0.9 - (0.3 * !obj.enabled)));
+		 g.setColour(Colours.withAlpha(obj.itemColour1, obj.over ? 1.0 - 0.2 * down: 0.8));
 		 		 
 		 g.fillPath(Paths.rhapsodyLogoWithBg, [a[0], a[1], a[3], a[3]]);
 

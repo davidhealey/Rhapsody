@@ -48,9 +48,7 @@ namespace Library
 	{
 		var a = obj.area;
 
-		var down = obj.down || obj.value;
-
-		g.setColour(Colours.withAlpha(obj.itemColour1, obj.hover && obj.enabled ? 0.8 + 0.2 * down: 0.9 - (0.3 * !obj.enabled)));
+		g.setColour(Colours.withAlpha(obj.itemColour1, obj.hover && obj.enabled ? 1.0 : 0.9 - (0.3 * !obj.enabled)));
 		g.fillPath(Paths.icons.add, [a[0], a[3] / 2 - 12 / 2, 12, 12]);
 		
 		g.setFont("regular", 18);
