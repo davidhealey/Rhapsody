@@ -93,7 +93,7 @@ namespace Plugins
 		{
 			local ext = f.toString(f.Extension);
 
-			if (![".vst3", ".au", ".png", ".dat"].contains(ext)) continue;
+			if (![".vst3", ".component", ".png", ".dat"].contains(ext)) continue;
 
 			local dir;
 
@@ -102,7 +102,7 @@ namespace Plugins
 			else if (ext == ".dat")
 				dir = getAppDataDirectory(projectName);
 			else
-				dir = getPluginLocation(ext == ".au");
+				dir = getPluginLocation(ext == ".component");
 
 			local target = dir.getChildFile(f.toString(f.Filename));
 
@@ -124,32 +124,22 @@ namespace Plugins
 
 	inline function getPluginLocation(type)
 	{
-		local path;
-
 		switch (Engine.getOS())
 		{
 			case "OSX":
-				local home = FileSystem.getFolder(FileSystem.UserHome);
+				local library = FileSystem.getFolder(FileSystem.UserHome).getChildFile("Library");
 
 				if (type == 1)
-					path = home.getChildFile("Library").createDirectory("Audio/Plug-ins/Components");
+					return library.createDirectory("Audio/Plug-ins/Components");
 				else
-					path = home.getChildFile("Library").createDirectory("Audio/Plug-ins/VST3");
-
-				path = path.toString(path.FullPath);
-			break;
+					return library.createDirectory("Audio/Plug-ins/VST3");
 
 			case "LINUX":
-				path = "~/.vst3";
-				break;
+				return FileSystem.fromAbsolutePath("~/.vst3");
 
 			case "WIN":
-				path = "C:/Program Files/Common Files/VST3";
-				break;
+				return FileSystem.fromAbsolutePath("C:/Program Files/Common Files/VST3");
 		}
-
-		if (isDefined(path))
-			return FileSystem.fromAbsolutePath(path);
 			
 		return undefined;
 	}
@@ -174,7 +164,7 @@ namespace Plugins
 			local f = FileSystem.fromAbsolutePath(fp);
 			local ext = f.toString(f.Extension);
 
-			if (!isDefined(f) || (ext != ".vst3" && ext != ".au"))
+			if (!isDefined(f) || (ext != ".vst3" && ext != ".component"))
 				continue;
 
 			f.deleteFileOrDirectory();
