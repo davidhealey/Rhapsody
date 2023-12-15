@@ -106,6 +106,10 @@ namespace Plugins
 
 			local target = dir.getChildFile(f.toString(f.Filename));
 
+			// Remove old file (if any)
+			if (target.isFile() || ([".vst", ".component"].contains(ext) && target.isDirectory()))
+				target.deleteFileOrDirectory();
+
 			f.move(target);
 
 			if (ext != ".png")
@@ -164,7 +168,7 @@ namespace Plugins
 			local f = FileSystem.fromAbsolutePath(fp);
 			local ext = f.toString(f.Extension);
 
-			if (!isDefined(f) || (ext != ".vst3" && ext != ".component"))
+			if (!isDefined(f) || ![".vst3", ".component"].contains(ext))
 				continue;
 
 			f.deleteFileOrDirectory();
