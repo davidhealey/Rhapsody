@@ -144,7 +144,7 @@ namespace Tile
 			
 		menuItems.push("Uninstall");
 
-		b.setPosition(area[2] - 17, area[3] - 27, 8, 16);
+		b.setPosition(area[2] - 17, area[3] - 28, 8, 16);
 		b.set("itemColour", 0xffa8b2bd);
 		b.set("allowCallbacks", "All Callbacks");
 		b.set("popupMenuItems", menuItems.join("\n"));
@@ -196,14 +196,14 @@ namespace Tile
 		if (type == "Install")
 			b.setPosition(area[2] - 28, area[3] - 28, 16, 16);
 		else
-			b.setPosition(area[2] - 48, area[3] - 28, 16, 16);
-			
+			b.setPosition(area[2] - 45, area[3] - 28, 16, 16);
+
 		b.set("tooltip", type + " " + parent.get("text") + ".");
 		b.set("itemColour", 0xff7fff74);
 		b.set("allowCallbacks", "Clicks & Hover");
 		b.setControlCallback(onbtnInstallControl);
-		b.data.icon = Paths.icons.download;
-			
+		b.data.icon = type == "Install" ? Paths.icons.download : Paths.icons.update;
+
 		b.setPaintRoutine(function(g)
 		{
 			var a = this.getLocalBounds(0);
