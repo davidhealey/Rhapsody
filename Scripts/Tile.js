@@ -367,8 +367,8 @@ namespace Tile
 		local data = component.getParentPanel().data;
 
 		if (Engine.isPlugin() && Engine.getOS() == "WIN" && data.format == "plugin")
-			Engine.showMessageBox("Permission Required", "Please use the standalone version of Rhapsody to install " + data.name, "0");
-
+			return Engine.showMessageBox("Permission Required", "Please use the standalone version of Rhapsody to install " + data.name, "0");
+			
 		if ((isDefined(data.sampleDir) && data.sampleDir.isDirectory()) || data.format == "plugin")
 			Downloader.addToQueue(data);
 		else
