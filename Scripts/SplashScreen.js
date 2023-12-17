@@ -49,10 +49,6 @@ namespace SplashScreen
 		g.setFont("regular", 14);
 		g.setColour(Colours.withAlpha(this.get("textColour"), 0.8));
 		g.drawAlignedText(this.get("text"), [a[0], a[3] - 100, a[2], 30], "centred");
-
-		g.setFont("regular", 18);
-		g.setColour(Colours.withAlpha(this.get("textColour"), 0.3));
-		g.drawAlignedText("v" + Engine.getVersion(), [a[0], a[1] + a[3] - 50, a[2] - 25, 50], "right");
 	});
 
 	pnlSplashScreen.setTimerCallback(function()
