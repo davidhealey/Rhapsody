@@ -169,6 +169,9 @@ namespace Library
 			
 			for (key in manifest[projectName])
 				item[key] = manifest[projectName][key];
+				
+			if (isDefined(item.installedVersion) && item.latestVersion > item.installedVersion)
+				item.hasUpdate = true;
 		}
 		
 		return result;
