@@ -88,12 +88,13 @@ namespace Plugins
 		local tempDir = FileSystem.fromAbsolutePath(tempDirPath);
 		local files = FileSystem.findFiles(tempDir, "*", false);
 		local installedFiles = [];
+		local allowedExtensions = [".vst3", ".component", ".png", ".dat", ".wav", ".mid"];
 
 		for (f in files)
 		{
 			local ext = f.toString(f.Extension);
 
-			if (![".vst3", ".component", ".png", ".dat"].contains(ext)) continue;
+			if (!allowedExtensions.contains(ext)) continue;
 
 			local dir;
 
@@ -107,13 +108,11 @@ namespace Plugins
 			local target = dir.getChildFile(f.toString(f.Filename));
 
 			// Remove old file (if any)
-			if (target.isFile() || ([".vst", ".component"].contains(ext) && target.isDirectory()))
+			if (target.isFile() || target.isDirectory())
 				target.deleteFileOrDirectory();
 
 			f.move(target);
-
-			if (ext != ".png")
-				installedFiles.push(target.toString(target.FullPath));
+			installedFiles.push(target.toString(target.FullPath));
 		}
 
 		Library.setManifestValue(projectName, "format", "plugin");

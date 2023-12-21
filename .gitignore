@@ -15,3 +15,6 @@ Compiled/
 *.ch*
 .DS_Store
 expansion_info.xml
+current_tasks.js
+finished_tasks.js
+repo_settings.js
