@@ -69,7 +69,7 @@ namespace LicenseHandler
 		if (value)
 			return;
 			
-		local license = lblAddLicense.get("text");
+		local license = lblAddLicense.get("text").trim();
 		
 		if (license == "" || !license.contains("-") || license.length != 19)
 			return Engine.showMessageBox("License Error", "Please enter a valid license key.", 1);
