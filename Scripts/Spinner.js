@@ -1,5 +1,5 @@
 /*
-    Copyright 2021, 2022, 2023 David Healey
+    Copyright 2021, 2022, 2023, 2024 David Healey
 
     This file is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -59,6 +59,36 @@ namespace Spinner
     	this.repaint();
 	});
 	
+	//! btnSpinnerCancel
+	const btnSpinnerCancel = Content.getComponent("btnSpinnerCancel");
+	const lafbtnSpinnerCancel = Content.createLocalLookAndFeel();
+	btnSpinnerCancel.setLocalLookAndFeel(lafbtnSpinnerCancel);
+	btnSpinnerCancel.setControlCallback(onbtnSpinnerCancelControl);
+	
+	inline function onbtnSpinnerCancelControl(component, value)
+	{
+		if (!value)
+			return;
+
+		Engine.showYesNoWindow("Confirm", "Are you sure you want to cancel the installation?", function(response)
+		{
+			if (!response)
+				return;
+				
+			Expansions.abortInstallation();
+			hide();
+		});
+	}
+	
+	lafbtnSpinnerCancel.registerFunction("drawToggleButton", function(g, obj)
+	{
+		var a = obj.area;
+		
+		g.setColour(Colours.withAlpha(obj.textColour, obj.over ? 1.0 - obj.value * 0.2 : 0.8)); 
+		g.setFont("bold", 18);
+		g.drawAlignedText(obj.text, a, "centred");
+	});
+	
 	// Functions
 	/**
 	* Sets the message displayed on the spinner panel
@@ -90,6 +120,13 @@ namespace Spinner
 		pnlSpinner.setValue(0);
 		pnlSpinner.stopTimer();
 		pnlSpinnerContainer.showControl(false);
+		btnSpinnerCancel.showControl(false);
+		pnlSpinner.data.msg = "";
+	}
+
+	inline function showCancelButton(shouldShow)
+	{
+		btnSpinnerCancel.showControl(shouldShow);
 	}
 
 	/*

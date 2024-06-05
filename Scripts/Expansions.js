@@ -1,5 +1,5 @@
 /*
-    Copyright 2022, 2023 David Healey
+    Copyright 2022, 2023, 2024 David Healey
 
     This file is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -126,8 +126,11 @@ namespace Expansions
 		Engine.sortWithFunction(archives, sortFiles);
 		
 		if (isManual)
+		{
 			Spinner.show("Installing");
-		
+			Spinner.showCancelButton(true);
+		}			
+
 		for (x in archives)
 		{
 			local filename = x.toString(x.Filename);
@@ -184,6 +187,8 @@ namespace Expansions
 
 		if (isDefined(broadcaster) && broadcaster != -1)
 			broadcaster.progress = {value: Math.round(obj.Progress * 100), message: "Installing: " + (extractionCount + 1) + "/" + numZips};
+		else
+			Spinner.setMessage("Installing: " + (extractionCount + 1) + "/" + numZips);
 	
 		if (obj.Status != 2)
 			return;
@@ -440,6 +445,7 @@ namespace Expansions
 	
 	inline function setCurrent(expName)
 	{
+		Spinner.show("Loading");
 		expHandler.setCurrentExpansion(expName);
 	}
 }
