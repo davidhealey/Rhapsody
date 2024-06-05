@@ -118,7 +118,7 @@ namespace LicenseHandler
 					return Engine.showMessageBox("Server Error: " + status, response, 1);
 
    				Library.updateCache(false);
-   				return Engine.showMessageBox("Success", "The license was added to your account", 0);
+   				return Engine.showMessageBox("Success", "The license was successfully activated.", 0);
     		}
     		else
     		{
