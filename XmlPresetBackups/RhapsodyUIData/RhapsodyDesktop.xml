@@ -16,7 +16,7 @@
       <Component type="ScriptButton" id="btnSync" x="251.0" y="15.0" width="54.0"
                  height="30.0" text="sync" parentComponent="pnlHeader" saveInPreset="0"
                  enableMidiLearn="0" isMomentary="1" itemColour="4289245885" bgColour="4279637529"
-                 itemColour2="0" tooltip="Check for updates"/>
+                 itemColour2="0" tooltip="Check for updates" enabled="0"/>
       <Component type="ScriptComboBox" id="cmbAdd" x="326.0" y="15.0" width="107.0"
                  height="30.0" max="2" parentComponent="pnlHeader" items="Manual Install&#10;Add a License"
                  text="Add Product" saveInPreset="0" bgColour="4279637529" textColour="0"
@@ -25,10 +25,10 @@
                  height="30.0" text="favourites" parentComponent="pnlHeader" enableMidiLearn="0"
                  itemColour="4289245885" bgColour="4279637529" itemColour2="0"
                  tooltip="Check for updates" saveInPreset="0"/>
-      <Component type="ScriptButton" id="btnAccount" x="566.0" y="15.0" width="74"
-                 height="30.0" text="log out" parentComponent="pnlHeader" saveInPreset="0"
+      <Component type="ScriptButton" id="btnAccount" x="566.0" y="15.0" width="67"
+                 height="30.0" text="login" parentComponent="pnlHeader" saveInPreset="0"
                  enableMidiLearn="0" isMomentary="1" itemColour="4289245885" bgColour="4279637529"
-                 itemColour2="0" tooltip="Sign out of Rhapsody"/>
+                 itemColour2="0" tooltip="Login"/>
       <Component type="ScriptPanel" id="pnlFilter" x="683.0" y="11.0" width="306.0"
                  height="38.0" bgColour="4280953393" itemColour="0" itemColour2="4294967295"
                  textColour="4289245885" borderSize="0.0" borderRadius="0.0" parentComponent="pnlHeader"
@@ -58,12 +58,12 @@
     <Component type="ScriptPanel" id="pnlLogin" x="0.0" y="0.0" width="1000.0"
                height="710.0" parentComponent="pnlContainer" itemColour="4280098081"
                itemColour2="4289245885" bgColour="4279374356" textColour="4294967295"
-               borderSize="0.0" borderRadius="0.0" visible="0">
+               borderSize="0.0" borderRadius="0.0">
       <Component type="ScriptLabel" id="lblUsername" x="373.0" y="279.0" width="276.0"
-                 height="20.0" parentComponent="pnlLogin" text="customer" itemColour2="4280953393"
+                 height="20.0" parentComponent="pnlLogin" text="" itemColour2="4280953393"
                  fontName="regular" fontSize="18.0" alignment="left" textColour="4291285984"/>
       <Component type="ScriptLabel" id="lblPassword" x="373.0" y="329.0" width="255.0"
-                 height="20.0" parentComponent="pnlLogin" text="1234567" itemColour2="4280953393"
+                 height="20.0" parentComponent="pnlLogin" text="" itemColour2="4280953393"
                  fontName="regular" fontSize="18.0" alignment="left" updateEachKey="1"
                  textColour="4291285984" fontStyle="Password"/>
       <Component type="ScriptButton" id="btnLoginSubmit" x="411.0" y="406.0" width="178.0"
