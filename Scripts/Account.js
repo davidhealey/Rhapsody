@@ -182,7 +182,7 @@ namespace Account
 	inline function onbtnGettingStartedControl(component, value)
 	{
 		if (!value)
-			Engine.openWebsite(App.baseUrl[App.mode] + "rhapsody/");
+			Engine.openWebsite(Engine.getProjectInfo().CompanyURL + "/rhapsody/");
 	}
 	
 	// btnDocumentation
@@ -193,7 +193,7 @@ namespace Account
 	inline function onbtnDocumentationControl(component, value)
 	{
 		if (!value)
-			Engine.openWebsite(App.baseUrl[App.mode] + "knowledge-base/");
+			Engine.openWebsite(Engine.getProjectInfo().CompanyURL + "/knowledge-base/");
 	}
 
 	// Functions
