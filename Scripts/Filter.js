@@ -1,5 +1,5 @@
 /*
-    Copyright 2023 David Healey
+    Copyright 2023, 2024 David Healey
 
     This file is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ namespace Filter
 	// lblFilter
 	const lblFilter = Content.getComponent("lblFilter");
 	lblFilter.set("text", "");
+	lblFilter.setConsumedKeyPresses("all");
 	lblFilter.setControlCallback(onlblFilterControl);
 	
 	inline function onlblFilterControl(component, value)
@@ -49,16 +50,16 @@ namespace Filter
 		Grid.filterTiles();
 	}
 	
-	lblFilter.setKeyPressCallback(function(event)
+	lblFilter.setKeyPressCallback(function(obj)
 	{
-		var grabbedFocus = (event.isFocusChange && !event.hasFocus);
-			
-		if (this.get("text") == "" && !isDefined(event.character) && !grabbedFocus)
+		var grabbedFocus = (obj.isFocusChange && !obj.hasFocus);
+
+		if (this.get("text") == "" && !isDefined(obj.character) && !grabbedFocus)
 			pnlFilter.set("text", "Search...");
 		else
 			pnlFilter.set("text", "");
 
-		btnFilterClear.showControl(this.get("text") != "" || isDefined(event.character));
+		btnFilterClear.showControl(this.get("text") != "" || isDefined(obj.character));
 
 		pnlFilter.repaint();
 	});
