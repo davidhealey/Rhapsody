@@ -278,7 +278,7 @@ namespace LookAndFeel
     		"Remove Favourite": ["heartFilled", 12, 11],
     		"Locate Samples": ["search", 12, 12],
     		"Uninstall": ["trash", 10, 12],
-    		"Visit Webpage": ["openInBrowser", 12, 12]
+    		"Visit Webpage": ["openInNew", 12, 12]
     	};
 
     	if (!obj.isSeparator)

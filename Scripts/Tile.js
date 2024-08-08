@@ -113,6 +113,9 @@ namespace Tile
 		if (!isOnline)
 			return;
 
+		if ((!isDefined(data.hasLicense) || !data.hasLicense ) && !isInstalled && isDefined(data.url))
+			return createBuyButton(cp);
+
 		if ((!isDefined(data.hasLicense) || !data.hasLicense) && data.regularPrice != "0")
 			return;
 
@@ -188,15 +191,53 @@ namespace Tile
 		return b;
 	}
 
+	inline function createBuyButton(parent)
+	{
+		local area = parent.getLocalBounds(0);
+		local b = parent.addChildPanel();
+	
+		b.setPosition(area[2] - 28, area[3] - 27, 16, 16);	
+		b.set("tooltip", type + " " + parent.get("text") + ".");
+		b.set("itemColour", 0xffa8b2bd);
+		b.set("allowCallbacks", "Clicks & Hover");
+		b.data.icon = Paths.icons.openInNew;
+		b.data.url = parent.data.url;
+	
+		b.setPaintRoutine(function(g)
+		{
+			var a = this.getLocalBounds(0);
+	
+			if (this.get("enabled"))
+				g.setColour(Colours.withAlpha(this.get("itemColour"), this.data.hover ? 1.0 - 0.3 * this.getValue() : 0.8));
+			else
+				g.setColour(Colours.withAlpha(this.get("itemColour"), 0.2));
+	
+			g.fillPath(this.data.icon, a);
+		});
+	
+		b.setMouseCallback(function(event)
+		{
+			this.setMouseCursor("PointingHandCursor", Colours.white, [0, 0]);
+			this.setValue(event.clicked);
+			this.data.hover = event.hover;
+			this.repaint();
+	
+			if (event.mouseUp)
+				Engine.openWebsite(this.data.url);
+		});
+	
+		return b;		
+	}
+
 	inline function createInstallButton(parent, type)
 	{
 		local area = parent.getLocalBounds(0);
 		local b = parent.addChildPanel();
 
 		if (type == "Install")
-			b.setPosition(area[2] - 28, area[3] - 28, 16, 16);
+			b.setPosition(area[2] - 30, area[3] - 29, 18, 18);
 		else
-			b.setPosition(area[2] - 45, area[3] - 28, 16, 16);
+			b.setPosition(area[2] - 47, area[3] - 29, 18, 18);
 
 		b.set("tooltip", type + " " + parent.get("text") + ".");
 		b.set("itemColour", 0xff7fff74);

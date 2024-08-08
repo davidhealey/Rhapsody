@@ -1,5 +1,5 @@
 /*
-    Copyright 2023 David Healey
+    Copyright 2023, 2024 David Healey
 
     This file is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -192,9 +192,6 @@ namespace Library
 		for (x in localData)
 		{
 			if (!isDefined(x.format) || !isDefined(x.projectName) || isDefined(x.hidden)) continue;
-			
-			if (x.regularPrice != "0")
-				if ((!isDefined(x.hasLicense) || !x.hasLicense) && !isDefined(x.source)) continue;				
 
 			if (!isDefined(x.tags) || x.tags == "")
 				x.tags = [];
