@@ -2,7 +2,7 @@
 
 <ProjectSettings>
   <Name value="Rhapsody"/>
-  <Version value="2.4.1"/>
+  <Version value="2.5.0"/>
   <Description value="Application for downloading and managing Rhapsody sample libraries"/>
   <BundleIdentifier value="com.librewave.rhapsody"/>
   <PluginCode value="Lwrp"/>
@@ -41,4 +41,5 @@
   <CompileWithPerfetto value="No"/>
   <CompileWithDebugSymbols value="No"/>
   <IncludeLorisInFrontend value="No"/>
+  <ExtraDefinitionsNetworkDll value=""/>
 </ProjectSettings>
