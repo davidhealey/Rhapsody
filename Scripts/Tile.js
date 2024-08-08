@@ -47,7 +47,7 @@ namespace Tile
 			}
 
 			if (this.isImageLoaded(image) && imageSize[0] == imageSize[1])
-				g.drawImage(image, [0, 0, a[2], a[3] - 40], 0, 0);
+				g.drawImage(image, [0, 0, a[2], a[3]], 0, 0);
 			else
 				drawPlaceholderImage();
 

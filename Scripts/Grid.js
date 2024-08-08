@@ -56,7 +56,7 @@ namespace Grid
 	});
 
 	reg TILE_WIDTH = pnlGrid.getWidth() / NUM_COLS - MARGIN;
-	reg TILE_HEIGHT = TILE_WIDTH + 15;
+	reg TILE_HEIGHT = TILE_WIDTH + 40;
 
 	// Functions
 	inline function update(data)
