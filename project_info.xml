@@ -2,7 +2,7 @@
 
 <ProjectSettings>
   <Name value="Rhapsody"/>
-  <Version value="2.5.0"/>
+  <Version value="2.5.1"/>
   <Description value="Application for downloading and managing Rhapsody sample libraries"/>
   <BundleIdentifier value="com.librewave.rhapsody"/>
   <PluginCode value="Lwrp"/>

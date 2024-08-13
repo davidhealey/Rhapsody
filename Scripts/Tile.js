@@ -57,7 +57,7 @@ namespace Tile
 			
 			var textWidth = a[2] - 30 - (30 * (isDefined(this.data.hasUpdate) && this.data.hasUpdate)) - (12 * (this.data.hasLicense && !isDefined(this.data.installedVersion)));
 
-			g.drawFittedText(this.data.name, [a[0] + 10, a[3] - 40, textWidth, 40], "left", 1, 1);
+			g.drawFittedText(this.data.name, [a[0] + 10, a[3] - 40, textWidth, 41], "left", 1, 1);
 
 			if (isDefined(this.data.progress))
 				drawProgressIndicator(a, this.data.progress);	
@@ -113,7 +113,7 @@ namespace Tile
 		if (!isOnline)
 			return;
 
-		if ((!isDefined(data.hasLicense) || !data.hasLicense ) && !isInstalled && isDefined(data.url))
+		if ((!isDefined(data.hasLicense) || !data.hasLicense ) && !isInstalled && isDefined(data.url) && data.regularPrice != "0")
 			return createBuyButton(cp);
 
 		if ((!isDefined(data.hasLicense) || !data.hasLicense) && data.regularPrice != "0")
@@ -237,7 +237,7 @@ namespace Tile
 		if (type == "Install")
 			b.setPosition(area[2] - 30, area[3] - 29, 18, 18);
 		else
-			b.setPosition(area[2] - 47, area[3] - 29, 18, 18);
+			b.setPosition(area[2] - 45, area[3] - 29, 18, 18);
 
 		b.set("tooltip", type + " " + parent.get("text") + ".");
 		b.set("itemColour", 0xff7fff74);
