@@ -448,4 +448,12 @@ namespace Expansions
 		Spinner.show("Loading");
 		expHandler.setCurrentExpansion(expName);
 	}
+	
+	inline function allowDuplicateSamples()
+	{
+		for (e in expHandler.getExpansionList())
+			e.setAllowDuplicateSamples(false);
+	}
+	
+	allowDuplicateSamples();
 }
