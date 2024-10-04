@@ -25,10 +25,10 @@
                  height="30.0" text="favourites" parentComponent="pnlHeader" enableMidiLearn="0"
                  itemColour="4289245885" bgColour="4279637529" itemColour2="0"
                  tooltip="Check for updates" saveInPreset="0"/>
-      <Component type="ScriptButton" id="btnAccount" x="566.0" y="15.0" width="74"
-                 height="30.0" text="log out" parentComponent="pnlHeader" saveInPreset="0"
+      <Component type="ScriptButton" id="btnAccount" x="566.0" y="15.0" width="67"
+                 height="30.0" text="login" parentComponent="pnlHeader" saveInPreset="0"
                  enableMidiLearn="0" isMomentary="1" itemColour="4289245885" bgColour="4279637529"
-                 itemColour2="0" tooltip="Sign out of Rhapsody"/>
+                 itemColour2="0" tooltip="Login"/>
       <Component type="ScriptPanel" id="pnlFilter" x="683.0" y="11.0" width="306.0"
                  height="38.0" bgColour="4280953393" itemColour="0" itemColour2="4294967295"
                  textColour="4289245885" borderSize="0.0" borderRadius="0.0" parentComponent="pnlHeader"
