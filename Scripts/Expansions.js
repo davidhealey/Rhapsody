@@ -241,7 +241,10 @@ namespace Expansions
 		expHandler.refreshExpansions();
 
 		for (e in expHandler.getExpansionList())
-			e.rebuildUserPresets();		
+		{
+			e.setAllowDuplicateSamples(false);
+			e.rebuildUserPresets();
+		}				
 	}
 		
 	inline function getInstalledExpansionsData()
@@ -455,5 +458,6 @@ namespace Expansions
 			e.setAllowDuplicateSamples(false);
 	}
 	
+	//! Calls
 	allowDuplicateSamples();
 }
